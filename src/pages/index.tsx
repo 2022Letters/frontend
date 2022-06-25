@@ -7,16 +7,27 @@ const MainBackground = styled.div`
 `;
 
 const NextBtn = styled.button`
-  position: absolute;
-  bottom: 80px;
+  height: 2.5rem;
   width: 80%;
   border: none;
+  border-radius: 12px;
+`;
+
+const BtnPosition = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  position: absolute;
+  bottom: 45px;
 `;
 
 function LandingPage() {
   return (
     <MainBackground>
-      <NextBtn>꽃다발 만들기</NextBtn>
+      <BtnPosition>
+        <NextBtn>꽃다발 만들기</NextBtn>
+      </BtnPosition>
     </MainBackground>
   );
 }
