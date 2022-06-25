@@ -2,7 +2,8 @@ import styled from 'styled-components';
 
 const MainBackground = styled.div`
   background-image: url('/img/main.png');
-  background-size: cover;
+  background-size: contain;
+  background-repeat: no-repeat;
   height: 100%;
 `;
 
