@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import Sidebar from './Sidebar';
 
@@ -18,11 +18,9 @@ const MenuImg = styled.img`
 `;
 
 function Header() {
-  const [isOpen, setIsOpen] = useState(false);
   const toggleSide = () => {
     const sidebar = document.getElementById('sidebar');
     sidebar?.classList.toggle('open');
-    setIsOpen(true);
   };
 
   return (
@@ -30,7 +28,7 @@ function Header() {
       <MenuBtn role="button" onClick={toggleSide}>
         <MenuImg src="/img/menu.png" />
       </MenuBtn>
-      <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} />
+      <Sidebar />
     </HeaderPostion>
   );
 }

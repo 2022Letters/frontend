@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect } from 'react';
 import styled from 'styled-components';
 
 const SideBarWrap = styled.div`
@@ -7,7 +7,8 @@ const SideBarWrap = styled.div`
   border-radius: 15px 0 0 15px;
   background-color: #e7e4e1;
   height: 100%;
-  right: -100%;
+  width: 55%;
+  right: -55%;
   top: 0;
   position: fixed;
   transition: 0.5s ease;
@@ -16,54 +17,45 @@ const SideBarWrap = styled.div`
     transition: 0.5s ease;
   }
 `;
+
 const Menu = styled.li`
   margin: 30px 8px;
 `;
+
 const ExitMenu = styled.span`
   position: absolute;
   bottom: 26px;
   font-size: 0.8rem;
 `;
 
-function Sidebar({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) {
-  const other = useRef<any>();
+function Sidebar() {
+  const outside = useRef<any>();
 
   useEffect(() => {
-    if (isOpen) {
-      window.addEventListener('mousedown', otherClose);
-    }
+    document.addEventListener('mousedown', handlerOutsie);
+
     return () => {
-      window.removeEventListener('mousedown', otherClose);
+      document.removeEventListener('mousedown', handlerOutsie);
     };
   });
 
-  useEffect(() => {
+  const handlerOutsie = (e: any) => {
+    if (!outside.current.contains(e.target)) {
+      toggleSide();
+    }
+  };
+
+  const toggleSide = () => {
     const sidebar = document.getElementById('sidebar');
-    if (isOpen) {
-      sidebar?.classList.add('open');
-    } else {
-      sidebar?.classList.remove('open');
-    }
-  }, [isOpen]);
-
-  const otherClose = async (e: any) => {
-    console.log(isOpen);
-    if (isOpen && !other.current.contains(e.target)) {
-      setClose();
-    }
+    sidebar?.classList.remove('open');
   };
-
-  const setClose = () => {
-    setIsOpen(false);
-  };
-
   return (
-    <SideBarWrap id="sidebar" ref={other}>
+    <SideBarWrap id="sidebar" ref={outside}>
       <img
         src="/img/close.png"
         alt="close"
-        onClick={setClose}
-        onKeyDown={setClose}
+        onClick={toggleSide}
+        onKeyDown={toggleSide}
       />
       <ul>
         <Menu>로그인/로그아웃</Menu>
