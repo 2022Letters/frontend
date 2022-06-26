@@ -5,6 +5,7 @@ import LandingPage from '.';
 import GlobalStyles from '../common/style/GlobalStyle';
 import theme from '../common/style/theme';
 import Layout from '../components/Layout/Layout';
+import Login from './login';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Layout>
           <Routes>
             <Route path="/" element={<LandingPage />} />
+            <Route path="/login" element={<Login />} />
           </Routes>
         </Layout>
       </Router>

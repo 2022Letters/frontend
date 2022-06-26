@@ -1,4 +1,5 @@
 import React, { useRef, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const SideBarWrap = styled.div`
@@ -57,7 +58,10 @@ function Sidebar({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) {
         onKeyDown={toggleSide}
       />
       <ul>
-        <Menu>로그인/로그아웃</Menu>
+        <Menu>
+          <Link to="/login">로그인</Link>
+        </Menu>
+        <Menu>로그아웃</Menu>
         <Menu>꽃다발 만들기</Menu>
         <Menu>mmm@gmail.com로 문의 부탁</Menu>
       </ul>
@@ -65,4 +69,5 @@ function Sidebar({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) {
     </SideBarWrap>
   );
 }
+
 export default Sidebar;
