@@ -6,6 +6,7 @@ const GlobalStyles = createGlobalStyle`
   margin: 0 0;
   padding:0 0;
   box-sizing: border-box;
+  font-family:'Neurit';
 }
 
 html,body, #root{
