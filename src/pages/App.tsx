@@ -6,6 +6,7 @@ import GlobalStyles from '../common/style/GlobalStyle';
 import theme from '../common/style/theme';
 import Layout from '../components/Layout/Layout';
 import Login from './login';
+import Nickname from './nickname';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/login/nickname" element={<Nickname />} />
           </Routes>
         </Layout>
       </Router>
