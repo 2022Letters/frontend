@@ -4,7 +4,7 @@ import { ThemeProvider } from 'styled-components';
 import GlobalStyles from '../common/style/GlobalStyle';
 import theme from '../common/style/theme';
 
-import LandingPage from './LandingPage';
+import GuestHome from './GuestHome';
 
 function App() {
   return (
@@ -12,7 +12,7 @@ function App() {
       <GlobalStyles />
       <Router>
         <Routes>
-          <Route path="/" element={<LandingPage />} />
+          <Route path="/guest" element={<GuestHome />} />
         </Routes>
       </Router>
     </ThemeProvider>
