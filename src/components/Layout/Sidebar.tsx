@@ -28,12 +28,11 @@ const ExitMenu = styled.span`
   font-size: 0.8rem;
 `;
 
-function Sidebar() {
+function Sidebar({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) {
   const outside = useRef<any>();
 
   useEffect(() => {
     document.addEventListener('mousedown', handlerOutsie);
-
     return () => {
       document.removeEventListener('mousedown', handlerOutsie);
     };
@@ -46,11 +45,11 @@ function Sidebar() {
   };
 
   const toggleSide = () => {
-    const sidebar = document.getElementById('sidebar');
-    sidebar?.classList.remove('open');
+    setIsOpen(false);
   };
+
   return (
-    <SideBarWrap id="sidebar" ref={outside}>
+    <SideBarWrap id="sidebar" ref={outside} className={isOpen ? 'open' : ''}>
       <img
         src="/img/close.png"
         alt="close"
