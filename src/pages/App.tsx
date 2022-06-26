@@ -5,6 +5,7 @@ import GlobalStyles from '../common/style/GlobalStyle';
 import theme from '../common/style/theme';
 
 import LandingPage from './LandingPage';
+import Main from './Main';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<LandingPage />} />
+          <Route path="/main" element={<Main />} />
         </Routes>
       </Router>
     </ThemeProvider>
