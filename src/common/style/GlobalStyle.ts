@@ -13,7 +13,6 @@ html,body, #root{
   font-size:16px;
 }
 
-
 button{
   text-decoration:none;
   cursor:pointer;
@@ -23,6 +22,7 @@ button{
 a{
   text-decoration:none;
   cursor:pointer;
+  color:#000;
   &:hover,
   &:active,
   &:visited{

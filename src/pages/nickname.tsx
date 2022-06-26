@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 const NickWrap = styled.div`
   height: 100%;
+  padding: 45px 20px 0;
 `;
 
 const NickTitle = styled.h2`
@@ -12,7 +13,6 @@ const NickTitle = styled.h2`
 const NickBody = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100%;
 `;
 const NickDiv = styled.div`
   display: flex;
@@ -31,13 +31,18 @@ const NickMsg = styled.span`
   color: red;
 `;
 
+const BtnPosition = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  bottom: 45px;
+`;
+
 const NickBtn = styled.button`
   height: 2.5rem;
-  border: none;
-  border-radius: 10px;
-  position: absolute;
-  bottom: 0;
   width: 100%;
+  border: none;
+  border-radius: 12px;
 `;
 
 function Nickname() {
@@ -49,7 +54,9 @@ function Nickname() {
           <NickInput />
           <NickMsg>변경이 불가하니 신중히 선택해주세요.</NickMsg>
         </NickDiv>
-        <NickBtn type="button">완료</NickBtn>
+        <BtnPosition>
+          <NickBtn type="button">완료</NickBtn>
+        </BtnPosition>
       </NickBody>
     </NickWrap>
   );

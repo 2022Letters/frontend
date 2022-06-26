@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import Sidebar from './Sidebar';
 
-const HeaderPostion = styled.div`
+const HeaderPostion = styled.header`
+  position: fixed;
+  width: 100%;
   display: flex;
   justify-content: flex-end;
   align-items: center;

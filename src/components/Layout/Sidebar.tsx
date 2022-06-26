@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const SideBarWrap = styled.div`
-  z-index: 5;
+  z-index: 10;
   padding: 12px;
   border-radius: 15px 0 0 15px;
   background-color: #e7e4e1;
@@ -20,7 +20,7 @@ const SideBarWrap = styled.div`
 `;
 
 const Menu = styled.li`
-  margin: 30px 8px;
+  padding: 16px 8px;
 `;
 
 const ExitMenu = styled.span`
@@ -57,15 +57,21 @@ function Sidebar({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) {
         onClick={toggleSide}
         onKeyDown={toggleSide}
       />
-      <ul>
-        <Menu>
-          <Link to="/login">로그인</Link>
-        </Menu>
-        <Menu>로그아웃</Menu>
-        <Menu>꽃다발 만들기</Menu>
-        <Menu>mmm@gmail.com로 문의 부탁</Menu>
-      </ul>
-      <ExitMenu>회원 탈퇴</ExitMenu>
+      <nav>
+        <ul>
+          <Menu onClick={toggleSide}>
+            <Link to="/login">로그인</Link>
+          </Menu>
+          <Menu onClick={toggleSide}>
+            <Link to="/">로그아웃</Link>
+          </Menu>
+          <Menu onClick={toggleSide}>
+            <Link to="/">꽃다발 만들기</Link>
+          </Menu>
+          <Menu>mmm@gmail.com로 문의 부탁</Menu>
+        </ul>
+        <ExitMenu>회원 탈퇴</ExitMenu>
+      </nav>
     </SideBarWrap>
   );
 }

@@ -5,12 +5,13 @@ import Kakao from './SocialLogin/Kakao';
 
 const LoginWrap = styled.div`
   height: 100%;
+  padding: 45px 20px 0;
 `;
 const ButtonWrap = styled.div`
-  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  margin: 50% 0;
 `;
 
 function Login() {
