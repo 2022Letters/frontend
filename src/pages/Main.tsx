@@ -1,6 +1,7 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
+import _, { debounce } from 'lodash';
 
 const Container = styled.section`
   position: relative;
@@ -34,21 +35,55 @@ const SearchInput = styled.input`
 const CategoryButton = styled.button`
   position: relative;
 `;
-
 export default function Main() {
-  const [query, setQuery] = useState('');
+  const [celebratedList, setCelebratedList] = useState<any>();
   const categoryList = ['생일', '졸업', '결혼', '새해', '기타'];
 
-  const onChange = (event: React.FormEvent<HTMLInputElement>) => {
+  useEffect(() => {
+    (async () => {
+      await getQueryData();
+    })();
+  }, []);
+
+  const getQueryData = async (value?: string) => {
+    const body = { query: value };
+    if (value) {
+      try {
+        setTimeout(() => {
+          console.log('data');
+        }, 1000);
+        const response = 'data';
+
+        setCelebratedList(response);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    try {
+      setTimeout(() => {
+        console.log('data');
+      }, 1000);
+      const response = 'data';
+      setCelebratedList(response);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const request = debounce((value, func) => {
+    func(value);
+  }, 1000);
+
+  const debounceRequest = useCallback(
+    (value: string, func: object) => request(value, func),
+    []
+  );
+
+  const onChange = async (event: React.FormEvent<HTMLInputElement>) => {
     const {
       currentTarget: { value }
     } = event;
-    setQuery(value);
-  };
-
-  const getQueryData = async () => {
-    const body = { query };
-    const response = await axios.post('abc', body);
+    debounceRequest(value, getQueryData);
   };
 
   return (
@@ -57,7 +92,6 @@ export default function Main() {
         <SearchInput
           type="text"
           placeholder="찾고 싶은 추억을 입력해주세요."
-          value={query}
           onChange={onChange}
         />
       </InputWrapper>
