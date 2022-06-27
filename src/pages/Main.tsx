@@ -1,7 +1,12 @@
 import axios from 'axios';
 import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import _, { debounce } from 'lodash';
+import { debounce } from 'lodash';
+
+interface CategoryButton {
+  index: string;
+  currentCategory: string;
+}
 
 const Container = styled.section`
   position: relative;
@@ -32,11 +37,28 @@ const SearchInput = styled.input`
   }
 `;
 
-const CategoryButton = styled.button`
+const CategoryWrapper = styled.article`
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-column-gap: 0.5rem;
+  margin: 2rem auto 0;
+  padding: 0 1rem;
+`;
+
+const CategoryButton = styled.button<CategoryButton>`
   position: relative;
+  border-radius: 50px;
+  border: none;
+  padding: 0.25rem;
+  background-color: ${(props) =>
+    props.index === props.currentCategory ? '#FA7272' : '#FFCACA'};
+  /* &.category--btn__selector {
+    background-color: red;
+  } */
 `;
 export default function Main() {
   const [celebratedList, setCelebratedList] = useState<any>();
+  const [currentCategory, setCurrentCategory] = useState<any>();
   const categoryList = ['생일', '졸업', '결혼', '새해', '기타'];
 
   useEffect(() => {
@@ -44,6 +66,14 @@ export default function Main() {
       await getQueryData();
     })();
   }, []);
+
+  const getCategoryEventList = async () => {
+    try {
+      const response = await axios.get(`${currentCategory}`);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const getQueryData = async (value?: string) => {
     const body = { query: value };
@@ -86,6 +116,19 @@ export default function Main() {
     debounceRequest(value, getQueryData);
   };
 
+  const onClick = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    const {
+      currentTarget: { value }
+    } = event;
+    if (value === currentCategory) {
+      setCurrentCategory('');
+      await getQueryData();
+      return;
+    }
+    setCurrentCategory(value);
+    await getCategoryEventList();
+  };
+
   return (
     <Container>
       <InputWrapper>
@@ -95,13 +138,20 @@ export default function Main() {
           onChange={onChange}
         />
       </InputWrapper>
-      <article>
+      <CategoryWrapper>
         {categoryList.map((category) => (
-          <CategoryButton type="button" key={category}>
+          <CategoryButton
+            type="button"
+            key={category}
+            value={category}
+            onClick={onClick}
+            index={category}
+            currentCategory={currentCategory}
+          >
             {category}
           </CategoryButton>
         ))}
-      </article>
+      </CategoryWrapper>
     </Container>
   );
 }
