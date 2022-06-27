@@ -5,12 +5,12 @@ import { useNavigate } from 'react-router-dom';
 import BackgroundImg from '../assets/imgs/temp.png';
 import theme from '../common/style/theme';
 
-const GuestHomeWrapper = styled.div`
+const MainWrapper = styled.div`
   width: 100%;
-  //height: 100%;
+  height: calc(100vh - 45px);
   display: flex;
   flex-direction: column;
-  padding: 15px 15px;
+  position: relative;
 `;
 
 const TextWrapper = styled.div`
@@ -22,6 +22,7 @@ const TextWrapper = styled.div`
 
 const BackgroundImage = styled.img`
   width: 100%;
+  height: 100%;
 `;
 
 const BtnArea = styled.div`
@@ -47,11 +48,11 @@ function GuestHome() {
   const navigate = useNavigate();
 
   const onStartClick = useCallback(() => {
-    navigate('/guest/selection');
+    navigate('/guest/select');
   }, []);
 
   return (
-    <GuestHomeWrapper>
+    <MainWrapper>
       <TextWrapper>
         <b>닉네임</b>&nbsp;님에게
         <br />
@@ -63,7 +64,7 @@ function GuestHome() {
       <BtnArea>
         <StartBtn onClick={onStartClick}>꽃 보내기</StartBtn>
       </BtnArea>
-    </GuestHomeWrapper>
+    </MainWrapper>
   );
 }
 

@@ -6,6 +6,7 @@ import GlobalStyles from '../common/style/GlobalStyle';
 import theme from '../common/style/theme';
 
 import GuestHome from './GuestHome';
+import LeafSelect from './LeafSelect';
 import Layout from '../components/Layout/Layout';
 
 function App() {
@@ -16,9 +17,8 @@ function App() {
         <Layout>
           <Routes>
             <Route path="/" element={<LandingPage />} />
-          </Routes>
-          <Routes>
             <Route path="/guest" element={<GuestHome />} />
+            <Route path="/guest/select" element={<LeafSelect />} />
           </Routes>
         </Layout>
       </Router>
