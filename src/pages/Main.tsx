@@ -24,6 +24,7 @@ const Container = styled.section`
 const InputWrapper = styled.article`
   width: 100%;
   margin-top: 4.375rem;
+  padding: 0 15px;
 `;
 
 const SearchInput = styled.input`
@@ -45,7 +46,7 @@ const CategoryWrapper = styled.article`
   grid-template-columns: repeat(5, 1fr);
   grid-column-gap: 0.5rem;
   margin: 2rem auto 0;
-  padding: 0 1rem;
+  padding: 0 15px;
 `;
 
 const CategoryButton = styled.button<CategoryButton>`
@@ -59,12 +60,34 @@ const CategoryButton = styled.button<CategoryButton>`
 `;
 
 const EventCardListContainer = styled.div`
+  padding: 0 15px;
   margin-top: 2rem;
-  padding: 0 0.625rem;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-column-gap: 0.625rem;
   grid-row-gap: 3rem;
+`;
+
+const CreateButtonWrapper = styled.div`
+  position: fixed;
+  width: 780px;
+  bottom: 0;
+  padding: 0 15px;
+  @media (max-width: 780px) {
+    width: 100%;
+  }
+`;
+
+const CreateButton = styled.button`
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  bottom: 15px;
+  right: 15px;
+  border-radius: 50px;
+  background-color: #ffcaca;
+  border: none;
+  font-size: 2rem;
 `;
 export default function Main() {
   const [celebratedList, setCelebratedList] = useState<any>();
@@ -201,6 +224,9 @@ export default function Main() {
           <EventCard eventInfo={eventInfo} menu={menu} idx={3} />
         </EventCardListContainer>
       )}
+      <CreateButtonWrapper>
+        <CreateButton type="submit">+</CreateButton>
+      </CreateButtonWrapper>
     </Container>
   );
 }
