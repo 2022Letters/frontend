@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { debounce } from 'lodash';
+import EventCard from '../components/EventCard';
 
 interface CategoryButton {
   index: string;
@@ -52,13 +53,22 @@ const CategoryButton = styled.button<CategoryButton>`
   padding: 0.25rem;
   background-color: ${(props) =>
     props.index === props.currentCategory ? '#FA7272' : '#FFCACA'};
-  /* &.category--btn__selector {
-    background-color: red;
-  } */
+  transition: all 0.2s ease-in;
+`;
+
+const EventCardListContainer = styled.div`
+  margin-top: 2rem;
+  padding: 0 0.625rem;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-column-gap: 0.625rem;
+  grid-row-gap: 3rem;
 `;
 export default function Main() {
   const [celebratedList, setCelebratedList] = useState<any>();
-  const [currentCategory, setCurrentCategory] = useState<any>();
+  const [isLoading, setIsLoading] = useState(false);
+  const [currentCategory, setCurrentCategory] = useState('');
+  const [isMenuOn, setIsMenuOn] = useState(false);
   const categoryList = ['생일', '졸업', '결혼', '새해', '기타'];
 
   useEffect(() => {
@@ -76,6 +86,7 @@ export default function Main() {
   };
 
   const getQueryData = async (value?: string) => {
+    setIsLoading(true);
     const body = { query: value };
     if (value) {
       try {
@@ -88,16 +99,18 @@ export default function Main() {
       } catch (err) {
         console.log(err);
       }
+    } else {
+      try {
+        setTimeout(() => {
+          console.log('data');
+        }, 1000);
+        const response = 'data';
+        setCelebratedList(response);
+      } catch (err) {
+        console.log(err);
+      }
     }
-    try {
-      setTimeout(() => {
-        console.log('data');
-      }, 1000);
-      const response = 'data';
-      setCelebratedList(response);
-    } catch (err) {
-      console.log(err);
-    }
+    setIsLoading(false);
   };
 
   const request = debounce((value, func) => {
@@ -125,8 +138,24 @@ export default function Main() {
       await getQueryData();
       return;
     }
+    setIsLoading(true);
     setCurrentCategory(value);
     await getCategoryEventList();
+    setIsLoading(false);
+  };
+
+  const eventInfo: IEventInfo = {
+    category: '생일',
+    bouquet:
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0VQF4Pjjbtd2gQ1GfDtgolMrZmJHFqsw_Qg&usqp=CAU',
+    date: '2022.06.25',
+    title: '20살 나의 생일',
+    id: 20
+  };
+
+  const menu: IMenu = {
+    isMenuOn,
+    setIsMenuOn
   };
 
   return (
@@ -152,6 +181,12 @@ export default function Main() {
           </CategoryButton>
         ))}
       </CategoryWrapper>
+      {isLoading ? 'Loading...' : null}
+      <EventCardListContainer>
+        <EventCard eventInfo={eventInfo} />
+        <EventCard eventInfo={eventInfo} />
+        <EventCard eventInfo={eventInfo} />
+      </EventCardListContainer>
     </Container>
   );
 }
