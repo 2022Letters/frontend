@@ -13,8 +13,8 @@ const Container = styled.section`
   position: relative;
   margin-left: auto;
   margin-right: auto;
-  width: 375px;
-  height: 667px;
+  width: 100%;
+  height: 100%;
   background-color: lavender;
   overflow: auto;
 `;

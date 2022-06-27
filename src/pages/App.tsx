@@ -4,18 +4,23 @@ import { ThemeProvider } from 'styled-components';
 import GlobalStyles from '../common/style/GlobalStyle';
 import theme from '../common/style/theme';
 
-import LandingPage from './LandingPage';
 import Main from './Main';
+import GuestHome from './GuestHome';
+import Layout from '../components/Layout/Layout';
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyles />
       <Router>
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/main" element={<Main />} />
-        </Routes>
+        <Layout>
+          <Routes>
+            <Route path="/main" element={<Main />} />
+          </Routes>
+          <Routes>
+            <Route path="/guest" element={<GuestHome />} />
+          </Routes>
+        </Layout>
       </Router>
     </ThemeProvider>
   );
