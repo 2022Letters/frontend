@@ -37,10 +37,6 @@ const BtnArea = styled.div`
   align-items: center;
 `;
 
-const StartBtn = styled(Button)`
-  width: 80%;
-`;
-
 function GuestHome() {
   const navigate = useNavigate();
 
@@ -59,7 +55,7 @@ function GuestHome() {
       </TextWrapper>
       <BackgroundImage src={BackgroundImg} />
       <BtnArea>
-        <StartBtn onClick={onStartClick}>꽃 보내기</StartBtn>
+        <Button onClick={onStartClick}>꽃 보내기</Button>
       </BtnArea>
     </MainWrapper>
   );

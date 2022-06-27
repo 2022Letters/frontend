@@ -39,10 +39,6 @@ const BtnArea = styled.div`
   align-items: center;
 `;
 
-const NextBtn = styled(Button)`
-  width: 80%;
-`;
-
 function LeafSelect() {
   const navigate = useNavigate();
   const leafs = [
@@ -68,7 +64,7 @@ function LeafSelect() {
         })}
       </LeafListWrapper>
       <BtnArea>
-        <NextBtn onClick={onNextClick}>다음</NextBtn>
+        <Button onClick={onNextClick}>다음</Button>
       </BtnArea>
     </MainWrapper>
   );
