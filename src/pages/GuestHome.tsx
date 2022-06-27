@@ -11,6 +11,7 @@ const MainWrapper = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
+  padding: 15px;
 `;
 
 const TextWrapper = styled.div`
