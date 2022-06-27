@@ -4,6 +4,7 @@ import { Button } from '../components/common/style';
 const MainBackground = styled.div`
   padding: 45px 0 0 0;
   background-image: url('/img/main.png');
+  background-size: 100% 100%;
   background-repeat: no-repeat;
   height: 100%;
   position: inherit;
