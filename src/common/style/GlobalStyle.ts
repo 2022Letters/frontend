@@ -37,6 +37,10 @@ li{
   cursor:pointer;
 }
 
+textarea{
+  resize:none;
+}
+
 @font-face {
     font-family: 'Neurit';	//폰트를 사용할 때 부르는 이름 지정
     src:url(${Neurit}) format('truetype');

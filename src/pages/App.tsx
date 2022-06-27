@@ -6,6 +6,7 @@ import GlobalStyles from '../common/style/GlobalStyle';
 import theme from '../common/style/theme';
 
 import GuestHome from './GuestHome';
+import GuestWrite from './GuestWrite';
 import LeafSelect from './LeafSelect';
 import Layout from '../components/Layout/Layout';
 
@@ -18,6 +19,7 @@ function App() {
           <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route path="/guest" element={<GuestHome />} />
+            <Route path="/guest/write" element={<GuestWrite />} />
             <Route path="/guest/select" element={<LeafSelect />} />
           </Routes>
         </Layout>
