@@ -3,7 +3,6 @@ import axios from 'axios';
 import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { debounce } from 'lodash';
-import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript';
 import EventCard from '../components/EventCard';
 
 interface CategoryButton {

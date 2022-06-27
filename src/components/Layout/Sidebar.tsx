@@ -1,8 +1,9 @@
 import React, { useRef, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const SideBarWrap = styled.div`
-  z-index: 5;
+  z-index: 10;
   padding: 12px;
   border-radius: 15px 0 0 15px;
   background-color: #e7e4e1;
@@ -19,21 +20,21 @@ const SideBarWrap = styled.div`
 `;
 
 const Menu = styled.li`
-  margin: 30px 8px;
+  padding: 16px 8px;
+  font-size: 1.5rem;
 `;
 
 const ExitMenu = styled.span`
   position: absolute;
   bottom: 26px;
-  font-size: 0.8rem;
+  font-size: 1rem;
 `;
 
-function Sidebar() {
+function Sidebar({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) {
   const outside = useRef<any>();
 
   useEffect(() => {
     document.addEventListener('mousedown', handlerOutsie);
-
     return () => {
       document.removeEventListener('mousedown', handlerOutsie);
     };
@@ -46,24 +47,34 @@ function Sidebar() {
   };
 
   const toggleSide = () => {
-    const sidebar = document.getElementById('sidebar');
-    sidebar?.classList.remove('open');
+    setIsOpen(false);
   };
+
   return (
-    <SideBarWrap id="sidebar" ref={outside}>
+    <SideBarWrap id="sidebar" ref={outside} className={isOpen ? 'open' : ''}>
       <img
         src="/img/close.png"
         alt="close"
         onClick={toggleSide}
         onKeyDown={toggleSide}
       />
-      <ul>
-        <Menu>로그인/로그아웃</Menu>
-        <Menu>꽃다발 만들기</Menu>
-        <Menu>mmm@gmail.com로 문의 부탁</Menu>
-      </ul>
-      <ExitMenu>회원 탈퇴</ExitMenu>
+      <nav>
+        <ul>
+          <Menu onClick={toggleSide}>
+            <Link to="/login">로그인</Link>
+          </Menu>
+          <Menu onClick={toggleSide}>
+            <Link to="/">로그아웃</Link>
+          </Menu>
+          <Menu onClick={toggleSide}>
+            <Link to="/">꽃다발 만들기</Link>
+          </Menu>
+          <Menu>mmm@gmail.com로 문의 부탁</Menu>
+        </ul>
+        <ExitMenu>회원 탈퇴</ExitMenu>
+      </nav>
     </SideBarWrap>
   );
 }
+
 export default Sidebar;
