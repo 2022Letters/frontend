@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Button } from '../components/common/style';
 
 const NickWrap = styled.div`
   height: 100%;
@@ -38,13 +39,6 @@ const BtnPosition = styled.div`
   bottom: 45px;
 `;
 
-const NickBtn = styled.button`
-  height: 2.5rem;
-  width: 100%;
-  border: none;
-  border-radius: 12px;
-`;
-
 function Nickname() {
   return (
     <NickWrap>
@@ -55,7 +49,7 @@ function Nickname() {
           <NickMsg>변경이 불가하니 신중히 선택해주세요.</NickMsg>
         </NickDiv>
         <BtnPosition>
-          <NickBtn type="button">완료</NickBtn>
+          <Button type="button">완료</Button>
         </BtnPosition>
       </NickBody>
     </NickWrap>
