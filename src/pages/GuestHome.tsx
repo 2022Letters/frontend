@@ -11,7 +11,6 @@ const MainWrapper = styled.div`
   height: 100%; //calc(100vh - 45px);
   display: flex;
   flex-direction: column;
-  position: relative;
   padding: 45px 15px 0 15px;
 `;
 
@@ -27,14 +26,8 @@ const BackgroundImage = styled.img`
   height: 100%;
 `;
 
-const BtnArea = styled.div`
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+const StartBtn = styled(Button)`
+  flex-shrink: 0;
 `;
 
 function GuestHome() {
@@ -54,9 +47,7 @@ function GuestHome() {
         2022.06.26
       </TextWrapper>
       <BackgroundImage src={BackgroundImg} />
-      <BtnArea>
-        <Button onClick={onStartClick}>꽃 보내기</Button>
-      </BtnArea>
+      <StartBtn onClick={onStartClick}>꽃 보내기</StartBtn>
     </MainWrapper>
   );
 }

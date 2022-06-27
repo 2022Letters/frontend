@@ -8,18 +8,19 @@ import { Button, Title } from '../components/common/style';
 const MainWrapper = styled.div`
   width: 100%;
   min-height: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  position: relative;
-  padding: 45px 15px calc(50vw / 2) 15px;
+  padding: 45px 15px 0 15px;
   padding-bottom: ;
 `;
 
 const LeafListWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
-  min-height: 100%;
   margin-top: 15px;
+  height: 100%;
+  overflow-y: auto;
 `;
 
 const LeafBtn = styled.img`
@@ -29,14 +30,8 @@ const LeafBtn = styled.img`
   border-radius: 12px;
 `;
 
-const BtnArea = styled.div`
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+const NextBtn = styled(Button)`
+  flex-shrink: 0;
 `;
 
 function LeafSelect() {
@@ -63,9 +58,7 @@ function LeafSelect() {
           return <LeafBtn src={e.img} key={e.id} />;
         })}
       </LeafListWrapper>
-      <BtnArea>
-        <Button onClick={onNextClick}>다음</Button>
-      </BtnArea>
+      <NextBtn onClick={onNextClick}>다음</NextBtn>
     </MainWrapper>
   );
 }
