@@ -66,6 +66,7 @@ const EventCardListContainer = styled.div`
   grid-template-columns: repeat(2, 1fr);
   grid-column-gap: 0.625rem;
   grid-row-gap: 3rem;
+  margin-bottom: 4rem;
 `;
 
 const CreateButtonWrapper = styled.div`
