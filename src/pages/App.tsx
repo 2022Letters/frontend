@@ -9,6 +9,8 @@ import GuestHome from './GuestHome';
 import GuestWrite from './GuestWrite';
 import LeafSelect from './LeafSelect';
 import Layout from '../components/Layout/Layout';
+import Login from './login';
+import Nickname from './nickname';
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
         <Layout>
           <Routes>
             <Route path="/" element={<LandingPage />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/login/nickname" element={<Nickname />} />
             <Route path="/guest" element={<GuestHome />} />
             <Route path="/guest/write" element={<GuestWrite />} />
             <Route path="/guest/select" element={<LeafSelect />} />

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 
 import theme from '../common/style/theme';
-import BackBtn from '../components/BackBtn';
+import BackBtn from '../components/common/BackBtn';
 
 const MainWrapper = styled.div`
   width: 100%;
