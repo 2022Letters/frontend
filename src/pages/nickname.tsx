@@ -25,6 +25,8 @@ const NickInput = styled.input`
   border-radius: 10px;
   border: 1.2px solid;
   box-shadow: 5px 8px 8px -2px grey;
+  padding: 10px;
+  font-size: 26px;
 `;
 const NickMsg = styled.span`
   margin: 15px 0;
