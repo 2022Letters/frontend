@@ -7,16 +7,7 @@ interface IEventInfo {
   title: string;
   id: number;
 }
-
-interface IEventInfoProps {
-  eventInfo: IEventInfo;
-}
-
 interface IMenu {
-  isMenuOn: boolean;
-  setIsMenuOn: object;
-}
-
-interface IMenuProps {
-  menu: IMenu;
+  currentTargetEvent: number;
+  toggleMenu(event: React.MouseEvent<HTMLButtonElement>): void;
 }

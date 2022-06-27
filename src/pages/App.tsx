@@ -16,8 +16,6 @@ function App() {
         <Layout>
           <Routes>
             <Route path="/main" element={<Main />} />
-          </Routes>
-          <Routes>
             <Route path="/guest" element={<GuestHome />} />
           </Routes>
         </Layout>

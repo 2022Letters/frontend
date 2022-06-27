@@ -1,7 +1,9 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import axios from 'axios';
 import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { debounce } from 'lodash';
+import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript';
 import EventCard from '../components/EventCard';
 
 interface CategoryButton {
@@ -68,7 +70,7 @@ export default function Main() {
   const [celebratedList, setCelebratedList] = useState<any>();
   const [isLoading, setIsLoading] = useState(false);
   const [currentCategory, setCurrentCategory] = useState('');
-  const [isMenuOn, setIsMenuOn] = useState(false);
+  const [currentTargetEvent, setCurrentTargetEvent] = useState(-1);
   const categoryList = ['생일', '졸업', '결혼', '새해', '기타'];
 
   useEffect(() => {
@@ -152,14 +154,23 @@ export default function Main() {
     title: '20살 나의 생일',
     id: 20
   };
-
-  const menu: IMenu = {
-    isMenuOn,
-    setIsMenuOn
+  const toggleMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
+    if (event.currentTarget.dataset.menu) return;
+    const number = Number(event.currentTarget.dataset.id);
+    if (number === currentTargetEvent) {
+      setCurrentTargetEvent(-1);
+      return;
+    }
+    setCurrentTargetEvent(number);
   };
 
+  const menu: IMenu = {
+    currentTargetEvent,
+    toggleMenu
+  };
   return (
-    <Container>
+    <Container onClick={() => setCurrentTargetEvent(-1)}>
       <InputWrapper>
         <SearchInput
           type="text"
@@ -181,12 +192,15 @@ export default function Main() {
           </CategoryButton>
         ))}
       </CategoryWrapper>
-      {isLoading ? 'Loading...' : null}
-      <EventCardListContainer>
-        <EventCard eventInfo={eventInfo} />
-        <EventCard eventInfo={eventInfo} />
-        <EventCard eventInfo={eventInfo} />
-      </EventCardListContainer>
+      {isLoading ? (
+        'Loading...'
+      ) : (
+        <EventCardListContainer>
+          <EventCard eventInfo={eventInfo} menu={menu} idx={1} />
+          <EventCard eventInfo={eventInfo} menu={menu} idx={2} />
+          <EventCard eventInfo={eventInfo} menu={menu} idx={3} />
+        </EventCardListContainer>
+      )}
     </Container>
   );
 }

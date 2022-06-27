@@ -1,3 +1,4 @@
+import React from 'react';
 import styled from 'styled-components';
 
 const Container = styled.article`
@@ -5,6 +6,7 @@ const Container = styled.article`
   position: relative;
   background-color: #fff9c1;
   border-radius: 10px;
+  transition: all 0.3s ease-in;
 `;
 
 const EventCardTopWrapper = styled.div`
@@ -43,21 +45,22 @@ const CategoryWrapper = styled.div`
 const MenuToggleButton = styled.button`
   border: none;
   position: absolute;
-  &:hover {
-    background-color: inherit;
+  &:hover &:active &:visited &:focus &:focus-within &:focus-visible {
+    background-color: #efefef;
   }
+
   bottom: 0;
   right: 0;
-  padding-right: inherit;
-  padding-bottom: inherit;
+  padding: inherit;
   font-weight: bold;
-  font-size: 20px;
-  height: fit-content;
+  border-radius: 10px;
+  background-color: #efefef;
+  vertical-align: text-bottom;
 `;
 
 const MenuWrapper = styled.div`
   position: absolute;
-  background-color: #d9d9d9;
+  background-color: #9f9f9f;
   display: flex;
   flex-direction: column;
   right: 0;
@@ -84,11 +87,20 @@ interface UpdateButton {
   update?: string;
 }
 
-export default function EventCard({
-  eventInfo: { category, bouquet, date, title, id }
-}: IEventInfoProps) {
-  const onClick = () => {
-    return null;
+interface IEventCard {
+  eventInfo: IEventInfo;
+  menu: IMenu;
+  idx: number;
+}
+export default function EventCard({ eventInfo, menu, idx }: IEventCard) {
+  const { category, bouquet, title, id, date } = eventInfo;
+  const { currentTargetEvent, toggleMenu } = menu;
+  const onClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    toggleMenu(event);
+  };
+
+  const KeepMenuOn = (event: React.MouseEvent<HTMLButtonElement>) => {
+    toggleMenu(event);
   };
   return (
     <Container>
@@ -103,15 +115,24 @@ export default function EventCard({
       <EventCardBottomWrapper>
         <p>{date}</p>
         <h1>{title}</h1>
-        <MenuToggleButton type="button" onClick={onClick}>
-          ...
+        <MenuToggleButton type="button" onClick={onClick} data-id={idx}>
+          . . .
         </MenuToggleButton>
-        <MenuWrapper>
-          <MenuButton type="button" update="update">
-            수정
-          </MenuButton>
-          <MenuButton type="button">삭제</MenuButton>
-        </MenuWrapper>
+        {currentTargetEvent === idx && (
+          <MenuWrapper className="target">
+            <MenuButton
+              type="button"
+              update="update"
+              onClick={KeepMenuOn}
+              data-menu="update"
+            >
+              수정
+            </MenuButton>
+            <MenuButton type="button" data-menu="delete" onClick={KeepMenuOn}>
+              삭제
+            </MenuButton>
+          </MenuWrapper>
+        )}
       </EventCardBottomWrapper>
     </Container>
   );

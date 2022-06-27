@@ -44,6 +44,12 @@ button{
   cursor:pointer;
   outline:none;
   color: #000;
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  border-radius: 0;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
 }
 
 a{
