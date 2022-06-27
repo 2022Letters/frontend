@@ -21,12 +21,13 @@ const SideBarWrap = styled.div`
 
 const Menu = styled.li`
   padding: 16px 8px;
+  font-size: 1.5rem;
 `;
 
 const ExitMenu = styled.span`
   position: absolute;
   bottom: 26px;
-  font-size: 0.8rem;
+  font-size: 1rem;
 `;
 
 function Sidebar({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) {

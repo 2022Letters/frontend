@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Title } from '../components/common/style';
 import Google from './SocialLogin/Google';
 import Kakao from './SocialLogin/Kakao';
 
@@ -17,7 +18,7 @@ const ButtonWrap = styled.div`
 function Login() {
   return (
     <LoginWrap>
-      <h2>로그인</h2>
+      <Title>로그인</Title>
       <ButtonWrap>
         <Kakao />
         <Google />

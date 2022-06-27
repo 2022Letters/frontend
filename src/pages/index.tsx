@@ -14,6 +14,7 @@ const BtnPosition = styled.div`
   justify-content: center;
   align-items: flex-end;
   height: 100%;
+  padding: 0 15px;
 `;
 // `;
 

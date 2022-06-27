@@ -1,13 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Button } from '../components/common/style';
+import { Button, Title } from '../components/common/style';
 
 const NickWrap = styled.div`
   height: 100%;
   padding: 45px 20px 0;
 `;
 
-const NickTitle = styled.h2`
+const NickTitle = styled(Title)`
   margin-bottom: 40px;
 `;
 
