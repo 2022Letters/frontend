@@ -8,8 +8,8 @@ import theme from '../common/style/theme';
 import GuestHome from './GuestHome';
 import LeafSelect from './LeafSelect';
 import Layout from '../components/Layout/Layout';
-import Login from './login';
-import Nickname from './nickname';
+import LoginPage from './LoginPage';
+import NicknameRegist from './NicknameRegist';
 
 function App() {
   return (
@@ -19,8 +19,8 @@ function App() {
         <Layout>
           <Routes>
             <Route path="/" element={<LandingPage />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/login/nickname" element={<Nickname />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/login/nickname" element={<NicknameRegist />} />
             <Route path="/guest" element={<GuestHome />} />
             <Route path="/guest/select" element={<LeafSelect />} />
           </Routes>
