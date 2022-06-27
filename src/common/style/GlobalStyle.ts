@@ -22,6 +22,7 @@ time, mark, audio, video {
   font-size: 100%;
   font: inherit;
   vertical-align: baseline;
+  font-family:'Neurit';
 }
 
 *{
@@ -29,7 +30,6 @@ time, mark, audio, video {
   padding:0 0;
   box-sizing: border-box;
   font-family:'Neurit';
-
 }
 
 html,body, #root{
