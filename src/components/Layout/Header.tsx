@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import Sidebar from './Sidebar';
 
-const HeaderPostion = styled.div`
+const HeaderPostion = styled.header`
+  position: fixed;
+  width: 100%;
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -18,9 +20,9 @@ const MenuImg = styled.img`
 `;
 
 function Header() {
+  const [isOpen, setIsOpen] = useState(false);
   const toggleSide = () => {
-    const sidebar = document.getElementById('sidebar');
-    sidebar?.classList.toggle('open');
+    setIsOpen(true);
   };
 
   return (
@@ -28,7 +30,7 @@ function Header() {
       <MenuBtn role="button" onClick={toggleSide}>
         <MenuImg src="/img/menu.png" />
       </MenuBtn>
-      <Sidebar />
+      <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} />
     </HeaderPostion>
   );
 }
