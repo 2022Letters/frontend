@@ -1,10 +1,12 @@
 import { createGlobalStyle } from 'styled-components';
+import Neurit from '../../assets/fonts/Neurit.ttf';
 
 const GlobalStyles = createGlobalStyle`
 *{
   margin: 0 0;
   padding:0 0;
   box-sizing: border-box;
+  font-family:'Neurit';
 }
 
 html,body, #root{
@@ -35,6 +37,11 @@ li{
   cursor:pointer;
 }
 
+@font-face {
+    font-family: 'Neurit';	//폰트를 사용할 때 부르는 이름 지정
+    src:url(${Neurit}) format('truetype');
+    font-weight: 50;
+  }
 `;
 
 export default GlobalStyles;
