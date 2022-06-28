@@ -11,13 +11,6 @@ module.exports = {
     'plugin:prettier/recommended'
   ],
   rules: {
-    // 'react/function-component-definition': [
-    //   2,
-    //   {
-    //     namedComponents: 'arrow-function',
-    //     unnamedComponents: 'arrow-function'
-    //   }
-    // ],
     'linebreak-style': 0,
     'import/prefer-default-export': 0,
     'import/extensions': 0,
