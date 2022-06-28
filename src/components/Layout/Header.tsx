@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Sidebar from './Sidebar';
 
 const HeaderPostion = styled.header`
-  position: fixed;
+  position: absolute;
   width: 100%;
   display: flex;
   justify-content: flex-end;

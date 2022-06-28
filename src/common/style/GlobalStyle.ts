@@ -38,17 +38,21 @@ html,body, #root{
   font-size:16px;
 }
 
+#root{
+  position:relative;
+  overflow-x: hidden;
+}
+
+body{
+  max-width:780px;
+  min-height:100%;
+  margin:0 auto;
+}
+
 button{
   text-decoration:none;
   cursor:pointer;
   outline:none;
-  color: #000;
-  appearance: none;
-  -moz-appearance: none;
-  -webkit-appearance: none;
-  border-radius: 0;
-  -webkit-border-radius: 0;
-  -moz-border-radius: 0;
 }
 
 a{
@@ -67,11 +71,8 @@ li{
   cursor:pointer;
 }
 
-body {
-  width: 780px;
-  height: 100vh;
-  margin-left: auto;
-  margin-right: auto;
+textarea{
+  resize:none;
 }
 
 @media (max-width: 780px) {
