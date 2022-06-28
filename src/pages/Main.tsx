@@ -29,14 +29,16 @@ const InputWrapper = styled.article`
 const SearchInput = styled.input`
   margin-left: auto;
   margin-right: auto;
+  font-size: 2rem;
   display: block;
   width: 70%;
-  height: 30px;
   border-radius: 50px;
-  padding-left: 20px;
-  padding-right: 20px;
+  padding: 5px 20px;
   &:focus {
     outline: none;
+  }
+  @media (max-width: 600px) {
+    font-size: 1.25rem;
   }
 `;
 
@@ -52,10 +54,15 @@ const CategoryButton = styled.button<CategoryButton>`
   position: relative;
   border-radius: 50px;
   border: none;
+  font-size: 2rem;
   padding: 0.25rem;
+
   background-color: ${(props) =>
     props.index === props.currentCategory ? '#FA7272' : '#FFCACA'};
   transition: all 0.2s ease-in;
+  @media (max-width: 600px) {
+    font-size: 1.25rem;
+  }
 `;
 
 const EventCardListContainer = styled.div`

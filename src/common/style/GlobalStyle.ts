@@ -53,6 +53,7 @@ button{
   text-decoration:none;
   cursor:pointer;
   outline:none;
+  color: #000;
 }
 
 a{

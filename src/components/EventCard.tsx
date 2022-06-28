@@ -1,5 +1,14 @@
-import React from 'react';
-import styled from 'styled-components';
+import React, { useState } from 'react';
+import styled, { css, keyframes } from 'styled-components';
+
+const boxFadeIn = keyframes`
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+`;
 
 const Container = styled.article`
   width: 100%;
@@ -22,7 +31,11 @@ const EventCardBottomWrapper = styled.div`
   padding: 0.625rem;
   background-color: #efefef;
   border-radius: 10px;
-  font-size: 8px;
+  font-size: 1.5rem;
+  letter-spacing: 2px;
+  @media (max-width: 600px) {
+    font-size: 1.25rem;
+  }
 `;
 const ImgWrapper = styled.picture`
   width: 100%;
@@ -40,6 +53,11 @@ const CategoryWrapper = styled.div`
   position: absolute;
   bottom: 5px;
   right: 0;
+  letter-spacing: 5px;
+  font-size: 1.5rem;
+  @media (max-width: 600px) {
+    font-size: 1rem;
+  }
 `;
 
 const MenuToggleButton = styled.button`
@@ -58,16 +76,21 @@ const MenuToggleButton = styled.button`
   vertical-align: text-bottom;
 `;
 
-const MenuWrapper = styled.div`
+const MenuWrapper = styled.div<IMenuButton>`
   position: absolute;
   background-color: #9f9f9f;
   display: flex;
   flex-direction: column;
   right: 0;
   top: 40px;
-  padding: inherit;
+  padding: 0 10px;
   border-radius: 10px;
   z-index: 2;
+  ${(props) =>
+    props.active &&
+    css`
+      animation: ${boxFadeIn} 0.2s 0s linear alternate;
+    `}
 `;
 
 const MenuButton = styled.button<UpdateButton>`
@@ -77,11 +100,16 @@ const MenuButton = styled.button<UpdateButton>`
   border-bottom: ${(props) => props.update && '1px solid #323232'};
   border-radius: ${(props) =>
     props.update ? '10px 10px 0 0' : '0 0 10px 10px'};
-  &:hover {
-    background-color: #9f9f9f;
+  transition: all 0.5s ease-in;
+  font-size: 1.5rem;
+  @media (max-width: 600px) {
+    font-size: 1rem;
   }
-  transition: all 0.2s ease-in;
 `;
+
+interface IMenuButton {
+  active?: boolean;
+}
 
 interface UpdateButton {
   update?: string;
@@ -93,9 +121,11 @@ interface IEventCard {
   idx: number;
 }
 export default function EventCard({ eventInfo, menu, idx }: IEventCard) {
+  const [isMenuOn, setIsMenuOn] = useState(false);
   const { category, bouquet, title, id, date } = eventInfo;
   const { currentTargetEvent, toggleMenu } = menu;
   const onClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setIsMenuOn(true);
     toggleMenu(event);
   };
 
@@ -119,7 +149,7 @@ export default function EventCard({ eventInfo, menu, idx }: IEventCard) {
           . . .
         </MenuToggleButton>
         {currentTargetEvent === idx && (
-          <MenuWrapper className="target">
+          <MenuWrapper className="target" active={isMenuOn}>
             <MenuButton
               type="button"
               update="update"
