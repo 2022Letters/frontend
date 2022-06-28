@@ -4,14 +4,16 @@ import { useNavigate } from 'react-router-dom';
 
 import theme from '../common/style/theme';
 import BackBtn from '../components/common/BackBtn';
+import { Button } from '../components/common/style';
+import Back from '../assets/imgs/letter.png';
 
 const MainWrapper = styled.div`
   width: 100%;
-  height: calc(100vh - 45px);
+  min-height: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  position: relative;
-  padding: 15px;
+  padding: 45px 15px 0 15px;
 `;
 
 const ContentWrapper = styled.div`
@@ -27,40 +29,43 @@ const NicknameInput = styled.input`
   width: 100%;
   border-radius: 12px;
   height: 40px;
+  flex-shrink: 0;
+  font-size: ${theme.calcRem(24)};
+  padding-left: 6px;
 `;
 
-const Letter = styled.textarea`
-  width: 100%;
+const LetterWrapper = styled.div`
   height: 100%;
   position: relative;
   margin-top: 15px;
 `;
 
-const LetterImg = styled.img`
+const Letter = styled.textarea`
+  width: 100%;
+  height: 100%;
+  font-size: ${theme.calcRem(24)};
+  padding: 6px;
+  border: none;
+  z-index: 1;
   position: absolute;
   top: 0;
   left: 0;
+  background-color: transparent;
+  &:focus {
+    border: none;
+    outline: none;
+  }
+`;
+
+const LetterImg = styled.img`
   width: 100%;
   height: 100%;
+  opacity: 0.4;
 `;
 
-const BtnArea = styled.div`
-  position: absolute;
-  bottom: 45px;
-  left: 0;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const NextBtn = styled.button`
-  font-size: ${theme.calcRem(30)};
-  height: 2.5rem;
-  width: 80%;
-  border-radius: 12px;
-  background-color: #d9d9d9;
-  border: none;
+const NextBtn = styled(Button)`
+  flex-shrink: 0;
+  margin-top: 15px;
 `;
 
 function GuestWrite() {
@@ -74,12 +79,13 @@ function GuestWrite() {
     <MainWrapper>
       <BackBtn />
       <ContentWrapper>
-        <NicknameInput />
-        <Letter />
+        <NicknameInput placeholder="닉네임" />
+        <LetterWrapper>
+          <Letter />
+          <LetterImg src={Back} />
+        </LetterWrapper>
       </ContentWrapper>
-      <BtnArea>
-        <NextBtn onClick={onNexttClick}>다음</NextBtn>
-      </BtnArea>
+      <NextBtn onClick={onNexttClick}>다음</NextBtn>
     </MainWrapper>
   );
 }
