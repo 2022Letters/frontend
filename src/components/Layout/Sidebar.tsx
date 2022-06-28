@@ -67,7 +67,10 @@ function Sidebar({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) {
             <Link to="/">로그아웃</Link>
           </Menu>
           <Menu onClick={toggleSide}>
-            <Link to="/">꽃다발 만들기</Link>
+            <Link to="/main">꽃다발 만들기</Link>
+          </Menu>
+          <Menu onClick={toggleSide}>
+            <Link to="/guest">손님으로 들어가기</Link>
           </Menu>
           <Menu>mmm@gmail.com로 문의 부탁</Menu>
         </ul>
