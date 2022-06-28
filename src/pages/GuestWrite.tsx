@@ -44,7 +44,7 @@ const Letter = styled.textarea`
   width: 100%;
   height: 100%;
   font-size: ${theme.calcRem(24)};
-  padding: 6px;
+  padding: 12px;
   border: none;
   z-index: 1;
   position: absolute;

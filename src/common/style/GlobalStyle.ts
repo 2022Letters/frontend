@@ -15,6 +15,17 @@ html,body, #root{
   font-size:16px;
 }
 
+#root{
+  position:relative;
+  overflow-x: hidden;
+}
+
+body{
+  max-width:780px;
+  min-height:100%;
+  margin:0 auto;
+}
+
 button{
   text-decoration:none;
   cursor:pointer;
