@@ -71,7 +71,7 @@ const NextBtn = styled(Button)`
 function GuestWrite() {
   const navigate = useNavigate();
 
-  const onNexttClick = useCallback(() => {
+  const onNextClick = useCallback(() => {
     navigate('/guest/layout');
   }, []);
 
@@ -85,7 +85,7 @@ function GuestWrite() {
           <LetterImg src={Back} />
         </LetterWrapper>
       </ContentWrapper>
-      <NextBtn onClick={onNexttClick}>다음</NextBtn>
+      <NextBtn onClick={onNextClick}>다음</NextBtn>
     </MainWrapper>
   );
 }
