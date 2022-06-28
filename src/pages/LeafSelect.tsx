@@ -1,8 +1,7 @@
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 
-import BackgroundImg from '../assets/imgs/temp.png';
 import { Button, Title } from '../components/common/style';
 
 const MainWrapper = styled.div`
@@ -23,39 +22,66 @@ const LeafListWrapper = styled.div`
   overflow-y: auto;
 `;
 
-const LeafBtn = styled.img`
+interface LeafBtnProps {
+  isSelect: boolean;
+  img: string;
+}
+
+const LeafBtn = styled.button<LeafBtnProps>`
   width: calc(50vw - 25px);
   height: calc(50vw - 25px);
   margin: 5px;
   border-radius: 12px;
+  opacity: ${(props) => (props.isSelect ? 1 : 0.5)};
+  background-image: url(${(props) => props.img});
+  background-size: cover;
+  background-repeat: norepeat;
+  border: none;
+  outline: none;
 `;
 
 const NextBtn = styled(Button)`
   flex-shrink: 0;
 `;
 
+const leafs = [
+  { img: '/img/Group14.png', id: 0 },
+  { img: '/img/Group15.png', id: 1 },
+  { img: '/img/Group15.png', id: 2 },
+  { img: '/img/Group15.png', id: 3 },
+  { img: '/img/Group15.png', id: 4 },
+  { img: '/img/Group15.png', id: 5 },
+  { img: '/img/Group15.png', id: 6 }
+];
+
 function LeafSelect() {
+  const [select, setSelect] = useState(0);
   const navigate = useNavigate();
-  const leafs = [
-    { img: BackgroundImg, id: 1 },
-    { img: BackgroundImg, id: 2 },
-    { img: BackgroundImg, id: 3 },
-    { img: BackgroundImg, id: 4 },
-    { img: BackgroundImg, id: 5 },
-    { img: BackgroundImg, id: 6 },
-    { img: BackgroundImg, id: 7 }
-  ];
 
   const onNextClick = useCallback(() => {
     navigate('/guest/write');
   }, []);
 
+  const selectImg = useCallback(
+    (id: number) => () => {
+      setSelect(id);
+    },
+    []
+  );
+
   return (
     <MainWrapper>
       <Title>꽃 송이를 선택해주세요.</Title>
       <LeafListWrapper>
-        {leafs.map((e, i) => {
-          return <LeafBtn src={e.img} key={e.id} />;
+        {leafs.map((e) => {
+          return (
+            <LeafBtn
+              img={e.img}
+              key={e.id}
+              onClick={selectImg(e.id)}
+              isSelect={select === e.id}
+            />
+          );
         })}
       </LeafListWrapper>
       <NextBtn onClick={onNextClick}>다음</NextBtn>
