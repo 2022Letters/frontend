@@ -21,6 +21,10 @@ const LeafListWrapper = styled.div`
   width: 100%;
   height: 100%;
   overflow-y: auto;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 interface LeafBtnProps {
