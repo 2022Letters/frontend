@@ -14,6 +14,7 @@ const HeaderPostion = styled.header`
 
 const MenuBtn = styled.div`
   margin-right: 10px;
+  cursor: pointer;
 `;
 
 const MenuImg = styled.img`
