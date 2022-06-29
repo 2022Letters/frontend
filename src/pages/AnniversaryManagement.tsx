@@ -21,7 +21,6 @@ const Container = styled.section`
   width: 100%;
   height: 100vh;
   padding: 0 15px;
-  background-color: lavender;
 `;
 
 const Form = styled.form`
@@ -128,7 +127,7 @@ const CategoryButton = styled.button<ICategoryButton>`
   bottom: 0;
   border: none;
   border-radius: 10px;
-  font-size: 2rem;
+  font-size: 1.5rem;
   background-color: ${(props) =>
     props.index === props.currentCategory ? '#FA7272' : '#FFCACA'};
   transition: all 0.2s ease-in;
@@ -137,19 +136,12 @@ const CategoryButton = styled.button<ICategoryButton>`
 const DatePickser = styled(ReactDatePicker)`
   margin-left: 10px;
   position: absolute;
-  input {
-    border: none;
-    outline: none;
-    &:focus-visible {
-      outline: none;
-    }
-  }
 `;
 
 const DatePickWrapper = styled.div`
   position: absolute;
   z-index: 2;
-  top: 30px;
+  top: 50px;
   left: 0;
 `;
 
