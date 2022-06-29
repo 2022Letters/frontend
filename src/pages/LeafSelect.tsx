@@ -33,8 +33,8 @@ interface LeafBtnProps {
 }
 
 const LeafBtn = styled.button<LeafBtnProps>`
-  width: calc(50% - 10px);
-  padding-bottom: 50%;
+  width: 48%;
+  padding-bottom: 48%;
   margin: 5px;
   border-radius: 12px;
   opacity: ${(props) => (props.isSelect ? 1 : 0.5)};
@@ -53,10 +53,7 @@ const leafs = [
   { img: '/img/Group14.png', id: 0 },
   { img: '/img/Group15.png', id: 1 },
   { img: '/img/Group15.png', id: 2 },
-  { img: '/img/Group15.png', id: 3 },
-  { img: '/img/Group15.png', id: 4 },
-  { img: '/img/Group15.png', id: 5 },
-  { img: '/img/Group15.png', id: 6 }
+  { img: '/img/Group15.png', id: 3 }
 ];
 
 function LeafSelect() {

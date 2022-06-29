@@ -36,6 +36,7 @@ const NicknameInput = styled.input`
 
 const LetterWrapper = styled.div`
   height: 100%;
+  width: 100%;
   position: relative;
   margin-top: 15px;
 `;
@@ -61,6 +62,9 @@ const LetterImg = styled.img`
   width: 100%;
   height: 100%;
   opacity: 0.4;
+  position: absolute;
+  top: 0;
+  left: 0;
 `;
 
 const NextBtn = styled(Button)`
