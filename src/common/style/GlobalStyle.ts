@@ -2,6 +2,29 @@ import { createGlobalStyle } from 'styled-components';
 import Neurit from '../../assets/fonts/Neurit.ttf';
 
 const GlobalStyles = createGlobalStyle`
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, menu, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+main, menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+  font-family:'Neurit';
+}
+
 *{
   margin: 0 0;
   padding:0 0;
@@ -15,10 +38,22 @@ html,body, #root{
   font-size:16px;
 }
 
+#root{
+  position:relative;
+  overflow-x: hidden;
+}
+
+body{
+  max-width:780px;
+  min-height:100%;
+  margin:0 auto;
+}
+
 button{
   text-decoration:none;
   cursor:pointer;
   outline:none;
+  color: #000;
 }
 
 a{
@@ -35,6 +70,16 @@ a{
 li{
   list-style:none;
   cursor:pointer;
+}
+
+textarea{
+  resize:none;
+}
+
+@media (max-width: 780px) {
+  body {
+    width: 100vw;
+  }
 }
 
 @font-face {
