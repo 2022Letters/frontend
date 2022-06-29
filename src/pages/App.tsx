@@ -1,10 +1,11 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
-import LandingPage from '.';
 import GlobalStyles from '../common/style/GlobalStyle';
 import theme from '../common/style/theme';
 
+import LandingPage from '.';
+import Main from './Main';
 import GuestHome from './GuestHome';
 import GuestWrite from './GuestWrite';
 import LeafSelect from './LeafSelect';
@@ -19,6 +20,7 @@ function App() {
       <Router>
         <Layout>
           <Routes>
+            <Route path="/main" element={<Main />} />
             <Route path="/" element={<LandingPage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/login/nickname" element={<Nickname />} />

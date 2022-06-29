@@ -18,6 +18,7 @@ const LeafListWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   margin-top: 15px;
+  width: 100%;
   height: 100%;
   overflow-y: auto;
 `;
@@ -28,14 +29,14 @@ interface LeafBtnProps {
 }
 
 const LeafBtn = styled.button<LeafBtnProps>`
-  width: calc(50vw - 25px);
-  height: calc(50vw - 25px);
+  width: calc(50% - 10px);
+  padding-bottom: 50%;
   margin: 5px;
   border-radius: 12px;
   opacity: ${(props) => (props.isSelect ? 1 : 0.5)};
   background-image: url(${(props) => props.img});
   background-size: cover;
-  background-repeat: norepeat;
+  background-repeat: no-repeat;
   border: none;
   outline: none;
 `;
