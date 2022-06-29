@@ -3,6 +3,7 @@ import styled, { keyframes } from 'styled-components';
 import ReactDatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { ko } from 'date-fns/esm/locale';
+import axios from 'axios';
 import * as C from '../components/common/style';
 
 const borderColor = keyframes`
@@ -18,11 +19,15 @@ const Container = styled.section`
   margin-left: auto;
   margin-right: auto;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   padding: 0 15px;
-  overflow: auto;
   background-color: lavender;
+`;
+
+const Form = styled.form`
   display: grid;
+  width: 100%;
+  height: 100%;
 `;
 
 const InputWrapper = styled.article`
@@ -72,7 +77,7 @@ const TitleLabel = styled.label`
   font-size: 2rem;
 `;
 
-const TitleInput = styled.input`
+const TitleInput = styled.input.attrs({ required: true, maxLength: 15 })`
   width: 100%;
   outline: none;
   padding: 5px 15px;
@@ -143,6 +148,7 @@ const DatePickser = styled(ReactDatePicker)`
 
 const DatePickWrapper = styled.div`
   position: absolute;
+  z-index: 2;
   top: 30px;
   left: 0;
 `;
@@ -195,6 +201,10 @@ const ToggleState = styled.span`
   font-size: 1.5rem;
 `;
 
+const SubmitButton = styled(C.Button)`
+  background-color: #d9d9d9;
+`;
+
 function AnniversaryManagement() {
   const [originalDateInfo, setOriginalDateInfo] = useState(new Date());
   const [isOpen, setIsOpen] = useState(false);
@@ -215,7 +225,7 @@ function AnniversaryManagement() {
     return `0${value}`;
   };
 
-  const toStringByFormatting = (source: Date, delimiter = '.') => {
+  const toStringByFormatting = (source: Date, delimiter = '-') => {
     const year = source.getFullYear();
     const month = leftPad(source.getMonth() + 1);
     const day = leftPad(source.getDate());
@@ -224,8 +234,13 @@ function AnniversaryManagement() {
     setAnniversaryInfo({ ...anniversaryInfo, date });
   };
 
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleClick = () => {
     setIsOpen(!isOpen);
+  };
+
+  const changeTitle = (e: React.FormEvent<HTMLInputElement>) => {
+    const { name, value } = e.currentTarget;
+    setAnniversaryInfo({ ...anniversaryInfo, [name]: value });
   };
 
   const onClickCategory = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -236,82 +251,90 @@ function AnniversaryManagement() {
   };
 
   const onSubmit = async () => {
-    return null;
+    console.log(anniversaryInfo);
+    if (!anniversaryInfo.title) return;
+    const response = await axios.post('', { data: anniversaryInfo });
+    console.log(response);
   };
 
   const categoryList = ['생일', '졸업', '결혼', '새해', '기타'];
   return (
     <Container>
-      <AllyHiddenTitle>글쓰기</AllyHiddenTitle>
-      <InputWrapper>
-        <TitleLabel htmlFor="title">제목</TitleLabel>
-        <TitleInput
-          type="text"
-          id="title"
-          name="title"
-          placeholder="기념일 제목을 입력해주세요."
-        />
-        <TitleInformation>제목은 15자 미만으로 작성해주세요.</TitleInformation>
-      </InputWrapper>
-      <CategorySelectionWrapper>
-        <DetailedTitle>카테고리</DetailedTitle>
-        <CategoryButtonListWrapper>
-          {categoryList?.map((category) => (
-            <CategoryWrapper key={category}>
-              <CategoryButton
-                type="button"
-                index={category}
-                currentCategory={anniversaryInfo.category}
-                onClick={onClickCategory}
-                value={category}
-              >
-                {category}
-              </CategoryButton>
-            </CategoryWrapper>
-          ))}
-        </CategoryButtonListWrapper>
-      </CategorySelectionWrapper>
-      <DateWrapper>
-        <DetailedTitle>날짜: </DetailedTitle>
-        <DateButton onClick={handleClick} type="button">
-          {anniversaryInfo?.date}
-        </DateButton>
-        <DatePickWrapper>
-          {isOpen && (
-            <DatePickser
-              locale={ko}
-              selected={originalDateInfo}
-              onChange={(date: Date) => {
-                setIsOpen(!isOpen);
-                toStringByFormatting(date);
-              }}
-              inline
-            />
-          )}
-        </DatePickWrapper>
-      </DateWrapper>
-      <ToggleControlWrapper>
-        <DetailedTitle>게시글 공개 여부</DetailedTitle>
-        <ToggleWrapper>
-          <ToggleInput
-            type="checkbox"
-            onClick={() => {
-              setAnniversaryInfo({
-                ...anniversaryInfo,
-                isOpen: !anniversaryInfo.isOpen
-              });
-            }}
+      <Form>
+        <AllyHiddenTitle>글쓰기</AllyHiddenTitle>
+        <InputWrapper>
+          <TitleLabel htmlFor="title">제목</TitleLabel>
+          <TitleInput
+            type="text"
+            id="title"
+            onChange={changeTitle}
+            name="title"
+            placeholder="기념일 제목을 입력해주세요."
           />
-          <ToggleState>
-            {anniversaryInfo.isOpen ? '공개' : '비공개'}
-          </ToggleState>
-        </ToggleWrapper>
-      </ToggleControlWrapper>
-      <SubmmitWrapper>
-        <C.Button type="button" onSubmit={onSubmit}>
-          등록
-        </C.Button>
-      </SubmmitWrapper>
+          <TitleInformation>
+            제목은 15자 미만으로 작성해주세요.
+          </TitleInformation>
+        </InputWrapper>
+        <CategorySelectionWrapper>
+          <DetailedTitle>카테고리</DetailedTitle>
+          <CategoryButtonListWrapper>
+            {categoryList?.map((category) => (
+              <CategoryWrapper key={category}>
+                <CategoryButton
+                  type="button"
+                  index={category}
+                  currentCategory={anniversaryInfo.category}
+                  onClick={onClickCategory}
+                  value={category}
+                >
+                  {category}
+                </CategoryButton>
+              </CategoryWrapper>
+            ))}
+          </CategoryButtonListWrapper>
+        </CategorySelectionWrapper>
+        <DateWrapper>
+          <DetailedTitle>날짜: </DetailedTitle>
+          <DateButton onClick={handleClick} type="button">
+            {anniversaryInfo?.date}
+          </DateButton>
+          <DatePickWrapper>
+            {isOpen && (
+              <DatePickser
+                locale={ko}
+                selected={originalDateInfo}
+                onChange={(date: Date) => {
+                  setIsOpen(!isOpen);
+                  toStringByFormatting(date);
+                }}
+                inline
+              />
+            )}
+          </DatePickWrapper>
+        </DateWrapper>
+        <ToggleControlWrapper>
+          <DetailedTitle>게시글 공개 여부</DetailedTitle>
+          <ToggleWrapper>
+            <ToggleInput
+              type="checkbox"
+              onClick={() => {
+                setAnniversaryInfo({
+                  ...anniversaryInfo,
+                  isOpen: !anniversaryInfo.isOpen
+                });
+              }}
+            />
+            <ToggleState>
+              {anniversaryInfo.isOpen ? '공개' : '비공개'}
+            </ToggleState>
+          </ToggleWrapper>
+        </ToggleControlWrapper>
+        <SubmmitWrapper>
+          <SubmitButton type="submit" onSubmit={onSubmit}>
+            등록
+          </SubmitButton>
+        </SubmmitWrapper>
+      </Form>
     </Container>
   );
 }

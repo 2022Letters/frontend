@@ -41,7 +41,7 @@ const BtnPosition = styled.div`
   bottom: 45px;
 `;
 
-function Nickname() {
+function NicknameRegist() {
   return (
     <NickWrap>
       <NickTitle>닉네임을 입력해주세요</NickTitle>
@@ -57,4 +57,4 @@ function Nickname() {
     </NickWrap>
   );
 }
-export default Nickname;
+export default NicknameRegist;

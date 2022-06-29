@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Title } from '../components/common/style';
-import Google from './SocialLogin/Google';
-import Kakao from './SocialLogin/Kakao';
+import GoogleLogin from './SocialLogin/GoogleLogin';
+import KakaoLogin from './SocialLogin/KakaoLogin';
 
 const LoginWrap = styled.div`
   height: 100%;
@@ -15,15 +15,15 @@ const ButtonWrap = styled.div`
   margin: 50% 0;
 `;
 
-function Login() {
+function LoginPage() {
   return (
     <LoginWrap>
       <Title>로그인</Title>
       <ButtonWrap>
-        <Kakao />
-        <Google />
+        <KakaoLogin />
+        <GoogleLogin />
       </ButtonWrap>
     </LoginWrap>
   );
 }
-export default Login;
+export default LoginPage;

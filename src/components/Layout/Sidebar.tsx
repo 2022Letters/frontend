@@ -19,12 +19,17 @@ const SideBarWrap = styled.div`
   }
 `;
 
-const Menu = styled.li`
+const CloseBtn = styled.button`
+  border: none;
+  background-color: rgba(0, 0, 0, 0);
+`;
+
+const MenuLi = styled.li`
   padding: 16px 8px;
   font-size: 1.5rem;
 `;
 
-const ExitMenu = styled.span`
+const QuitMenu = styled.span`
   position: absolute;
   bottom: 26px;
   font-size: 1rem;
@@ -52,26 +57,33 @@ function Sidebar({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) {
 
   return (
     <SideBarWrap id="sidebar" ref={outside} className={isOpen ? 'open' : ''}>
-      <img
-        src="/img/close.png"
-        alt="close"
-        onClick={toggleSide}
-        onKeyDown={toggleSide}
-      />
+      <CloseBtn>
+        <img
+          src="/img/close.png"
+          alt="close"
+          onClick={toggleSide}
+          onKeyDown={toggleSide}
+        />
+      </CloseBtn>
       <nav>
         <ul>
-          <Menu onClick={toggleSide}>
-            <Link to="/login">로그인</Link>
-          </Menu>
-          <Menu onClick={toggleSide}>
+          <MenuLi>
+            <Link to="/login" onClick={toggleSide}>
+              로그인
+            </Link>
+          </MenuLi>
+          <MenuLi onClick={toggleSide}>
             <Link to="/">로그아웃</Link>
-          </Menu>
-          <Menu onClick={toggleSide}>
-            <Link to="/">꽃다발 만들기</Link>
-          </Menu>
-          <Menu>mmm@gmail.com로 문의 부탁</Menu>
+          </MenuLi>
+          <MenuLi onClick={toggleSide}>
+            <Link to="/main">꽃다발 만들기</Link>
+          </MenuLi>
+          <MenuLi onClick={toggleSide}>
+            <Link to="/guest">손님으로 들어가기</Link>
+          </MenuLi>
+          <MenuLi>mmm@gmail.com로 문의 부탁해요~</MenuLi>
         </ul>
-        <ExitMenu>회원 탈퇴</ExitMenu>
+        <QuitMenu>회원 탈퇴</QuitMenu>
       </nav>
     </SideBarWrap>
   );
