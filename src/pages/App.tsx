@@ -7,6 +7,7 @@ import theme from '../common/style/theme';
 import LandingPage from '.';
 import Main from './Main';
 import GuestHome from './GuestHome';
+import GuestWrite from './GuestWrite';
 import LeafSelect from './LeafSelect';
 import Layout from '../components/Layout/Layout';
 import LoginPage from './LoginPage';
@@ -26,6 +27,7 @@ function App() {
             <Route path="/login/redirect" element={<SocialRedirect />} />
             <Route path="/login/nickname" element={<NicknameRegist />} />
             <Route path="/guest" element={<GuestHome />} />
+            <Route path="/guest/write" element={<GuestWrite />} />
             <Route path="/guest/select" element={<LeafSelect />} />
           </Routes>
         </Layout>

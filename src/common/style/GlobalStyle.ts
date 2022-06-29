@@ -1,5 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
-import Neurit from '../../assets/fonts/Neurit.ttf';
+import Neurit from '../../assets/fonts/Neurit.woff';
 
 const GlobalStyles = createGlobalStyle`
 
@@ -44,7 +44,8 @@ html,body, #root{
 }
 
 body{
-  max-width:780px;
+  max-width:550px;
+  min-width:320px;
   min-height:100%;
   margin:0 auto;
 }
@@ -74,12 +75,6 @@ li{
 
 textarea{
   resize:none;
-}
-
-@media (max-width: 780px) {
-  body {
-    width: 100vw;
-  }
 }
 
 @font-face {
