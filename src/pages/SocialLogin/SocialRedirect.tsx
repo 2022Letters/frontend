@@ -3,7 +3,11 @@ import React, { useEffect } from 'react';
 
 function SocialRedirect() {
   useEffect(() => {
-    callKakaoLogin();
+    if (code) {
+      callKakaoLogin();
+    } else {
+      callGoogleLogin();
+    }
   }, []);
 
   const url = new URL(window.location.href);
@@ -16,6 +20,9 @@ function SocialRedirect() {
     axios.get(`http://localhost:8080/kakaoLogin?code=${code}`).then((res) => {
       console.log(res);
     });
+  };
+  const callGoogleLogin = () => {
+    console.log('구글로그인');
   };
 
   return <div>로딩중</div>;
