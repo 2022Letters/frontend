@@ -23,6 +23,9 @@ function SocialRedirect() {
   };
   const callGoogleLogin = () => {
     console.log('구글로그인');
+    axios.get(`http://localhost:8080/login/sucess`).then((res) => {
+      console.log(res);
+    });
   };
 
   return <div>로딩중</div>;
