@@ -3,6 +3,7 @@ import axios from 'axios';
 import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { debounce } from 'lodash';
+import { Link } from 'react-router-dom';
 import EventCard from '../components/EventCard';
 
 interface CategoryButton {
@@ -232,7 +233,9 @@ export default function Main() {
         </EventCardListContainer>
       )}
       <CreateButtonWrapper>
-        <CreateButton type="submit">+</CreateButton>
+        <Link to="/create">
+          <CreateButton type="submit">+</CreateButton>
+        </Link>
       </CreateButtonWrapper>
     </Container>
   );

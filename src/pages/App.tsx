@@ -11,6 +11,7 @@ import LeafSelect from './LeafSelect';
 import Layout from '../components/Layout/Layout';
 import Login from './login';
 import Nickname from './nickname';
+import AnniversaryManagement from './AnniversaryManagement';
 
 function App() {
   return (
@@ -19,8 +20,10 @@ function App() {
       <Router>
         <Layout>
           <Routes>
-            <Route path="/main" element={<Main />} />
             <Route path="/" element={<LandingPage />} />
+            <Route path="/main" element={<Main />} />
+            <Route path="/create" element={<AnniversaryManagement />} />
+            <Route path="/edit/:postId" element={<AnniversaryManagement />} />
             <Route path="/login" element={<Login />} />
             <Route path="/login/nickname" element={<Nickname />} />
             <Route path="/guest" element={<GuestHome />} />
