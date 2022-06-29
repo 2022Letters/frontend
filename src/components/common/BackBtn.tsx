@@ -2,11 +2,13 @@ import { useNavigate } from 'react-router-dom';
 import { useCallback } from 'react';
 import styled from 'styled-components';
 
-import Back from '../../assets/imgs/arrow.png';
-
-const Button = styled.img`
-  width: 30px;
-  height: 30px;
+const Button = styled.a`
+  width: 20px;
+  height: 20px;
+  border-top: 3.5px solid #000;
+  border-left: 3.5px solid #000;
+  transform: rotate(-45deg);
+  flex-shrink: 0;
 `;
 
 function BackBtn() {
@@ -16,7 +18,7 @@ function BackBtn() {
     navigate(-1);
   }, []);
 
-  return <Button src={Back} onClick={onBackClick} />;
+  return <Button onClick={onBackClick} />;
 }
 
 export default BackBtn;

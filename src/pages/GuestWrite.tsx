@@ -32,6 +32,9 @@ const NicknameInput = styled.input`
   flex-shrink: 0;
   font-size: ${theme.calcRem(24)};
   padding-left: 6px;
+  &:focus {
+    outline: none;
+  }
 `;
 
 const LetterWrapper = styled.div`
