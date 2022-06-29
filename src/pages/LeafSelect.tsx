@@ -17,12 +17,8 @@ const MainWrapper = styled.div`
 `;
 
 const LeafListWrapper = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  /* display: grid;
+  display: grid;
   grid-template-columns: repeat(2, 1fr);
-  grid-column-gap: 0.625rem;
-  grid-row-gap: 1.5rem; */
   margin-top: 15px;
   width: 100%;
   height: 100%;
@@ -40,12 +36,13 @@ interface LeafBtnProps {
 
 const BtnWrapper = styled.div<LeafBtnProps>`
   position: relative;
-  width: calc(50% - 10px);
+  width: calc(100% - 10px);
   margin: 5px;
   background-color: #ffdc25;
-  border-radius: 12px;
-  margin-bottom: 25%;
+  border-radius: 30px;
+  margin-bottom: 50%;
   opacity: ${(props) => (props.isSelect ? 1 : 0.5)};
+  cursor: pointer;
 `;
 
 const LeafBtn = styled.img`
