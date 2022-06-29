@@ -44,7 +44,8 @@ html,body, #root{
 }
 
 body{
-  max-width:780px;
+  max-width:550px;
+  min-width:320px;
   min-height:100%;
   margin:0 auto;
 }
