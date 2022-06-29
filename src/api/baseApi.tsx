@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // api 서버 url
-const apiUrl = `localhost:8080`;
+const apiUrl = process.env.REACT_APP_API_URL;
 
 export const getApi = async (url: string) => {
   try {
