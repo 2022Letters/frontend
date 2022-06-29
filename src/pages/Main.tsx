@@ -6,11 +6,6 @@ import { debounce } from 'lodash';
 import { Link } from 'react-router-dom';
 import EventCard from '../components/EventCard';
 
-interface CategoryButton {
-  index: string;
-  currentCategory: string;
-}
-
 const Container = styled.section`
   position: relative;
   margin-left: auto;
@@ -51,7 +46,7 @@ const CategoryWrapper = styled.article`
   padding: 0 15px;
 `;
 
-const CategoryButton = styled.button<CategoryButton>`
+const CategoryButton = styled.button<ICategoryButton>`
   position: relative;
   border-radius: 50px;
   border: none;

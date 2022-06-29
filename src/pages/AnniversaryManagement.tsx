@@ -22,6 +22,7 @@ const Container = styled.section`
   padding: 0 15px;
   overflow: auto;
   background-color: lavender;
+  display: grid;
 `;
 
 const InputWrapper = styled.article`
@@ -29,19 +30,42 @@ const InputWrapper = styled.article`
   margin-top: 4.375rem;
 `;
 
-const CategoryWrapper = styled.article`
+const CategorySelectionWrapper = styled.article`
   width: 100%;
+  margin-top: 1rem;
+`;
+
+const CategoryButtonListWrapper = styled.div`
+  display: grid;
+  margin-top: 1rem;
+  grid-template-columns: repeat(5, 1fr);
+  grid-column-gap: 2rem;
+  @media (max-width: 550px) {
+    grid-column-gap: 1rem;
+  }
 `;
 
 const DateWrapper = styled.article`
   width: 100%;
+  margin-top: 1rem;
   display: flex;
   align-items: center;
   position: relative;
 `;
 
-const ToggleWrapper = styled.article`
+const ToggleControlWrapper = styled.article`
+  margin-top: 1rem;
   width: 100%;
+`;
+
+const ToggleWrapper = styled.div`
+  display: flex;
+  margin-top: 1rem;
+  align-items: center;
+`;
+
+const SubmmitWrapper = styled.article`
+  margin-top: 2rem;
 `;
 
 const TitleLabel = styled.label`
@@ -53,7 +77,7 @@ const TitleInput = styled.input`
   outline: none;
   padding: 5px 15px;
   font-size: 1.5rem;
-  margin-top: 5px;
+  margin-top: 1rem;
   border: 2px solid transparent;
   border-radius: 0;
   border-bottom: 2px solid #000;
@@ -83,6 +107,28 @@ const DetailedTitle = styled.h2`
   margin-right: 1rem;
 `;
 
+const CategoryWrapper = styled.div`
+  position: relative;
+  width: 100%;
+  height: 0;
+  overflow: hidden;
+  padding-bottom: 100%;
+`;
+
+const CategoryButton = styled.button<ICategoryButton>`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  bottom: 0;
+  border: none;
+  border-radius: 10px;
+  font-size: 2rem;
+  background-color: ${(props) =>
+    props.index === props.currentCategory ? '#FA7272' : '#FFCACA'};
+  transition: all 0.2s ease-in;
+`;
+
 const DatePickser = styled(ReactDatePicker)`
   margin-left: 10px;
   position: absolute;
@@ -107,15 +153,62 @@ const DateButton = styled.button`
   font-size: 1.5rem;
 `;
 
+const ToggleInput = styled.input`
+  margin-right: 1rem;
+  &[type='checkbox'] {
+    position: relative;
+    border: none;
+    -webkit-appearance: none;
+    background: #b6b6b6;
+    outline: none;
+    width: 74px;
+    height: 30px;
+    border-radius: 20px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+      0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    &::before {
+    }
+  }
+
+  &[type='checkbox']:before {
+    content: '';
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    border-radius: 20px;
+    top: 4px;
+    left: 4px;
+    background: #fff;
+    transform: scale(1.1);
+    transition: 750ms ease all;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+      0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
+
+  &:checked[type='checkbox']:before {
+    background: #fff;
+    left: 48px;
+  }
+`;
+
+const ToggleState = styled.span`
+  font-size: 1.5rem;
+`;
+
 function AnniversaryManagement() {
   const [originalDateInfo, setOriginalDateInfo] = useState(new Date());
-  const [refinedDate, setRefinedDate] = useState('');
   const [isOpen, setIsOpen] = useState(false);
+  const [anniversaryInfo, setAnniversaryInfo] = useState({
+    title: '',
+    category: '생일',
+    date: '',
+    isOpen: false
+  });
   useEffect(() => {
     toStringByFormatting(originalDateInfo);
   }, []);
 
-  const leftPad = (value: any) => {
+  const leftPad = (value: number) => {
     if (value >= 10) {
       return value;
     }
@@ -128,12 +221,24 @@ function AnniversaryManagement() {
     const day = leftPad(source.getDate());
     const date = [year, month, day].join(delimiter);
     setOriginalDateInfo(new Date(date));
-    setRefinedDate(date);
+    setAnniversaryInfo({ ...anniversaryInfo, date });
   };
+
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
     setIsOpen(!isOpen);
   };
+
+  const onClickCategory = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const {
+      currentTarget: { value }
+    } = event;
+    setAnniversaryInfo({ ...anniversaryInfo, category: value });
+  };
+
+  const onSubmit = async () => {
+    return null;
+  };
+
   const categoryList = ['생일', '졸업', '결혼', '새해', '기타'];
   return (
     <Container>
@@ -148,18 +253,28 @@ function AnniversaryManagement() {
         />
         <TitleInformation>제목은 15자 미만으로 작성해주세요.</TitleInformation>
       </InputWrapper>
-      <CategoryWrapper>
+      <CategorySelectionWrapper>
         <DetailedTitle>카테고리</DetailedTitle>
-        {categoryList?.map((category) => (
-          <button type="button" key={category}>
-            {category}
-          </button>
-        ))}
-      </CategoryWrapper>
+        <CategoryButtonListWrapper>
+          {categoryList?.map((category) => (
+            <CategoryWrapper key={category}>
+              <CategoryButton
+                type="button"
+                index={category}
+                currentCategory={anniversaryInfo.category}
+                onClick={onClickCategory}
+                value={category}
+              >
+                {category}
+              </CategoryButton>
+            </CategoryWrapper>
+          ))}
+        </CategoryButtonListWrapper>
+      </CategorySelectionWrapper>
       <DateWrapper>
         <DetailedTitle>날짜: </DetailedTitle>
         <DateButton onClick={handleClick} type="button">
-          {refinedDate}
+          {anniversaryInfo?.date}
         </DateButton>
         <DatePickWrapper>
           {isOpen && (
@@ -175,10 +290,28 @@ function AnniversaryManagement() {
           )}
         </DatePickWrapper>
       </DateWrapper>
-      <ToggleWrapper>
+      <ToggleControlWrapper>
         <DetailedTitle>게시글 공개 여부</DetailedTitle>
-      </ToggleWrapper>
-      <C.Button type="button">등록</C.Button>
+        <ToggleWrapper>
+          <ToggleInput
+            type="checkbox"
+            onClick={() => {
+              setAnniversaryInfo({
+                ...anniversaryInfo,
+                isOpen: !anniversaryInfo.isOpen
+              });
+            }}
+          />
+          <ToggleState>
+            {anniversaryInfo.isOpen ? '공개' : '비공개'}
+          </ToggleState>
+        </ToggleWrapper>
+      </ToggleControlWrapper>
+      <SubmmitWrapper>
+        <C.Button type="button" onSubmit={onSubmit}>
+          등록
+        </C.Button>
+      </SubmmitWrapper>
     </Container>
   );
 }
