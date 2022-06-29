@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Button, Title } from '../components/common/style';
 
@@ -42,16 +42,35 @@ const BtnPosition = styled.div`
 `;
 
 function NicknameRegist() {
+  const [nickname, setNickname] = useState('');
+
+  const changeNickname = (e: any) => {
+    if (nickname.length < 10) {
+      setNickname(e.target.value);
+    }
+    return null;
+  };
+
+  const registUser = () => {
+    console.log(nickname);
+  };
   return (
     <NickWrap>
       <NickTitle>닉네임을 입력해주세요</NickTitle>
       <NickBody>
         <NickDiv>
-          <NickInput />
+          <NickInput
+            type="text"
+            onChange={(e) => changeNickname(e)}
+            value={nickname}
+            placeholder="닉네임은 10자이내로 작성해주세요!"
+          />
           <NickMsg>변경이 불가하니 신중히 선택해주세요.</NickMsg>
         </NickDiv>
         <BtnPosition>
-          <Button type="button">완료</Button>
+          <Button type="button" onClick={registUser}>
+            완료
+          </Button>
         </BtnPosition>
       </NickBody>
     </NickWrap>
