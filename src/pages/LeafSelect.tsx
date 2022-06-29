@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 
 import { Button, Title } from '../components/common/style';
+import F1 from '../assets/imgs/Group14.png';
+import F2 from '../assets/imgs/Group15.png';
 
 const MainWrapper = styled.div`
   width: 100%;
@@ -17,6 +19,10 @@ const MainWrapper = styled.div`
 const LeafListWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
+  /* display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-column-gap: 0.625rem;
+  grid-row-gap: 1.5rem; */
   margin-top: 15px;
   width: 100%;
   height: 100%;
@@ -28,37 +34,38 @@ const LeafListWrapper = styled.div`
 `;
 
 interface LeafBtnProps {
-  isSelect: boolean;
-  img: string;
+  isSelect?: boolean;
+  img?: string;
 }
 
-const LeafBtn = styled.button<LeafBtnProps>`
-  width: 48%;
-  padding-bottom: 48%;
+const BtnWrapper = styled.div<LeafBtnProps>`
+  position: relative;
+  width: calc(50% - 10px);
   margin: 5px;
+  background-color: #ffdc25;
   border-radius: 12px;
+  margin-bottom: 25%;
   opacity: ${(props) => (props.isSelect ? 1 : 0.5)};
-  background-image: url(${(props) => props.img});
-  background-size: cover;
-  background-repeat: no-repeat;
-  border: none;
-  outline: none;
+`;
+
+const LeafBtn = styled.img`
+  width: 100%;
+  height: 100%;
 `;
 
 const NextBtn = styled(Button)`
   flex-shrink: 0;
 `;
 
-const leafs = [
-  { img: '/img/Group14.png', id: 0 },
-  { img: '/img/Group15.png', id: 1 },
-  { img: '/img/Group15.png', id: 2 },
-  { img: '/img/Group15.png', id: 3 }
-];
-
 function LeafSelect() {
   const [select, setSelect] = useState(0);
   const navigate = useNavigate();
+  const leafs = [
+    { img: F1, id: 0 },
+    { img: F2, id: 1 },
+    { img: F2, id: 2 },
+    { img: F2, id: 3 }
+  ];
 
   const onNextClick = useCallback(() => {
     navigate('/guest/write');
@@ -77,12 +84,13 @@ function LeafSelect() {
       <LeafListWrapper>
         {leafs.map((e) => {
           return (
-            <LeafBtn
-              img={e.img}
+            <BtnWrapper
               key={e.id}
               onClick={selectImg(e.id)}
               isSelect={select === e.id}
-            />
+            >
+              <LeafBtn src={e.img} />
+            </BtnWrapper>
           );
         })}
       </LeafListWrapper>
