@@ -21,12 +21,7 @@ const Container = styled.section`
   width: 100%;
   height: 100vh;
   padding: 0 15px;
-`;
-
-const Form = styled.form`
   display: grid;
-  width: 100%;
-  height: 100%;
 `;
 
 const InputWrapper = styled.article`
@@ -149,6 +144,7 @@ const DateButton = styled.button`
   border: none;
   background-color: transparent;
   font-size: 1.5rem;
+  border-bottom: 2px solid #000;
 `;
 
 const ToggleInput = styled.input`
@@ -166,6 +162,9 @@ const ToggleInput = styled.input`
       0 2px 4px -1px rgba(0, 0, 0, 0.06);
     &::before {
     }
+  }
+  &:checked[type='checkbox'] {
+    background: #fa7272;
   }
 
   &[type='checkbox']:before {
@@ -195,6 +194,10 @@ const ToggleState = styled.span`
 
 const SubmitButton = styled(C.Button)`
   background-color: #d9d9d9;
+`;
+
+const Svg = styled.svg`
+  margin-left: 0.5rem;
 `;
 
 function AnniversaryManagement() {
@@ -230,8 +233,8 @@ function AnniversaryManagement() {
     setIsOpen(!isOpen);
   };
 
-  const changeTitle = (e: React.FormEvent<HTMLInputElement>) => {
-    const { name, value } = e.currentTarget;
+  const changeTitle = (event: React.FormEvent<HTMLInputElement>) => {
+    const { name, value } = event.currentTarget;
     setAnniversaryInfo({ ...anniversaryInfo, [name]: value });
   };
 
@@ -242,7 +245,8 @@ function AnniversaryManagement() {
     setAnniversaryInfo({ ...anniversaryInfo, category: value });
   };
 
-  const onSubmit = async () => {
+  const onSubmit = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
     console.log(anniversaryInfo);
     if (!anniversaryInfo.title) return;
     const response = await axios.post('', { data: anniversaryInfo });
@@ -252,81 +256,88 @@ function AnniversaryManagement() {
   const categoryList = ['생일', '졸업', '결혼', '새해', '기타'];
   return (
     <Container>
-      <Form>
-        <AllyHiddenTitle>글쓰기</AllyHiddenTitle>
-        <InputWrapper>
-          <TitleLabel htmlFor="title">제목</TitleLabel>
-          <TitleInput
-            type="text"
-            id="title"
-            onChange={changeTitle}
-            name="title"
-            placeholder="기념일 제목을 입력해주세요."
-          />
-          <TitleInformation>
-            제목은 15자 미만으로 작성해주세요.
-          </TitleInformation>
-        </InputWrapper>
-        <CategorySelectionWrapper>
-          <DetailedTitle>카테고리</DetailedTitle>
-          <CategoryButtonListWrapper>
-            {categoryList?.map((category) => (
-              <CategoryWrapper key={category}>
-                <CategoryButton
-                  type="button"
-                  index={category}
-                  currentCategory={anniversaryInfo.category}
-                  onClick={onClickCategory}
-                  value={category}
-                >
-                  {category}
-                </CategoryButton>
-              </CategoryWrapper>
-            ))}
-          </CategoryButtonListWrapper>
-        </CategorySelectionWrapper>
-        <DateWrapper>
-          <DetailedTitle>날짜: </DetailedTitle>
-          <DateButton onClick={handleClick} type="button">
-            {anniversaryInfo?.date}
-          </DateButton>
-          <DatePickWrapper>
-            {isOpen && (
-              <DatePickser
-                locale={ko}
-                selected={originalDateInfo}
-                onChange={(date: Date) => {
-                  setIsOpen(!isOpen);
-                  toStringByFormatting(date);
-                }}
-                inline
-              />
-            )}
-          </DatePickWrapper>
-        </DateWrapper>
-        <ToggleControlWrapper>
-          <DetailedTitle>게시글 공개 여부</DetailedTitle>
-          <ToggleWrapper>
-            <ToggleInput
-              type="checkbox"
-              onClick={() => {
-                setAnniversaryInfo({
-                  ...anniversaryInfo,
-                  isOpen: !anniversaryInfo.isOpen
-                });
+      <AllyHiddenTitle>글쓰기</AllyHiddenTitle>
+      <InputWrapper>
+        <TitleLabel htmlFor="title">제목</TitleLabel>
+        <TitleInput
+          type="text"
+          id="title"
+          name="title"
+          onChange={changeTitle}
+          placeholder="기념일 제목을 입력해주세요."
+        />
+        <TitleInformation>제목은 15자 미만으로 작성해주세요.</TitleInformation>
+      </InputWrapper>
+      <CategorySelectionWrapper>
+        <DetailedTitle>카테고리</DetailedTitle>
+        <CategoryButtonListWrapper>
+          {categoryList?.map((category) => (
+            <CategoryWrapper key={category}>
+              <CategoryButton
+                type="button"
+                index={category}
+                currentCategory={anniversaryInfo.category}
+                onClick={onClickCategory}
+                value={category}
+              >
+                {category}
+              </CategoryButton>
+            </CategoryWrapper>
+          ))}
+        </CategoryButtonListWrapper>
+      </CategorySelectionWrapper>
+      <DateWrapper>
+        <DetailedTitle>날짜: </DetailedTitle>
+        <DateButton onClick={handleClick} type="button">
+          {anniversaryInfo?.date}
+          <Svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            className="bi bi-calendar-check"
+            viewBox="0 0 16 16"
+          >
+            <path d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0z" />
+            <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z" />
+          </Svg>
+        </DateButton>
+        <DatePickWrapper>
+          {isOpen && (
+            <DatePickser
+              locale={ko}
+              selected={originalDateInfo}
+              onChange={(date: Date) => {
+                setIsOpen(!isOpen);
+                toStringByFormatting(date);
               }}
+              inline
             />
-            <ToggleState>
-              {anniversaryInfo.isOpen ? '공개' : '비공개'}
-            </ToggleState>
-          </ToggleWrapper>
-        </ToggleControlWrapper>
-        <SubmmitWrapper>
-          <SubmitButton type="submit" onSubmit={onSubmit}>
-            등록
-          </SubmitButton>
-        </SubmmitWrapper>
-      </Form>
+          )}
+        </DatePickWrapper>
+      </DateWrapper>
+      <ToggleControlWrapper>
+        <DetailedTitle>게시글 공개 여부</DetailedTitle>
+        <ToggleWrapper>
+          <ToggleInput
+            type="checkbox"
+            onClick={() => {
+              setAnniversaryInfo({
+                ...anniversaryInfo,
+                isOpen: !anniversaryInfo.isOpen
+              });
+            }}
+          />
+          <ToggleState>
+            {anniversaryInfo.isOpen ? '공개' : '비공개'}
+          </ToggleState>
+        </ToggleWrapper>
+      </ToggleControlWrapper>
+      <SubmmitWrapper>
+        <SubmitButton type="submit" onClick={onSubmit}>
+          등록
+        </SubmitButton>
+      </SubmmitWrapper>
     </Container>
   );
 }
