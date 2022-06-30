@@ -1,5 +1,6 @@
-import { getApi, postApi } from './baseApi';
+import { getApi, postApi, putApi, deleteApi } from './baseApi';
 
+// 로그인 api
 export const kakaoLoginApi = (code: string) => {
   const url = `kakaoLogin?code=${code}`;
   const data = getApi(url);
@@ -15,6 +16,12 @@ export const googleLoginApi = () => {
 export const nicknameRegistApi = () => {
   const url = `login/user/nickname`;
   const data = getApi(url);
+  return data;
+};
+
+export const deleteUser = (userid: string) => {
+  const url = `user/${userid}`;
+  const data = deleteApi(url);
   return data;
 };
 

@@ -25,8 +25,8 @@ function SocialRedirect() {
       if (data.message === 'success') {
         if (data.existingUser) {
           // 이미 가입한 회원이면 유저 정보 localstorage에 저장
-          localStorage.setItem('kakaoToken', data.accessToken);
-          localStorage.setItem('user', data.user);
+          localStorage.setItem('token', data.accessToken);
+          localStorage.setItem('user', JSON.stringify(data.user));
           navigate('/main'); // 메인 화면으로
         } else {
           // 가입하지 않았다면 닉네임 화면으로

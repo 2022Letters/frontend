@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import styled from 'styled-components';
 import { Button } from '../components/common/style';
 
@@ -17,9 +18,17 @@ const BtnPosition = styled.div`
   height: 100%;
   padding: 0 15px;
 `;
-// `;
 
 function LandingPage() {
+  useEffect(() => {
+    // 테스트 코드
+    // const user = {
+    //   id: 11,
+    //   nickname: '선물선물'
+    // };
+    // localStorage.setItem('user', JSON.stringify(user));
+  });
+
   return (
     <MainBackground>
       <BtnPosition>

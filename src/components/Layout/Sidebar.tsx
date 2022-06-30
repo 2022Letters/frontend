@@ -1,8 +1,10 @@
 import React, { useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { deleteUser } from '../../api/Apis';
 
 const SideBarWrap = styled.div`
+  background-color: #ffe2e2;
   z-index: 10;
   padding: 12px;
   border-radius: 15px 0 0 15px;
@@ -37,18 +39,32 @@ const QuitMenu = styled.span`
 
 function Sidebar({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) {
   const outside = useRef<any>();
+  const userInfo = localStorage.getItem('user');
 
   useEffect(() => {
-    document.addEventListener('mousedown', handlerOutsie);
+    console.log(userInfo);
+    document.addEventListener('mousedown', handlerOutside);
     return () => {
-      document.removeEventListener('mousedown', handlerOutsie);
+      document.removeEventListener('mousedown', handlerOutside);
     };
-  });
+  }, []);
 
-  const handlerOutsie = (e: any) => {
+  const handlerOutside = (e: any) => {
     if (!outside.current.contains(e.target)) {
       toggleSide();
     }
+  };
+  // 회원 탈퇴
+  const quitUser = () => {
+    const user: any = localStorage.getItem('user');
+    // 회원 탈퇴 api
+    const data = deleteUser(user.id);
+    console.log(data);
+  };
+  // 로그아웃
+  const handelLogout = () => {
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
   };
 
   const toggleSide = () => {
@@ -67,14 +83,19 @@ function Sidebar({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) {
       </CloseBtn>
       <nav>
         <ul>
-          <MenuLi>
-            <Link to="/login" onClick={toggleSide}>
-              로그인
-            </Link>
-          </MenuLi>
-          <MenuLi onClick={toggleSide}>
-            <Link to="/">로그아웃</Link>
-          </MenuLi>
+          {userInfo ? (
+            <MenuLi onClick={toggleSide}>
+              <Link to="/" onClick={handelLogout}>
+                로그아웃
+              </Link>
+            </MenuLi>
+          ) : (
+            <MenuLi>
+              <Link to="/login" onClick={toggleSide}>
+                로그인
+              </Link>
+            </MenuLi>
+          )}
           <MenuLi onClick={toggleSide}>
             <Link to="/main">꽃다발 만들기</Link>
           </MenuLi>
@@ -83,7 +104,7 @@ function Sidebar({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) {
           </MenuLi>
           <MenuLi>mmm@gmail.com로 문의 부탁해요~</MenuLi>
         </ul>
-        <QuitMenu>회원 탈퇴</QuitMenu>
+        <QuitMenu onClick={quitUser}>회원 탈퇴</QuitMenu>
       </nav>
     </SideBarWrap>
   );

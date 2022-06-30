@@ -2,9 +2,11 @@ export interface kakaoLogin {
   'access-token': string;
   existingUser: string;
   message: string;
-  user: {
-    id: number;
-    nickname: string;
-    email: string;
-  };
+  user: User;
+}
+
+export interface User {
+  id: number;
+  nickname: string;
+  email: string;
 }
