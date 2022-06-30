@@ -22,7 +22,6 @@ function SocialRedirect() {
   // 카카오 로그인
   const callKakaoLogin = () => {
     console.log(code);
-
     if (code) {
       const { data }: any = kakaoLoginApi(code);
       if (data.message === 'success') {
@@ -45,19 +44,24 @@ function SocialRedirect() {
   const callGoogleLogin = () => {
     console.log('구글로그인');
     console.log(emailget);
-    const data: any = {
-      email: emailget
-    };
-    axios
-      .get('http://localhost:8080/login/sucess', data)
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+    if (emailget) {
+      const { data }: any = googleLoginApi(emailget);
+      console.log(data);
 
+      //   if (data.existingUser) {
+      //     // 이미 가입한 회원이면 유저 정보 localstorage에 저장
+      //     localStorage.setItem('token', data.accessToken);
+      //     localStorage.setItem('user', JSON.stringify(data.user));
+      //     navigate('/main'); // 메인 화면으로
+      //   } else {
+      //     // 가입하지 않았다면 닉네임 화면으로
+      //     navigate('/login/nickname');
+      //   }
+      // } else {
+      //   alert('로그인 과정 중에 문제가 발생했습니다.');
+      // }
+    }
+  };
   return <LoadingPage />;
 }
 
