@@ -10,7 +10,7 @@ import {
 // 917335306727-2d6rp3jl36nv9due5r321p08pku177r3.apps.googleusercontent.com
 
 function Google() {
-  const googleLogin = (response: any) => {
+  const googleLogin = () => {
     window.location.href = 'http://localhost:8080/oauth2/authorization/google';
   };
   return (

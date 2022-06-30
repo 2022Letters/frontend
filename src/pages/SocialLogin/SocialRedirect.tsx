@@ -24,7 +24,7 @@ function SocialRedirect() {
       const { data }: any = kakaoLoginApi(code);
       if (data.message === 'success') {
         if (data.existingUser) {
-          // 이미 가입한 회원이면 로그인
+          // 이미 가입한 회원이면 유저 정보 localstorage에 저장
           localStorage.setItem('kakaoToken', data.accessToken);
           localStorage.setItem('user', data.user);
           navigate('/main'); // 메인 화면으로

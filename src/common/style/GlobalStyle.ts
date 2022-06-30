@@ -13,6 +13,7 @@ html,body, #root{
   width:100%;
   height:100%;
   font-size:16px;
+  background-color: #FFF7E3;
 }
 
 button{
