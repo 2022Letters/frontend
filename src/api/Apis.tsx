@@ -8,6 +8,7 @@ export const kakaoLoginApi = (code: string) => {
 };
 
 export const googleLoginApi = (email: string) => {
+  console.log(email);
   const url = `login/sucess?email=${email}`;
   const data = getApi(url);
   return data;

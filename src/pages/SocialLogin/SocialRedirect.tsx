@@ -43,9 +43,9 @@ function SocialRedirect() {
   // 구글 로그인
   const callGoogleLogin = () => {
     console.log('구글로그인');
-    console.log(emailget);
     if (emailget) {
-      const { data }: any = googleLoginApi(emailget);
+      console.log(emailget);
+      const data: any = googleLoginApi(emailget);
       console.log(data);
 
       //   if (data.existingUser) {
