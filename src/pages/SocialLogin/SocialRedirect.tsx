@@ -8,9 +8,10 @@ function SocialRedirect() {
   const navigate = useNavigate();
 
   const code = new URL(window.location.href).searchParams.get('code');
-  const emailget = new URL(window.location.href).searchParams.get('code');
+  const emailget = new URL(window.location.href).searchParams.get('email');
   useEffect(() => {
     // navigate('/login/nickname');
+    console.log(emailget);
     if (code) {
       callKakaoLogin();
     } else if (emailget) {
