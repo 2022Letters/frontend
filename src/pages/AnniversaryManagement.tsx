@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import ReactDatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -53,7 +53,7 @@ const DateWrapper = styled.article`
   width: 100%;
   margin-top: 1rem;
   display: flex;
-  align-items: center;
+  align-items: start;
   position: relative;
 `;
 
@@ -220,9 +220,10 @@ function AnniversaryManagement() {
     date: '',
     isOpen: false
   });
+
+  const ref = useRef();
   useEffect(() => {
     toStringByFormatting(originalDateInfo);
-    console.log('fuck');
   }, []);
 
   const leftPad = (value: number) => {
@@ -241,8 +242,14 @@ function AnniversaryManagement() {
     setAnniversaryInfo({ ...anniversaryInfo, date });
   };
 
-  const handleClick = () => {
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
     setIsOpen(!isOpen);
+  };
+
+  const onCloseCalendar = (event: any) => {
+    console.log(event?.currentTarget);
+    setIsOpen(false);
   };
 
   const changeTitle = (event: React.FormEvent<HTMLInputElement>) => {
@@ -269,9 +276,14 @@ function AnniversaryManagement() {
     const response = await axios.post('', { data: anniversaryInfo });
   };
 
+  const stop = (event: any) => {
+    event.preventDefault();
+    event.stopPropagation();
+  };
+
   const categoryList = ['생일', '졸업', '결혼', '새해', '기타'];
   return (
-    <Container>
+    <Container onClick={onCloseCalendar}>
       <Form onSubmit={onSubmit}>
         <AllyHiddenTitle>글쓰기</AllyHiddenTitle>
         <InputWrapper>
@@ -327,13 +339,18 @@ function AnniversaryManagement() {
               <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z" />
             </Svg>
           </DateButton>
-          <DatePickWrapper>
+          <DatePickWrapper
+            onClick={(event: React.PointerEvent<HTMLDivElement>) => {
+              event.stopPropagation();
+              event.preventDefault();
+              setIsOpen(true);
+            }}
+          >
             {isOpen && (
               <DatePickser
                 locale={ko}
                 selected={originalDateInfo}
                 onChange={(date: Date) => {
-                  setIsOpen(!isOpen);
                   toStringByFormatting(date);
                 }}
                 inline
