@@ -86,7 +86,7 @@ function GuestWrite() {
     <MainWrapper>
       <BackBtn />
       <ContentWrapper>
-        <NicknameInput placeholder="닉네임" />
+        <NicknameInput placeholder="닉네임 (최대 8자)" required maxLength={8} />
         <LetterWrapper>
           <Letter />
           <LetterImg src={Back} />
