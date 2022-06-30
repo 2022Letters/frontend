@@ -13,6 +13,7 @@ import Layout from '../components/Layout/Layout';
 import LoginPage from './LoginPage';
 import NicknameRegist from './NicknameRegist';
 import SocialRedirect from './SocialLogin/SocialRedirect';
+import GuestLayout from './GuestLayout';
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
             <Route path="/guest" element={<GuestHome />} />
             <Route path="/guest/write" element={<GuestWrite />} />
             <Route path="/guest/select" element={<LeafSelect />} />
+            <Route path="/guest/layout" element={<GuestLayout />} />
           </Routes>
         </Layout>
       </Router>

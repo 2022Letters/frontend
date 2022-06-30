@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import theme from '../common/style/theme';
 import BackBtn from '../components/common/BackBtn';
 import { Button } from '../components/common/style';
-import Back from '../assets/imgs/letter.png';
+import { letters } from '../constants';
 
 const MainWrapper = styled.div`
   width: 100%;
@@ -76,6 +76,7 @@ const NextBtn = styled(Button)`
 `;
 
 function GuestWrite() {
+  const postId = 1;
   const navigate = useNavigate();
 
   const onNextClick = useCallback(() => {
@@ -89,7 +90,7 @@ function GuestWrite() {
         <NicknameInput placeholder="닉네임 (최대 8자)" required maxLength={8} />
         <LetterWrapper>
           <Letter />
-          <LetterImg src={Back} />
+          <LetterImg src={letters[postId]} />
         </LetterWrapper>
       </ContentWrapper>
       <NextBtn onClick={onNextClick}>다음</NextBtn>

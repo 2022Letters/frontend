@@ -3,8 +3,7 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 
 import { Button, Title } from '../components/common/style';
-import F1 from '../assets/imgs/Group14.png';
-import F2 from '../assets/imgs/Group15.png';
+import { leaves } from '../constants';
 
 const MainWrapper = styled.div`
   width: 100%;
@@ -31,7 +30,6 @@ const LeafListWrapper = styled.div`
 
 interface LeafBtnProps {
   isSelect?: boolean;
-  img?: string;
 }
 
 const BtnWrapper = styled.div<LeafBtnProps>`
@@ -41,7 +39,7 @@ const BtnWrapper = styled.div<LeafBtnProps>`
   background-color: #ffdc25;
   border-radius: 30px;
   margin-bottom: 50%;
-  opacity: ${(props) => (props.isSelect ? 1 : 0.5)};
+  opacity: ${(props) => (props.isSelect ? 1 : 0.4)};
   cursor: pointer;
 `;
 
@@ -57,12 +55,7 @@ const NextBtn = styled(Button)`
 function LeafSelect() {
   const [select, setSelect] = useState(0);
   const navigate = useNavigate();
-  const leafs = [
-    { img: F1, id: 0 },
-    { img: F2, id: 1 },
-    { img: F2, id: 2 },
-    { img: F2, id: 3 }
-  ];
+  const postId = 1;
 
   const onNextClick = useCallback(() => {
     navigate('/guest/write');
@@ -77,16 +70,16 @@ function LeafSelect() {
 
   return (
     <MainWrapper>
-      <Title>꽃 송이를 선택해주세요.</Title>
+      <Title>꽃을 선택해주세요.</Title>
       <LeafListWrapper>
-        {leafs.map((e) => {
+        {leaves[postId].map((e, i) => {
           return (
             <BtnWrapper
               key={e.id}
-              onClick={selectImg(e.id)}
-              isSelect={select === e.id}
+              onClick={selectImg(i)}
+              isSelect={select === i}
             >
-              <LeafBtn src={e.img} />
+              <LeafBtn src={e.url} />
             </BtnWrapper>
           );
         })}

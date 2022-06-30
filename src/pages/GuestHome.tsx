@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import theme from '../common/style/theme';
 import { Button } from '../components/common/style';
-import BackGroundImg from '../assets/imgs/temp.png';
+import { flowerwraps } from '../constants';
 
 const MainWrapper = styled.div`
   width: 100%;
@@ -44,6 +44,7 @@ const StartBtn = styled(Button)`
 `;
 
 function GuestWrite() {
+  const categoryId = 1;
   const navigate = useNavigate();
 
   const onStartClick = useCallback(() => {
@@ -62,7 +63,7 @@ function GuestWrite() {
           </p>
           2022.06.26
         </TextWrapper>
-        <BackgroundImage src={BackGroundImg} />
+        <BackgroundImage src={flowerwraps[categoryId]} />
       </ContentWrapper>
       <StartBtn onClick={onStartClick}>꽃 보내기</StartBtn>
     </MainWrapper>
