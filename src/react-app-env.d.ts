@@ -11,3 +11,8 @@ interface IMenu {
   currentTargetEvent: number;
   toggleMenu(event: React.MouseEvent<HTMLButtonElement>): void;
 }
+
+interface ICategoryButton {
+  index: string;
+  currentCategory: string;
+}

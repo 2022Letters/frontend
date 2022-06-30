@@ -3,12 +3,8 @@ import axios from 'axios';
 import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { debounce } from 'lodash';
+import { Link } from 'react-router-dom';
 import EventCard from '../components/EventCard';
-
-interface CategoryButton {
-  index: string;
-  currentCategory: string;
-}
 
 const Container = styled.section`
   position: relative;
@@ -50,7 +46,7 @@ const CategoryWrapper = styled.article`
   padding: 0 15px;
 `;
 
-const CategoryButton = styled.button<CategoryButton>`
+const CategoryButton = styled.button<ICategoryButton>`
   position: relative;
   border-radius: 50px;
   border: none;
@@ -90,7 +86,7 @@ const CreateButton = styled.button`
   width: 50px;
   height: 50px;
   bottom: 15px;
-  right: 15px;
+  right: 25px;
   border-radius: 50px;
   background-color: #ffcaca;
   border: none;
@@ -229,10 +225,13 @@ export default function Main() {
           <EventCard eventInfo={eventInfo} menu={menu} idx={1} />
           <EventCard eventInfo={eventInfo} menu={menu} idx={2} />
           <EventCard eventInfo={eventInfo} menu={menu} idx={3} />
+          <EventCard eventInfo={eventInfo} menu={menu} idx={4} />
         </EventCardListContainer>
       )}
       <CreateButtonWrapper>
-        <CreateButton type="submit">+</CreateButton>
+        <Link to="/create">
+          <CreateButton type="submit">+</CreateButton>
+        </Link>
       </CreateButtonWrapper>
     </Container>
   );
