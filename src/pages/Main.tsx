@@ -86,7 +86,7 @@ const CreateButton = styled.button`
   width: 50px;
   height: 50px;
   bottom: 15px;
-  right: 15px;
+  right: 25px;
   border-radius: 50px;
   background-color: #ffcaca;
   border: none;
@@ -225,6 +225,7 @@ export default function Main() {
           <EventCard eventInfo={eventInfo} menu={menu} idx={1} />
           <EventCard eventInfo={eventInfo} menu={menu} idx={2} />
           <EventCard eventInfo={eventInfo} menu={menu} idx={3} />
+          <EventCard eventInfo={eventInfo} menu={menu} idx={4} />
         </EventCardListContainer>
       )}
       <CreateButtonWrapper>
