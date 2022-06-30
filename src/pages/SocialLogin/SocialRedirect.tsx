@@ -44,9 +44,14 @@ function SocialRedirect() {
   const callGoogleLogin = () => {
     console.log('구글로그인');
     if (emailget) {
-      console.log(emailget);
-      const data: any = googleLoginApi(emailget);
-      console.log(data);
+      axios
+        .get(`http://localhost:8080/login/sucess?email=${emailget}`)
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
 
       //   if (data.existingUser) {
       //     // 이미 가입한 회원이면 유저 정보 localstorage에 저장
