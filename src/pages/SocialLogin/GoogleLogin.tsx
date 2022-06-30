@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React from 'react';
 
 import {
@@ -7,11 +8,14 @@ import {
   SocialSpan
 } from '../../components/common/style';
 
-// 917335306727-2d6rp3jl36nv9due5r321p08pku177r3.apps.googleusercontent.com
-
 function Google() {
   const googleLogin = () => {
-    window.location.href = 'http://localhost:8080/oauth2/authorization/google';
+    // window.location.href = 'http://localhost:8080/oauth2/authorization/google';
+    axios
+      .get('http://localhost:8080/oauth2/authorization/google')
+      .then((res) => {
+        console.log(res);
+      });
   };
   return (
     <SocialDiv>
