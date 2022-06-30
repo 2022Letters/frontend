@@ -50,16 +50,34 @@ export default function GuestLayout() {
   const categoryId = 1;
   useEffect(() => {
     const fetchData = async () => {
-      const response = await axios.get(`${process.env.apiUrl}/api/post/${1}`);
+      // const response = await axios.get(`${process.env.apiUrl}/api/post/${1}`);
     };
     fetchData();
   }, []);
+
+  const dragFunction = (
+    event: React.DragEvent<HTMLImageElement>,
+    type: string
+  ) => {
+    event.preventDefault();
+    event.stopPropagation();
+    console.log(type);
+  };
+
   return (
     <MainWrapper>
       <MainTitle>원하는 위치에 꽃을 배치해주세요.</MainTitle>
-      <ImgWrapper>
+      <ImgWrapper className="relative">
         <UserImg src={flowerwraps[categoryId]} />
-        <SelectedLeaf src={leaves[categoryId][0].url} />
+        <SelectedLeaf
+          src={leaves[categoryId][0].url}
+          onDragOver={(event) => {
+            return dragFunction(event, 'over');
+          }}
+          onDrop={(event) => dragFunction(event, 'drop')}
+          onDragEnter={(event) => dragFunction(event, 'enter')}
+          onDragLeave={(event) => dragFunction(event, 'leave')}
+        />
       </ImgWrapper>
       <NextBtn>완료</NextBtn>
     </MainWrapper>
