@@ -10,12 +10,10 @@ import {
 
 function Google() {
   const googleLogin = () => {
-    // window.location.href = 'http://localhost:8080/oauth2/authorization/google';
-    axios
-      .get('http://localhost:8080/oauth2/authorization/google')
-      .then((res) => {
-        console.log(res);
-      });
+    window.location.href = 'http://localhost:8080/oauth2/authorization/google';
+    axios.get('http://localhost:8080/login/sucess').then((res) => {
+      console.log(res);
+    });
   };
   return (
     <SocialDiv>
