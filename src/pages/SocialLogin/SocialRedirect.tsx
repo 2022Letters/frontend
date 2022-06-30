@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { googleLoginApi, kakaoLoginApi } from '../../api/Apis';
@@ -8,12 +9,12 @@ function SocialRedirect() {
 
   const code = new URL(window.location.href).searchParams.get('code');
   useEffect(() => {
-    // navigate('/login/nickname');
-    // if (code) {
-    //   callKakaoLogin();
-    // } else {
-    //   callGoogleLogin();
-    // }
+    navigate('/login/nickname');
+    if (code) {
+      callKakaoLogin();
+    } else {
+      callGoogleLogin();
+    }
   }, []);
 
   // 카카오 로그인
@@ -40,8 +41,9 @@ function SocialRedirect() {
   // 구글 로그인
   const callGoogleLogin = () => {
     console.log('구글로그인');
-    const { data }: any = googleLoginApi();
-    console.log(data);
+    axios.get('http://localhost:8080/login/sucess').then((res) => {
+      console.log(res);
+    });
   };
 
   return <LoadingPage />;
