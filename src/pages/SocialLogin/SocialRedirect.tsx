@@ -1,13 +1,14 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { googleLoginApi, kakaoLoginApi } from '../../api/Apis';
+import LoadingPage from '../../components/LoadingPage';
 
 function SocialRedirect() {
   const navigate = useNavigate();
 
   const code = new URL(window.location.href).searchParams.get('code');
   useEffect(() => {
-    navigate('/login/nickname');
+    // navigate('/login/nickname');
     // if (code) {
     //   callKakaoLogin();
     // } else {
@@ -15,6 +16,7 @@ function SocialRedirect() {
     // }
   }, []);
 
+  // 카카오 로그인
   const callKakaoLogin = () => {
     console.log(code);
 
@@ -35,13 +37,14 @@ function SocialRedirect() {
       }
     }
   };
+  // 구글 로그인
   const callGoogleLogin = () => {
     console.log('구글로그인');
     const { data }: any = googleLoginApi();
     console.log(data);
   };
 
-  return <div>로딩중</div>;
+  return <LoadingPage />;
 }
 
 export default SocialRedirect;
