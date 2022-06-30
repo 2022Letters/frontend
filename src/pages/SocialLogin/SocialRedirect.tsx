@@ -41,9 +41,14 @@ function SocialRedirect() {
   // 구글 로그인
   const callGoogleLogin = () => {
     console.log('구글로그인');
-    axios.get('http://localhost:8080/login/sucess').then((res) => {
-      console.log(res);
-    });
+    axios
+      .get('http://localhost:8080/login/sucess')
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return <LoadingPage />;
