@@ -1,5 +1,6 @@
-import { useEffect } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import styled from 'styled-components';
+import Draggable, { DraggableEvent } from 'react-draggable';
 import axios from 'axios';
 
 import { Title, Button } from '../components/common/style';
@@ -34,52 +35,77 @@ const UserImg = styled.img`
 
 const SelectedLeaf = styled.img`
   position: absolute;
-  top: 50%;
-  left: 50%;
+  top: 0;
+  left: 0;
   z-index: 999;
   width: 100px;
   height: 100px;
+  cursor: move;
 `;
 
-const NextBtn = styled(Button)`
+const FinishBtn = styled(Button)`
   margin-top: 15px;
   flex-shrink: 0;
 `;
 
+interface IPos {
+  x: number;
+  y: number;
+}
+
+interface IBox {
+  height: number;
+  width: number;
+}
+
 export default function GuestLayout() {
+  const [pos, setPos] = useState<IPos>({ x: 0, y: 0 });
+  const [box, setBox] = useState<IBox>({ width: 0, height: 0 });
+
+  const imgWrapper = useRef() as React.MutableRefObject<HTMLDivElement>;
   const categoryId = 1;
+
   useEffect(() => {
+    const wrapperBox = imgWrapper.current.getBoundingClientRect();
+    console.log(wrapperBox);
+    setBox({ width: wrapperBox.width, height: wrapperBox.height } as IBox);
+
     const fetchData = async () => {
       // const response = await axios.get(`${process.env.apiUrl}/api/post/${1}`);
     };
     fetchData();
   }, []);
 
-  const dragFunction = (
-    event: React.DragEvent<HTMLImageElement>,
-    type: string
-  ) => {
-    event.preventDefault();
-    event.stopPropagation();
-    console.log(type);
+  const trackPos = (data: any) => {
+    setPos((prev) => ({ ...prev, x: data.x, y: data.y } as IPos));
   };
+
+  const stopPos = (data: any) => {
+    // setPos({ x: data.x, y: data.y });
+    console.log(pos);
+  };
+
+  const onFinishClick = useCallback(() => {
+    const xRatio = pos.x / box.width;
+    const yRatio = pos.y / box.height;
+    console.log(pos, box, xRatio, yRatio);
+  }, []);
 
   return (
     <MainWrapper>
-      <MainTitle>원하는 위치에 꽃을 배치해주세요.</MainTitle>
-      <ImgWrapper className="relative">
+      <MainTitle>
+        원하는 위치에 꽃을 배치해주세요.{pos.x} {pos.y}
+      </MainTitle>
+      <ImgWrapper ref={imgWrapper}>
         <UserImg src={flowerwraps[categoryId]} />
-        <SelectedLeaf
-          src={leaves[categoryId][0].url}
-          onDragOver={(event) => {
-            return dragFunction(event, 'over');
-          }}
-          onDrop={(event) => dragFunction(event, 'drop')}
-          onDragEnter={(event) => dragFunction(event, 'enter')}
-          onDragLeave={(event) => dragFunction(event, 'leave')}
-        />
+        <Draggable
+          onDrag={(e, data) => trackPos(data)}
+          onStop={(e, data) => stopPos(data)}
+        >
+          <SelectedLeaf src={leaves[categoryId][0].url} />
+        </Draggable>
       </ImgWrapper>
-      <NextBtn>완료</NextBtn>
+      <FinishBtn onClick={onFinishClick}>완료</FinishBtn>
     </MainWrapper>
   );
 }
