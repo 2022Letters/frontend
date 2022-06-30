@@ -25,7 +25,7 @@ function SocialRedirect() {
     if (code) {
       const { data }: any = kakaoLoginApi(code);
       if (data.message === 'success') {
-        if (data.existingUser) {
+        if (data.existingUser === 'true') {
           // 이미 가입한 회원이면 유저 정보 localstorage에 저장
           localStorage.setItem('token', data.accessToken);
           localStorage.setItem('user', JSON.stringify(data.user));
@@ -40,31 +40,55 @@ function SocialRedirect() {
     }
   };
 
+  // // 구글 로그인
+  // const callGoogleLogin = () => {
+  //   console.log('구글로그인');
+  //   if (emailget) {
+  //     axios
+  //       .get(`http://localhost:8080/login/sucess?email=${emailget}`)
+  //       .then((res) => {
+  //         const { data } = res;
+  //         console.log(res);
+  //       })
+  //       .catch((err) => {
+  //         console.log(err);
+  //       });
+
+  //     //   if (data.existingUser) {
+  //     //     // 이미 가입한 회원이면 유저 정보 localstorage에 저장
+  //     //     localStorage.setItem('token', data.accessToken);
+  //     //     localStorage.setItem('user', JSON.stringify(data.user));
+  //     //     navigate('/main'); // 메인 화면으로
+  //     //   } else {
+  //     //     // 가입하지 않았다면 닉네임 화면으로
+  //     //     navigate('/login/nickname');
+  //     //   }
+  //     // } else {
+  //     //   alert('로그인 과정 중에 문제가 발생했습니다.');
+  //     // }
+  //   }
   // 구글 로그인
   const callGoogleLogin = () => {
     console.log('구글로그인');
     if (emailget) {
       axios
         .get(`http://localhost:8080/login/sucess?email=${emailget}`)
-        .then((res) => {
+        .then((res: any) => {
           console.log(res);
+          const { data } = res;
+          if (data.existingUser === 'true') {
+            // 이미 가입한 회원이면 유저 정보 localstorage에 저장
+            localStorage.setItem('token', data.accessToken);
+            localStorage.setItem('user', JSON.stringify(data.user));
+            navigate('/main'); // 메인 화면으로
+          } else {
+            // 가입하지 않았다면 닉네임 화면으로
+            navigate('/login/nickname');
+          }
         })
         .catch((err) => {
           console.log(err);
         });
-
-      //   if (data.existingUser) {
-      //     // 이미 가입한 회원이면 유저 정보 localstorage에 저장
-      //     localStorage.setItem('token', data.accessToken);
-      //     localStorage.setItem('user', JSON.stringify(data.user));
-      //     navigate('/main'); // 메인 화면으로
-      //   } else {
-      //     // 가입하지 않았다면 닉네임 화면으로
-      //     navigate('/login/nickname');
-      //   }
-      // } else {
-      //   alert('로그인 과정 중에 문제가 발생했습니다.');
-      // }
     }
   };
   return <LoadingPage />;

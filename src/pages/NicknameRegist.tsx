@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Button, Title } from '../components/common/style';
@@ -50,7 +51,16 @@ function NicknameRegist() {
 
   const registUser = () => {
     console.log(nickname);
+    axios
+      .get(`http://localhost:8080/login/user/nickname?nickname=${nickname}`)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
+
   return (
     <NickWrap>
       <NickTitle>닉네임을 입력해주세요</NickTitle>
