@@ -8,12 +8,12 @@ function SocialRedirect() {
   const navigate = useNavigate();
 
   const code = new URL(window.location.href).searchParams.get('code');
-  const email = new URL(window.location.href).searchParams.get('code');
+  const emailget = new URL(window.location.href).searchParams.get('code');
   useEffect(() => {
     // navigate('/login/nickname');
     if (code) {
       callKakaoLogin();
-    } else if (email) {
+    } else if (emailget) {
       callGoogleLogin();
     }
   }, []);
@@ -41,11 +41,11 @@ function SocialRedirect() {
   };
 
   // 구글 로그인
-  const callGoogleLogin = (email: string) => {
+  const callGoogleLogin = () => {
     console.log('구글로그인');
-    console.log(email);
+    console.log(emailget);
     const data: any = {
-      email
+      email: emailget
     };
     axios
       .get('http://localhost:8080/login/sucess', data)
