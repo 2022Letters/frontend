@@ -73,7 +73,7 @@ function SocialRedirect() {
     console.log('구글로그인');
     if (emailget) {
       axios
-        .get(`http://localhost:8080/login/sucess?email=${emailget}`)
+        .get(`/login/sucess?email=${emailget}`)
         .then((res: any) => {
           console.log(res);
           const { data } = res;

@@ -46,12 +46,13 @@ const BtnPosition = styled.div`
 function NicknameRegist() {
   const [nickname, setNickname] = useState('');
 
+  const location = useLocation();
+
   const changeNickname = (e: any) => {
     setNickname(e.target.value);
   };
 
   const registUser = () => {
-    const location = useLocation();
     console.log(location.state);
     const param: any = location.state;
     const userEmail = param.email;
@@ -63,7 +64,7 @@ function NicknameRegist() {
         email: userEmail
       };
       axios
-        .post(`http://localhost:8080/login/user/nickname`, data)
+        .post(`/login/user/nickname`, data)
         .then((res) => {
           console.log(res);
         })
