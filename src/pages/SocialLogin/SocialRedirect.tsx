@@ -32,6 +32,7 @@ function SocialRedirect() {
           navigate('/main'); // 메인 화면으로
         } else {
           // 가입하지 않았다면 닉네임 화면으로
+
           navigate('/login/nickname');
         }
       } else {
@@ -83,7 +84,12 @@ function SocialRedirect() {
             navigate('/main'); // 메인 화면으로
           } else {
             // 가입하지 않았다면 닉네임 화면으로
-            navigate('/login/nickname');
+            const userEmail = data.email;
+            navigate('/login/nickname', {
+              state: {
+                email: userEmail
+              }
+            });
           }
         })
         .catch((err) => {

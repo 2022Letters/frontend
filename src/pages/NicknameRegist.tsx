@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { useState } from 'react';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { Button, Title } from '../components/common/style';
 
@@ -50,15 +51,26 @@ function NicknameRegist() {
   };
 
   const registUser = () => {
-    console.log(nickname);
-    axios
-      .get(`http://localhost:8080/login/user/nickname?nickname=${nickname}`)
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    const location = useLocation();
+    console.log(location.state);
+    const param: any = location.state;
+    const userEmail = param.email;
+    if (userEmail) {
+      console.log(userEmail);
+      console.log(nickname);
+      const data = {
+        nickname,
+        email: userEmail
+      };
+      axios
+        .post(`http://localhost:8080/login/user/nickname`, data)
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
 
   return (
