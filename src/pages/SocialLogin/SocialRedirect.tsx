@@ -8,13 +8,13 @@ function SocialRedirect() {
   const navigate = useNavigate();
 
   const code = new URL(window.location.href).searchParams.get('code');
-  const emailget = new URL(window.location.href).searchParams.get('email');
+  const email = new URL(window.location.href).searchParams.get('email');
   useEffect(() => {
     // navigate('/login/nickname');
-    console.log(emailget);
+    console.log(email);
     if (code) {
       callKakaoLogin();
-    } else if (emailget) {
+    } else if (email) {
       callGoogleLogin();
     }
   }, []);
@@ -71,11 +71,10 @@ function SocialRedirect() {
   // 구글 로그인
   const callGoogleLogin = () => {
     console.log('구글로그인');
-    if (emailget) {
+    if (email) {
       axios
-        .get(`/login/sucess?email=${emailget}`)
+        .get(`/login/sucess?email=${email}`)
         .then((res: any) => {
-          console.log(res);
           const { data } = res;
           if (data.existingUser === 'true') {
             // 이미 가입한 회원이면 유저 정보 localstorage에 저장
@@ -84,11 +83,10 @@ function SocialRedirect() {
             navigate('/main'); // 메인 화면으로
           } else {
             // 가입하지 않았다면 닉네임 화면으로
-            const userEmail = data.email;
+            // 이메일이 필요 없을수도 있음 => 테스트
+            // const userEmail = data.email;
             navigate('/login/nickname', {
-              state: {
-                email: userEmail
-              }
+              state: email
             });
           }
         })

@@ -42,7 +42,6 @@ function Sidebar({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) {
   const userInfo = localStorage.getItem('user');
 
   useEffect(() => {
-    console.log(userInfo);
     document.addEventListener('mousedown', handlerOutside);
     return () => {
       document.removeEventListener('mousedown', handlerOutside);
@@ -59,6 +58,7 @@ function Sidebar({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) {
     const user: any = localStorage.getItem('user');
     // 회원 탈퇴 api
     const data = deleteUser(user.id);
+
     console.log(data);
   };
   // 로그아웃

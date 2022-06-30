@@ -54,17 +54,19 @@ function NicknameRegist() {
 
   const registUser = () => {
     console.log(location.state);
-    const param: any = location.state;
-    const userEmail = param.email;
-    if (userEmail) {
-      console.log(userEmail);
-      console.log(nickname);
-      const data = {
-        nickname,
-        email: userEmail
-      };
+    const email = location.state;
+    // const data = {
+    //   nickname,
+    //   email
+    // };
+    console.log(email);
+    console.log(nickname);
+    if (email) {
       axios
-        .post(`/login/user/nickname`, data)
+        .post(`/login/user/nickname`, {
+          nickname,
+          email
+        })
         .then((res) => {
           console.log(res);
         })
