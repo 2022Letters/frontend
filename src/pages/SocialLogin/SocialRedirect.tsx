@@ -8,11 +8,12 @@ function SocialRedirect() {
   const navigate = useNavigate();
 
   const code = new URL(window.location.href).searchParams.get('code');
+  const email = new URL(window.location.href).searchParams.get('code');
   useEffect(() => {
     // navigate('/login/nickname');
     if (code) {
       callKakaoLogin();
-    } else {
+    } else if (email) {
       callGoogleLogin();
     }
   }, []);
@@ -38,11 +39,16 @@ function SocialRedirect() {
       }
     }
   };
+
   // 구글 로그인
-  const callGoogleLogin = () => {
+  const callGoogleLogin = (email: string) => {
     console.log('구글로그인');
+    console.log(email);
+    const data: any = {
+      email
+    };
     axios
-      .get('http://localhost:8080/login/sucess')
+      .get('http://localhost:8080/login/sucess', data)
       .then((res) => {
         console.log(res);
       })
