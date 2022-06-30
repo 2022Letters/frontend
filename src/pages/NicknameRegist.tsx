@@ -45,10 +45,7 @@ function NicknameRegist() {
   const [nickname, setNickname] = useState('');
 
   const changeNickname = (e: any) => {
-    if (nickname.length < 10) {
-      setNickname(e.target.value);
-    }
-    return null;
+    setNickname(e.target.value);
   };
 
   const registUser = () => {
@@ -64,6 +61,7 @@ function NicknameRegist() {
             onChange={(e) => changeNickname(e)}
             value={nickname}
             placeholder="닉네임은 10자이내로 작성해주세요!"
+            maxLength={10}
           />
           <NickMsg>변경이 불가하니 신중히 선택해주세요.</NickMsg>
         </NickDiv>

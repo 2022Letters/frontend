@@ -7,12 +7,12 @@ function SocialRedirect() {
 
   const code = new URL(window.location.href).searchParams.get('code');
   useEffect(() => {
-    // navigate('/login/nickname');
-    if (code) {
-      callKakaoLogin();
-    } else {
-      callGoogleLogin();
-    }
+    navigate('/login/nickname');
+    // if (code) {
+    //   callKakaoLogin();
+    // } else {
+    //   callGoogleLogin();
+    // }
   }, []);
 
   const callKakaoLogin = () => {
