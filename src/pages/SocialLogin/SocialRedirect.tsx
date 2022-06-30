@@ -9,7 +9,7 @@ function SocialRedirect() {
 
   const code = new URL(window.location.href).searchParams.get('code');
   useEffect(() => {
-    navigate('/login/nickname');
+    // navigate('/login/nickname');
     if (code) {
       callKakaoLogin();
     } else {
