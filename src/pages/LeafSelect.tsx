@@ -11,16 +11,22 @@ const MainWrapper = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   padding: 45px 15px 0 15px;
-  padding-bottom: ;
+`;
+
+const MainTitle = styled(Title)`
+  margin-top: 15px;
 `;
 
 const LeafListWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  margin-top: 15px;
+  grid-column-gap: 2rem;
+  grid-row-gap: 2rem;
+  place-items: center;
   width: 100%;
-  height: 100%;
+  // height: 100%;
   overflow-y: auto;
   -ms-overflow-style: none;
   &::-webkit-scrollbar {
@@ -33,13 +39,9 @@ interface LeafBtnProps {
 }
 
 const BtnWrapper = styled.div<LeafBtnProps>`
-  position: relative;
-  width: calc(100% - 10px);
-  margin: 5px;
+  width: 100%;
   background-color: ${(props) => (props.isSelect ? '#FFC7C7' : '#FFE5E2')};
   border-radius: 30px;
-  margin-bottom: 50%;
-  // opacity: ${(props) => (props.isSelect ? 1 : 0.4)};
   cursor: pointer;
 `;
 
@@ -70,7 +72,7 @@ function LeafSelect() {
 
   return (
     <MainWrapper>
-      <Title>꽃을 선택해주세요.</Title>
+      <MainTitle>꽃을 선택해주세요.</MainTitle>
       <LeafListWrapper>
         {leaves[Number(postId)] &&
           leaves[Number(postId)].map((e, i) => {

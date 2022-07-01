@@ -73,6 +73,12 @@ const LetterImg = styled.img`
   left: 0;
 `;
 
+const CountLength = styled.div`
+  position: absolute;
+  bottom: 0;
+  right: 0;
+`;
+
 // isLayout
 const MainTitle = styled(Title)`
   flex-shrink: 0;
@@ -283,9 +289,9 @@ export default function GuestLayout() {
       {!isLayout ? (
         <ContentWrapper onSubmit={onNextClick}>
           <NicknameInput
-            placeholder="닉네임 (최대 8자)"
+            placeholder="닉네임 (최대 10자)"
             required
-            maxLength={8}
+            maxLength={10}
             onChange={onNicknameChange}
             value={nickname}
           />
@@ -322,6 +328,7 @@ export default function GuestLayout() {
               src={leaves[post.categoryId][Number(iconId)].url}
               ref={nodeRef}
               isDragging={isDragging}
+              draggable
             />
           </Draggable>
         </ImgWrapper>
