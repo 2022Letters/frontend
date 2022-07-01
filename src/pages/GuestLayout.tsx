@@ -1,9 +1,10 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import styled from 'styled-components';
-import Draggable, { DraggableEvent } from 'react-draggable';
+import Draggable from 'react-draggable';
 import axios from 'axios';
 
 import { Title, Button } from '../components/common/style';
+import BackBtn from '../components/common/BackBtn';
 import { flowerwraps, leaves } from '../constants';
 
 const MainWrapper = styled.div`
@@ -17,6 +18,7 @@ const MainWrapper = styled.div`
 
 const MainTitle = styled(Title)`
   flex-shrink: 0;
+  margin-top: 15px;
 `;
 
 const ImgWrapper = styled.div`
@@ -71,6 +73,7 @@ export default function GuestLayout() {
   useEffect(() => {
     const wrapperBox = imgWrapper.current.getBoundingClientRect();
     setBox({ ...box, width: wrapperBox.width, height: wrapperBox.height });
+
     console.log(wrapperBox);
     // const fetchData = async () => {
     //   const response = await axios.get(`${process.env.apiUrl}/api/post/${1}`);
@@ -78,35 +81,44 @@ export default function GuestLayout() {
     // fetchData();
   }, []);
 
-  const startPos = (data: any) => {
-    if (
-      data.x >= 0 &&
-      data.x + imgSize < box.width &&
-      data.y >= 0 &&
-      data.y + imgSize < box.height
-    ) {
-      setOriginPos({ ...originPos, x: data.x, y: data.y });
-    } else {
-      setPos({ ...pos, x: originPos.x, y: originPos.y });
-    }
-  };
+  const startPos = useCallback(
+    (data: any) => {
+      if (
+        data.x >= 0 &&
+        data.x + imgSize * 0.66 < box.width &&
+        data.y >= 0 &&
+        data.y + imgSize * 0.66 < box.height
+      ) {
+        setOriginPos({ ...originPos, x: data.x, y: data.y });
+      } else {
+        setPos({ ...pos, x: originPos.x, y: originPos.y });
+      }
+    },
+    [pos, originPos, box]
+  );
 
-  const trackPos = (data: any) => {
-    setPos({ ...pos, x: data.x, y: data.y });
-  };
-
-  const stopPos = (data: any) => {
-    if (
-      data.x >= 0 &&
-      data.x + imgSize < box.width &&
-      data.y >= 0 &&
-      data.y + imgSize < box.height
-    ) {
+  const trackPos = useCallback(
+    (data: any) => {
       setPos({ ...pos, x: data.x, y: data.y });
-    } else {
-      setPos({ ...pos, x: originPos.x, y: originPos.y });
-    }
-  };
+    },
+    [pos]
+  );
+
+  const stopPos = useCallback(
+    (data: any) => {
+      if (
+        data.x >= 0 &&
+        data.x + imgSize * 0.66 < box.width &&
+        data.y >= 0 &&
+        data.y + imgSize * 0.66 < box.height
+      ) {
+        setPos({ ...pos, x: data.x, y: data.y });
+      } else {
+        setPos({ ...pos, x: originPos.x, y: originPos.y });
+      }
+    },
+    [pos, originPos, box]
+  );
 
   const onFinishClick = useCallback(() => {
     const xRatio = pos.x / box.width;
@@ -116,6 +128,7 @@ export default function GuestLayout() {
 
   return (
     <MainWrapper>
+      <BackBtn />
       <MainTitle>원하는 위치에 꽃을 배치해주세요.</MainTitle>
       <ImgWrapper ref={imgWrapper}>
         <UserImg src={flowerwraps[categoryId]} />

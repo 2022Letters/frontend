@@ -36,10 +36,10 @@ const BtnWrapper = styled.div<LeafBtnProps>`
   position: relative;
   width: calc(100% - 10px);
   margin: 5px;
-  background-color: #ffdc25;
+  background-color: ${(props) => (props.isSelect ? '#FFC7C7' : '#FFE5E2')};
   border-radius: 30px;
   margin-bottom: 50%;
-  opacity: ${(props) => (props.isSelect ? 1 : 0.4)};
+  // opacity: ${(props) => (props.isSelect ? 1 : 0.4)};
   cursor: pointer;
 `;
 
