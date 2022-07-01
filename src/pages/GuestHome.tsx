@@ -61,6 +61,9 @@ const Leaf = styled.img<ILeaf>`
   top: ${(props) => `${props.top * props.height}px`};
   left: ${(props) => `${props.left * props.width}px`};
   z-index: 8;
+  top: ${(props) => `calc(50% + ${props.top * props.height}px)`};
+  left: ${(props) => `calc(50% + ${props.left * props.width}px)`};
+  transform: translate(-50%, -50%);
   width: 100px;
   height: 100px;
 `;
@@ -86,14 +89,14 @@ function GuestWrite() {
       {
         msgId: 1,
         iconId: 1,
-        x: 0.3,
-        y: 0.4
+        x: 0.04230769230769231,
+        y: -0.39609483960948394
       },
       {
         msgId: 2,
         iconId: 2,
-        x: 0.7,
-        y: 0.6
+        x: -0.19038461538461537,
+        y: 0.10739191073919108
       }
     ]
   });

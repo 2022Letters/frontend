@@ -89,6 +89,7 @@ const ImgWrapper = styled.div`
   height: 100%;
   width: 100%;
   position: relative;
+  aspect-ratio: 343/398;
 `;
 
 const FlowerWrap = styled.img`
@@ -336,7 +337,6 @@ export default function GuestLayout() {
           </Draggable>
         </ImgWrapper>
       )}
-
       {isLayout && <NextBtn onClick={onFinishClick}>완료</NextBtn>}
     </MainWrapper>
   );
