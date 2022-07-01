@@ -31,9 +31,9 @@ function App() {
             <Route path="/login/redirect" element={<SocialRedirect />} />
             <Route path="/login/nickname" element={<NicknameRegist />} />
             <Route path="/guest" element={<GuestHome />} />
-            <Route path="/guest/write" element={<GuestWrite />} />
+            {/* <Route path="/guest/write" element={<GuestWrite />} /> */}
             <Route path="/guest/select" element={<LeafSelect />} />
-            <Route path="/guest/layout" element={<GuestLayout />} />
+            <Route path="/guest/write" element={<GuestLayout />} />
           </Routes>
         </Layout>
       </Router>
