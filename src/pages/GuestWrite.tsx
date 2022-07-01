@@ -127,6 +127,7 @@ const SelectedLeaf = styled.img<ISelectedLeaf>`
   width: 100px;
   height: 100px;
   cursor: move;
+  -webkit-user-drag: none;
   border-radius: 30px;
   border: ${(props) => (props.isDragging ? 'none' : '2px solid #fff')};
 `;
