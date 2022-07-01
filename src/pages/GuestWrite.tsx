@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import styled from 'styled-components';
 import Draggable from 'react-draggable';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 
 import theme from '../common/style/theme';
@@ -97,7 +97,7 @@ const SelectedLeaf = styled.img`
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 999;
+  z-index: 9;
   width: 100px;
   height: 100px;
   cursor: move;
@@ -136,6 +136,7 @@ export default function GuestLayout() {
   const [box, setBox] = useState<IBox>({ width: 0, height: 0 });
 
   const navigate = useNavigate();
+  const { postId, iconId } = useParams();
   const imgWrapper = useRef() as React.MutableRefObject<HTMLDivElement>;
   const nodeRef = useRef(null);
   const categoryId = 1;

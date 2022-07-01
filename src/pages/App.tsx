@@ -32,7 +32,10 @@ function App() {
             <Route path="/:postId" element={<GuestHome />} />
             {/* <Route path="/guest/write" element={<GuestWrite />} /> */}
             <Route path="/guest/select/:postId" element={<LeafSelect />} />
-            <Route path="/guest/write" element={<GuestWrite />} />
+            <Route
+              path="/guest/write/:postId/:iconId"
+              element={<GuestWrite />}
+            />
           </Routes>
         </Layout>
       </Router>

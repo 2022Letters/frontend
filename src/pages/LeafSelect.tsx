@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { Button, Title } from '../components/common/style';
 import { leaves } from '../constants';
@@ -55,11 +55,11 @@ const NextBtn = styled(Button)`
 function LeafSelect() {
   const [select, setSelect] = useState(0);
   const navigate = useNavigate();
-  const postId = 1;
+  const { postId } = useParams();
 
   const onNextClick = useCallback(() => {
-    navigate('/guest/write');
-  }, []);
+    navigate(`/guest/write/${postId}/${select}`);
+  }, [select]);
 
   const selectImg = useCallback(
     (id: number) => () => {
@@ -72,17 +72,18 @@ function LeafSelect() {
     <MainWrapper>
       <Title>꽃을 선택해주세요.</Title>
       <LeafListWrapper>
-        {leaves[postId].map((e, i) => {
-          return (
-            <BtnWrapper
-              key={e.id}
-              onClick={selectImg(i)}
-              isSelect={select === i}
-            >
-              <LeafBtn src={e.url} />
-            </BtnWrapper>
-          );
-        })}
+        {leaves[Number(postId)] &&
+          leaves[Number(postId)].map((e, i) => {
+            return (
+              <BtnWrapper
+                key={e.id}
+                onClick={selectImg(i)}
+                isSelect={select === i}
+              >
+                <LeafBtn src={e.url} />
+              </BtnWrapper>
+            );
+          })}
       </LeafListWrapper>
       <NextBtn onClick={onNextClick}>다음</NextBtn>
     </MainWrapper>
