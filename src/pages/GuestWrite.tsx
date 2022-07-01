@@ -85,7 +85,7 @@ const ImgWrapper = styled.div`
   position: relative;
 `;
 
-const UserImg = styled.img`
+const FlowerWrap = styled.img`
   position: absolute;
   top: 0;
   left: 0;
@@ -93,7 +93,27 @@ const UserImg = styled.img`
   height: 100%;
 `;
 
-const SelectedLeaf = styled.img`
+interface IAnyLeaf {
+  top: number;
+  left: number;
+  width: number;
+  height: number;
+}
+
+const AnyLeaf = styled.img<IAnyLeaf>`
+  position: absolute;
+  top: ${(props) => `${props.top * props.height}px`};
+  left: ${(props) => `${props.left * props.width}px`};
+  z-index: 8;
+  width: 100px;
+  height: 100px;
+`;
+
+interface ISelectedLeaf {
+  isDragging: boolean;
+}
+
+const SelectedLeaf = styled.img<ISelectedLeaf>`
   position: absolute;
   top: 0;
   left: 0;
@@ -101,6 +121,8 @@ const SelectedLeaf = styled.img`
   width: 100px;
   height: 100px;
   cursor: move;
+  border-radius: 30px;
+  border: ${(props) => (props.isDragging ? 'none' : '2px solid #fff')};
 `;
 
 const PrevBtn = styled.a`
@@ -129,17 +151,42 @@ interface IBox {
 
 export default function GuestLayout() {
   const [isLayout, setIsLayout] = useState(false);
+  const [post, setPost] = useState({
+    id: 1,
+    categoryId: 2,
+    userId: 1,
+    userNickname: '싸피',
+    title: 'ssafy3',
+    visibility: false,
+    date: '2018-12-15',
+    createdAt: '2022-06-29T10:14:07.000+00:00',
+    count: 2,
+    messages: [
+      {
+        msgId: 1,
+        iconId: 1,
+        x: 0.3,
+        y: 0.4
+      },
+      {
+        msgId: 2,
+        iconId: 2,
+        x: 0.7,
+        y: 0.6
+      }
+    ]
+  });
   const [nickname, setNickname] = useState('');
   const [text, setText] = useState('');
   const [pos, setPos] = useState<IPos>({ x: 0, y: 0 });
   const [originPos, setOriginPos] = useState<IPos>({ x: 0, y: 0 });
   const [box, setBox] = useState<IBox>({ width: 0, height: 0 });
+  const [isDragging, setIsDragging] = useState(false);
 
   const navigate = useNavigate();
   const { postId, iconId } = useParams();
   const imgWrapper = useRef() as React.MutableRefObject<HTMLDivElement>;
   const nodeRef = useRef(null);
-  const categoryId = 1;
   const imgSize = 100;
 
   useEffect(() => {
@@ -150,13 +197,14 @@ export default function GuestLayout() {
     }
 
     // const fetchData = async () => {
-    //   const response = await axios.get(`${process.env.apiUrl}/api/post/${1}`);
+    //   const response = await axios.get(`${process.env.apiUrl}/api/post/${postId}`);
     // };
     // fetchData();
   }, [isLayout]);
 
   const startPos = useCallback(
     (data: any) => {
+      setIsDragging(false);
       if (
         data.x >= 0 &&
         data.x + imgSize * 0.66 < box.width &&
@@ -173,6 +221,7 @@ export default function GuestLayout() {
 
   const trackPos = useCallback(
     (data: any) => {
+      setIsDragging(true);
       setPos({ ...pos, x: data.x, y: data.y });
     },
     [pos]
@@ -180,6 +229,7 @@ export default function GuestLayout() {
 
   const stopPos = useCallback(
     (data: any) => {
+      setIsDragging(false);
       if (
         data.x >= 0 &&
         data.x + imgSize * 0.66 < box.width &&
@@ -223,7 +273,7 @@ export default function GuestLayout() {
     const xRatio = pos.x / box.width;
     const yRatio = pos.y / box.height;
     console.log(pos, box, xRatio, yRatio);
-    // navigate('/guest/layout');
+    // navigate('/guest/result');
   }, [pos, box]);
 
   return (
@@ -241,13 +291,26 @@ export default function GuestLayout() {
           />
           <LetterWrapper>
             <Letter required onChange={onTextChange} value={text} />
-            <LetterImg src={letters[categoryId]} />
+            <LetterImg src={letters[post.categoryId]} />
           </LetterWrapper>
           <NextBtn>다음</NextBtn>
         </ContentWrapper>
       ) : (
         <ImgWrapper ref={imgWrapper}>
-          <UserImg src={flowerwraps[categoryId]} />
+          <FlowerWrap src={flowerwraps[post.categoryId]} />
+          {post.count > 0 &&
+            post.messages.map((e) => {
+              return (
+                <AnyLeaf
+                  top={e.y}
+                  left={e.x}
+                  width={box.width}
+                  height={box.height}
+                  src={leaves[post.categoryId][e.iconId].url}
+                  key={e.msgId}
+                />
+              );
+            })}
           <Draggable
             position={pos}
             onStart={(e, data) => startPos(data)}
@@ -255,7 +318,11 @@ export default function GuestLayout() {
             onStop={(e, data) => stopPos(data)}
             nodeRef={nodeRef}
           >
-            <SelectedLeaf src={leaves[categoryId][0].url} ref={nodeRef} />
+            <SelectedLeaf
+              src={leaves[post.categoryId][Number(iconId)].url}
+              ref={nodeRef}
+              isDragging={isDragging}
+            />
           </Draggable>
         </ImgWrapper>
       )}
