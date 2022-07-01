@@ -57,7 +57,7 @@ function Sidebar({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) {
     }
   };
   // 회원 탈퇴
-  const quitUser = () => {
+  const quitUser = async () => {
     const userItem = localStorage.getItem('user');
     const user = userItem ? JSON.parse(userItem) : null;
 
@@ -65,25 +65,23 @@ function Sidebar({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) {
     // 회원 탈퇴 api
     console.log(user);
     console.log(social);
-    axios
-      .delete(`/user/${user.id}?socialLoginType=${social}`)
-      .then((res) => {
-        const { data } = res;
-        console.log(data);
-
-        // 구글로그인 탈퇴인 경우 redirect
-        if (social === '0') {
-          window.location.href = 'http://localhost:8080/logout';
-        } else {
-          // 카카오 로그인 탈퇴인 경우 메인으로
-          navigate('/');
-        }
-        // 로그아웃
-        handelLogout();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    try {
+      const { data } = await axios.delete(
+        `/user/${user.id}?socialLoginType=${social}`
+      );
+      console.log(data);
+      // 구글로그인 탈퇴인 경우 redirect
+      if (social === '0') {
+        window.location.href = 'http://localhost:8080/logout';
+      } else {
+        // 카카오 로그인 탈퇴인 경우 메인으로
+        navigate('/');
+      }
+      // 로그아웃
+      handelLogout();
+    } catch (err) {
+      console.log(err);
+    }
   };
   // 로그아웃
   const handelLogout = () => {
