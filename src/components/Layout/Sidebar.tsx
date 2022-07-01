@@ -58,9 +58,10 @@ function Sidebar({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) {
   // 회원 탈퇴
   const quitUser = () => {
     const user: any = localStorage.getItem('user');
+    const social: any = localStorage.getItem('social');
     // 회원 탈퇴 api
     axios
-      .delete(`/user/${user.id}`)
+      .delete(`/user/${user.id}?socialLoginType=${social}`)
       .then((res) => {
         const { data } = res;
         console.log(data);
@@ -69,6 +70,10 @@ function Sidebar({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) {
       .catch((err) => {
         console.log(err);
       });
+
+    if (social === '0') {
+      window.location.href = 'http://localhost:8080/logout';
+    }
   };
   // 로그아웃
   const handelLogout = () => {

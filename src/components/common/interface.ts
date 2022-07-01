@@ -10,3 +10,8 @@ export interface User {
   nickname: string;
   email: string;
 }
+
+export interface NicknameProps {
+  email: string;
+  socialLoginType: number;
+}

@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { NicknameProps } from '../components/common/interface';
 import { Button, Title } from '../components/common/style';
 
 const NickWrap = styled.div`
@@ -55,13 +56,14 @@ function NicknameRegist() {
 
   const registUser = () => {
     console.log(location.state);
-    const email = location.state;
-    // const data = {
-    //   nickname,
-    //   email
-    // };
+    const state = location.state as NicknameProps;
+    const { email } = state;
+    const { socialLoginType } = state;
+
     console.log(email);
     console.log(nickname);
+    // 구글 0 , 카카오 1
+    console.log(socialLoginType);
     if (email) {
       axios
         .post(`/login/user/nickname`, {
@@ -73,7 +75,7 @@ function NicknameRegist() {
           console.log(data);
           if (data.message === 'success') {
             localStorage.setItem('token', data.accessToken);
-            // localStorage.setItem('social', data.socialLoginType);
+            localStorage.setItem('social', JSON.stringify(socialLoginType));
             localStorage.setItem('user', JSON.stringify(data.user));
             navigate('/main'); // 메인 화면으로
           }
