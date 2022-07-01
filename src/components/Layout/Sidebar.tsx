@@ -1,5 +1,6 @@
+import axios from 'axios';
 import React, { useRef, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { deleteUser } from '../../api/Apis';
 
@@ -40,6 +41,7 @@ const QuitMenu = styled.span`
 function Sidebar({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) {
   const outside = useRef<any>();
   const userInfo = localStorage.getItem('user');
+  const navigate = useNavigate();
 
   useEffect(() => {
     document.addEventListener('mousedown', handlerOutside);
@@ -57,14 +59,20 @@ function Sidebar({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) {
   const quitUser = () => {
     const user: any = localStorage.getItem('user');
     // 회원 탈퇴 api
-    const data = deleteUser(user.id);
-
-    console.log(data);
+    axios
+      .delete(`/user/${user.id}`)
+      .then((res) => {
+        const { data } = res;
+        console.log(data);
+        navigate('/');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   // 로그아웃
   const handelLogout = () => {
-    localStorage.removeItem('user');
-    localStorage.removeItem('token');
+    localStorage.clear();
   };
 
   const toggleSide = () => {

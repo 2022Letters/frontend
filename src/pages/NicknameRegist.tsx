@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useState } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Button, Title } from '../components/common/style';
 
@@ -47,6 +47,7 @@ function NicknameRegist() {
   const [nickname, setNickname] = useState('');
 
   const location = useLocation();
+  const navigate = useNavigate();
 
   const changeNickname = (e: any) => {
     setNickname(e.target.value);
@@ -68,7 +69,14 @@ function NicknameRegist() {
           email
         })
         .then((res) => {
-          console.log(res);
+          const { data } = res;
+          console.log(data);
+          if (data.message === 'success') {
+            localStorage.setItem('token', data.accessToken);
+            // localStorage.setItem('social', data.socialLoginType);
+            localStorage.setItem('user', JSON.stringify(data.user));
+            navigate('/main'); // 메인 화면으로
+          }
         })
         .catch((err) => {
           console.log(err);
