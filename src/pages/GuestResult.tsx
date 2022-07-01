@@ -48,12 +48,17 @@ const Leaf = styled.img<ILeaf>`
   top: ${(props) => `${props.top * props.height}px`};
   left: ${(props) => `${props.left * props.width}px`};
   z-index: 8;
+  top: ${(props) => `calc(50% + ${props.top * props.height}px)`};
+  left: ${(props) => `calc(50% + ${props.left * props.width}px)`};
+  transform: translate(-50%, -50%);
   width: 100px;
   height: 100px;
 `;
 
 const Label = styled.label`
   width: 100%;
+  text-align: center;
+  font-size: 1.5rem;
 `;
 
 const StartBtn = styled(Button)`
@@ -77,14 +82,14 @@ export default function GuestResult() {
       {
         msgId: 1,
         iconId: 1,
-        x: 0.3,
-        y: 0.4
+        x: 0.04230769230769231,
+        y: -0.39609483960948394
       },
       {
         msgId: 2,
         iconId: 2,
-        x: 0.7,
-        y: 0.6
+        x: -0.19038461538461537,
+        y: 0.10739191073919108
       }
     ]
   });
@@ -118,7 +123,8 @@ export default function GuestResult() {
             })}
         </ImgWrapper>
       </ContentWrapper>
-      <StartBtn>꽃 보내기</StartBtn>
+      <Label>내 꽃이 전달되었어요.</Label>
+      <StartBtn>나도 꽃다발 만들기</StartBtn>
     </MainWrapper>
   );
 }
