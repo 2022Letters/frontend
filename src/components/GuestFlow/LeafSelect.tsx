@@ -1,19 +1,9 @@
-import { useCallback, useState } from 'react';
+import { useCallback, Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
-import { Button, Title } from '../components/common/style';
-import { leaves } from '../constants';
-
-const MainWrapper = styled.div`
-  width: 100%;
-  min-height: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 45px 15px 0 15px;
-`;
+import { Title } from '../common/style';
+import { leaves } from '../../constants';
 
 const MainTitle = styled(Title)`
   margin-top: 15px;
@@ -50,28 +40,23 @@ const LeafBtn = styled.img`
   height: 100%;
 `;
 
-const NextBtn = styled(Button)`
-  flex-shrink: 0;
-`;
+interface Props {
+  iconId: number;
+  setIconId: Dispatch<SetStateAction<number>>;
+}
 
-function LeafSelect() {
-  const [select, setSelect] = useState(0);
-  const navigate = useNavigate();
+export default function LeafSelect({ iconId, setIconId }: Props) {
   const { postId } = useParams();
-
-  const onNextClick = useCallback(() => {
-    navigate(`/guest/write/${postId}/${select}`);
-  }, [select]);
 
   const selectImg = useCallback(
     (id: number) => () => {
-      setSelect(id);
+      setIconId(id);
     },
     []
   );
 
   return (
-    <MainWrapper>
+    <>
       <MainTitle>꽃을 선택해주세요.</MainTitle>
       <LeafListWrapper>
         {leaves[Number(postId)] &&
@@ -80,16 +65,13 @@ function LeafSelect() {
               <BtnWrapper
                 key={e.id}
                 onClick={selectImg(i)}
-                isSelect={select === i}
+                isSelect={iconId === i}
               >
                 <LeafBtn src={e.url} />
               </BtnWrapper>
             );
           })}
       </LeafListWrapper>
-      <NextBtn onClick={onNextClick}>다음</NextBtn>
-    </MainWrapper>
+    </>
   );
 }
-
-export default LeafSelect;

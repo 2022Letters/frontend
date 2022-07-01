@@ -112,7 +112,7 @@ function GuestWrite() {
   }, []);
 
   const onStartClick = useCallback(() => {
-    navigate(`/guest/select/${postId}`);
+    navigate(`/guest/${postId}`);
   }, []);
 
   return (
