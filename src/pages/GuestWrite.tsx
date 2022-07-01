@@ -153,7 +153,7 @@ export default function GuestLayout() {
   const [isLayout, setIsLayout] = useState(false);
   const [post, setPost] = useState({
     id: 1,
-    categoryId: 2,
+    categoryId: 1,
     userId: 1,
     userNickname: '싸피',
     title: 'ssafy3',
