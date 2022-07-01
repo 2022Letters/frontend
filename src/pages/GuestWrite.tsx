@@ -1,11 +1,13 @@
-import React, { useCallback } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import Draggable from 'react-draggable';
+import { useNavigate, useParams } from 'react-router-dom';
+import axios from 'axios';
 
 import theme from '../common/style/theme';
+import { Title, Button } from '../components/common/style';
 import BackBtn from '../components/common/BackBtn';
-import { Button } from '../components/common/style';
-import Back from '../assets/imgs/letter.png';
+import { flowerwraps, leaves, letters } from '../constants';
 
 const MainWrapper = styled.div`
   width: 100%;
@@ -16,7 +18,8 @@ const MainWrapper = styled.div`
   padding: 45px 15px 0 15px;
 `;
 
-const ContentWrapper = styled.div`
+// !isLayout
+const ContentWrapper = styled.form`
   width: 100%;
   height: 100%;
   display: flex;
@@ -70,31 +73,261 @@ const LetterImg = styled.img`
   left: 0;
 `;
 
-const NextBtn = styled(Button)`
+// isLayout
+const MainTitle = styled(Title)`
   flex-shrink: 0;
   margin-top: 15px;
 `;
 
-function GuestWrite() {
-  const navigate = useNavigate();
+const ImgWrapper = styled.div`
+  height: 100%;
+  width: 100%;
+  position: relative;
+`;
 
-  const onNextClick = useCallback(() => {
-    navigate('/guest/layout');
+const FlowerWrap = styled.img`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+`;
+
+interface IAnyLeaf {
+  top: number;
+  left: number;
+  width: number;
+  height: number;
+}
+
+const AnyLeaf = styled.img<IAnyLeaf>`
+  position: absolute;
+  top: ${(props) => `${props.top * props.height}px`};
+  left: ${(props) => `${props.left * props.width}px`};
+  z-index: 8;
+  width: 100px;
+  height: 100px;
+`;
+
+interface ISelectedLeaf {
+  isDragging: boolean;
+}
+
+const SelectedLeaf = styled.img<ISelectedLeaf>`
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 9;
+  width: 100px;
+  height: 100px;
+  cursor: move;
+  border-radius: 30px;
+  border: ${(props) => (props.isDragging ? 'none' : '2px solid #fff')};
+`;
+
+const PrevBtn = styled.a`
+  width: 20px;
+  height: 20px;
+  border-top: 3.5px solid #000;
+  border-left: 3.5px solid #000;
+  transform: rotate(-45deg);
+  flex-shrink: 0;
+`;
+
+const NextBtn = styled(Button)`
+  margin-top: 15px;
+  flex-shrink: 0;
+`;
+
+interface IPos {
+  x: number;
+  y: number;
+}
+
+interface IBox {
+  height: number;
+  width: number;
+}
+
+export default function GuestLayout() {
+  const [isLayout, setIsLayout] = useState(false);
+  const [post, setPost] = useState({
+    id: 1,
+    categoryId: 1,
+    userId: 1,
+    userNickname: '싸피',
+    title: 'ssafy3',
+    visibility: false,
+    date: '2018-12-15',
+    createdAt: '2022-06-29T10:14:07.000+00:00',
+    count: 2,
+    messages: [
+      {
+        msgId: 1,
+        iconId: 1,
+        x: 0.3,
+        y: 0.4
+      },
+      {
+        msgId: 2,
+        iconId: 2,
+        x: 0.7,
+        y: 0.6
+      }
+    ]
+  });
+  const [nickname, setNickname] = useState('');
+  const [text, setText] = useState('');
+  const [pos, setPos] = useState<IPos>({ x: 0, y: 0 });
+  const [originPos, setOriginPos] = useState<IPos>({ x: 0, y: 0 });
+  const [box, setBox] = useState<IBox>({ width: 0, height: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+
+  const navigate = useNavigate();
+  const { postId, iconId } = useParams();
+  const imgWrapper = useRef() as React.MutableRefObject<HTMLDivElement>;
+  const nodeRef = useRef(null);
+  const imgSize = 100;
+
+  useEffect(() => {
+    if (isLayout) {
+      const wrapperBox = imgWrapper.current.getBoundingClientRect();
+      setBox({ ...box, width: wrapperBox.width, height: wrapperBox.height });
+      console.log(wrapperBox);
+    }
+
+    // const fetchData = async () => {
+    //   const response = await axios.get(`${process.env.apiUrl}/api/post/${postId}`);
+    // };
+    // fetchData();
+  }, [isLayout]);
+
+  const startPos = useCallback(
+    (data: any) => {
+      setIsDragging(false);
+      if (
+        data.x >= 0 &&
+        data.x + imgSize * 0.66 < box.width &&
+        data.y >= 0 &&
+        data.y + imgSize * 0.66 < box.height
+      ) {
+        setOriginPos({ ...originPos, x: data.x, y: data.y });
+      } else {
+        setPos({ ...pos, x: originPos.x, y: originPos.y });
+      }
+    },
+    [pos, originPos, box]
+  );
+
+  const trackPos = useCallback(
+    (data: any) => {
+      setIsDragging(true);
+      setPos({ ...pos, x: data.x, y: data.y });
+    },
+    [pos]
+  );
+
+  const stopPos = useCallback(
+    (data: any) => {
+      setIsDragging(false);
+      if (
+        data.x >= 0 &&
+        data.x + imgSize * 0.66 < box.width &&
+        data.y >= 0 &&
+        data.y + imgSize * 0.66 < box.height
+      ) {
+        setPos({ ...pos, x: data.x, y: data.y });
+      } else {
+        setPos({ ...pos, x: originPos.x, y: originPos.y });
+      }
+    },
+    [pos, originPos, box]
+  );
+
+  const onNicknameChange = useCallback(
+    (e: React.FormEvent<HTMLInputElement>) => {
+      const { value } = e.currentTarget;
+      setNickname(value);
+    },
+    [nickname]
+  );
+
+  const onTextChange = useCallback(
+    (e: React.FormEvent<HTMLTextAreaElement>) => {
+      const { value } = e.currentTarget;
+      setText(value);
+    },
+    [text]
+  );
+
+  const onPrevClick = useCallback(() => {
+    setIsLayout(false);
   }, []);
+
+  const onNextClick = useCallback((e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsLayout(true);
+  }, []);
+
+  const onFinishClick = useCallback(() => {
+    const xRatio = pos.x / box.width;
+    const yRatio = pos.y / box.height;
+    console.log(pos, box, xRatio, yRatio);
+    // navigate('/guest/result');
+  }, [pos, box]);
 
   return (
     <MainWrapper>
-      <BackBtn />
-      <ContentWrapper>
-        <NicknameInput placeholder="닉네임" />
-        <LetterWrapper>
-          <Letter />
-          <LetterImg src={Back} />
-        </LetterWrapper>
-      </ContentWrapper>
-      <NextBtn onClick={onNextClick}>다음</NextBtn>
+      {isLayout ? <PrevBtn onClick={onPrevClick} /> : <BackBtn />}
+      {isLayout && <MainTitle>원하는 위치에 꽃을 배치해주세요.</MainTitle>}
+      {!isLayout ? (
+        <ContentWrapper onSubmit={onNextClick}>
+          <NicknameInput
+            placeholder="닉네임 (최대 8자)"
+            required
+            maxLength={8}
+            onChange={onNicknameChange}
+            value={nickname}
+          />
+          <LetterWrapper>
+            <Letter required onChange={onTextChange} value={text} />
+            <LetterImg src={letters[post.categoryId]} />
+          </LetterWrapper>
+          <NextBtn>다음</NextBtn>
+        </ContentWrapper>
+      ) : (
+        <ImgWrapper ref={imgWrapper}>
+          <FlowerWrap src={flowerwraps[post.categoryId]} />
+          {post.count > 0 &&
+            post.messages.map((e) => {
+              return (
+                <AnyLeaf
+                  top={e.y}
+                  left={e.x}
+                  width={box.width}
+                  height={box.height}
+                  src={leaves[post.categoryId][e.iconId].url}
+                  key={e.msgId}
+                />
+              );
+            })}
+          <Draggable
+            position={pos}
+            onStart={(e, data) => startPos(data)}
+            onDrag={(e, data) => trackPos(data)}
+            onStop={(e, data) => stopPos(data)}
+            nodeRef={nodeRef}
+          >
+            <SelectedLeaf
+              src={leaves[post.categoryId][Number(iconId)].url}
+              ref={nodeRef}
+              isDragging={isDragging}
+            />
+          </Draggable>
+        </ImgWrapper>
+      )}
+
+      {isLayout && <NextBtn onClick={onFinishClick}>완료</NextBtn>}
     </MainWrapper>
   );
 }
-
-export default GuestWrite;

@@ -41,6 +41,7 @@ html,body, #root{
 #root{
   position:relative;
   overflow-x: hidden;
+  background-color:#FFF7E3;
 }
 
 body{

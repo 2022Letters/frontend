@@ -1,10 +1,9 @@
 import { useCallback, useState } from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { Button, Title } from '../components/common/style';
-import F1 from '../assets/imgs/Group14.png';
-import F2 from '../assets/imgs/Group15.png';
+import { leaves } from '../constants';
 
 const MainWrapper = styled.div`
   width: 100%;
@@ -31,17 +30,16 @@ const LeafListWrapper = styled.div`
 
 interface LeafBtnProps {
   isSelect?: boolean;
-  img?: string;
 }
 
 const BtnWrapper = styled.div<LeafBtnProps>`
   position: relative;
   width: calc(100% - 10px);
   margin: 5px;
-  background-color: #ffdc25;
+  background-color: ${(props) => (props.isSelect ? '#FFC7C7' : '#FFE5E2')};
   border-radius: 30px;
   margin-bottom: 50%;
-  opacity: ${(props) => (props.isSelect ? 1 : 0.5)};
+  // opacity: ${(props) => (props.isSelect ? 1 : 0.4)};
   cursor: pointer;
 `;
 
@@ -57,16 +55,11 @@ const NextBtn = styled(Button)`
 function LeafSelect() {
   const [select, setSelect] = useState(0);
   const navigate = useNavigate();
-  const leafs = [
-    { img: F1, id: 0 },
-    { img: F2, id: 1 },
-    { img: F2, id: 2 },
-    { img: F2, id: 3 }
-  ];
+  const { postId } = useParams();
 
   const onNextClick = useCallback(() => {
-    navigate('/guest/write');
-  }, []);
+    navigate(`/guest/write/${postId}/${select}`);
+  }, [select]);
 
   const selectImg = useCallback(
     (id: number) => () => {
@@ -77,19 +70,20 @@ function LeafSelect() {
 
   return (
     <MainWrapper>
-      <Title>꽃 송이를 선택해주세요.</Title>
+      <Title>꽃을 선택해주세요.</Title>
       <LeafListWrapper>
-        {leafs.map((e) => {
-          return (
-            <BtnWrapper
-              key={e.id}
-              onClick={selectImg(e.id)}
-              isSelect={select === e.id}
-            >
-              <LeafBtn src={e.img} />
-            </BtnWrapper>
-          );
-        })}
+        {leaves[Number(postId)] &&
+          leaves[Number(postId)].map((e, i) => {
+            return (
+              <BtnWrapper
+                key={e.id}
+                onClick={selectImg(i)}
+                isSelect={select === i}
+              >
+                <LeafBtn src={e.url} />
+              </BtnWrapper>
+            );
+          })}
       </LeafListWrapper>
       <NextBtn onClick={onNextClick}>다음</NextBtn>
     </MainWrapper>

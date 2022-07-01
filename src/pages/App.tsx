@@ -7,7 +7,6 @@ import theme from '../common/style/theme';
 import LandingPage from '.';
 import Main from './Main';
 import GuestHome from './GuestHome';
-import GuestWrite from './GuestWrite';
 import LeafSelect from './LeafSelect';
 import Layout from '../components/Layout/Layout';
 import AnniversaryManagement from './AnniversaryManagement';
@@ -15,6 +14,7 @@ import LoginPage from './LoginPage';
 import NicknameRegist from './NicknameRegist';
 import SocialRedirect from './SocialLogin/SocialRedirect';
 import GuestResult from './GuestResult';
+import GuestWrite from './GuestWrite';
 
 function App() {
   return (
@@ -30,10 +30,14 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/login/redirect" element={<SocialRedirect />} />
             <Route path="/login/nickname" element={<NicknameRegist />} />
-            <Route path="/guest" element={<GuestHome />} />
-            <Route path="/guest/write" element={<GuestWrite />} />
-            <Route path="/guest/select" element={<LeafSelect />} />
-            <Route path="/guest/result/:postId" element={<LeafSelect />} />
+            <Route path="/:postId" element={<GuestHome />} />
+            {/* <Route path="/guest/write" element={<GuestWrite />} /> */}
+            <Route path="/guest/select/:postId" element={<LeafSelect />} />
+            <Route path="/guest/result/:postId" element={<GuestResult />} />
+            <Route
+              path="/guest/write/:postId/:iconId"
+              element={<GuestWrite />}
+            />
           </Routes>
         </Layout>
       </Router>

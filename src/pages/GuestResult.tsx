@@ -2,7 +2,7 @@ import { useEffect, useState, useRef, useCallback } from 'react';
 import styled from 'styled-components';
 import { useParams, useNavigate } from 'react-router-dom';
 
-import { leaves, flowerwraps } from '../';
+import { leaves, flowerwraps } from '../constants';
 import { Button } from '../components/common/style';
 
 const MainWrapper = styled.div`
