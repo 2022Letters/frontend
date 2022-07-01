@@ -108,9 +108,9 @@ interface IAnyLeaf {
 
 const AnyLeaf = styled.img<IAnyLeaf>`
   position: absolute;
-  top: ${(props) => `${props.top * props.height}px`};
-  left: ${(props) => `${props.left * props.width}px`};
-  z-index: 8;
+  top: ${(props) => `calc(50% + ${props.top * props.height}px)`};
+  left: ${(props) => `calc(50% + ${props.left * props.width}px)`};
+  transform: translate(-50%, -50%);
   width: 100px;
   height: 100px;
 `;
@@ -121,8 +121,8 @@ interface ISelectedLeaf {
 
 const SelectedLeaf = styled.img<ISelectedLeaf>`
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 50%;
+  left: 50%;
   z-index: 9;
   width: 100px;
   height: 100px;
@@ -171,14 +171,14 @@ export default function GuestLayout() {
       {
         msgId: 1,
         iconId: 1,
-        x: 0.3,
-        y: 0.4
+        x: 0.04230769230769231,
+        y: -0.39609483960948394
       },
       {
         msgId: 2,
         iconId: 2,
-        x: 0.7,
-        y: 0.6
+        x: -0.19038461538461537,
+        y: 0.10739191073919108
       }
     ]
   });
@@ -212,10 +212,10 @@ export default function GuestLayout() {
     (data: any) => {
       setIsDragging(false);
       if (
-        data.x >= 0 &&
-        data.x + imgSize * 0.66 < box.width &&
-        data.y >= 0 &&
-        data.y + imgSize * 0.66 < box.height
+        data.x - imgSize * 0.66 >= (box.width / 2) * -1 &&
+        data.x + imgSize * 0.66 < box.width / 2 &&
+        data.y - imgSize * 0.66 >= (box.height / 2) * -1 &&
+        data.y + imgSize * 0.66 < box.height / 2
       ) {
         setOriginPos({ ...originPos, x: data.x, y: data.y });
       } else {
@@ -237,15 +237,16 @@ export default function GuestLayout() {
     (data: any) => {
       setIsDragging(false);
       if (
-        data.x >= 0 &&
-        data.x + imgSize * 0.66 < box.width &&
-        data.y >= 0 &&
-        data.y + imgSize * 0.66 < box.height
+        data.x - imgSize * 0.66 >= (box.width / 2) * -1 &&
+        data.x + imgSize * 0.66 < box.width / 2 &&
+        data.y - imgSize * 0.66 >= (box.height / 2) * -1 &&
+        data.y + imgSize * 0.66 < box.height / 2
       ) {
         setPos({ ...pos, x: data.x, y: data.y });
       } else {
         setPos({ ...pos, x: originPos.x, y: originPos.y });
       }
+      console.log(pos);
     },
     [pos, originPos, box]
   );
@@ -319,6 +320,7 @@ export default function GuestLayout() {
             })}
           <Draggable
             position={pos}
+            positionOffset={{ x: '-50%', y: '-50%' }}
             onStart={(e, data) => startPos(data)}
             onDrag={(e, data) => trackPos(data)}
             onStop={(e, data) => stopPos(data)}
