@@ -65,15 +65,20 @@ function Sidebar({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) {
       .then((res) => {
         const { data } = res;
         console.log(data);
-        navigate('/');
+
+        // 구글로그인 탈퇴인 경우 redirect
+        if (social === '0') {
+          window.location.href = 'http://localhost:8080/logout';
+        } else {
+          // 카카오 로그인 탈퇴인 경우 메인으로
+          navigate('/');
+        }
+        // 로그아웃
+        handelLogout();
       })
       .catch((err) => {
         console.log(err);
       });
-
-    if (social === '0') {
-      window.location.href = 'http://localhost:8080/logout';
-    }
   };
   // 로그아웃
   const handelLogout = () => {
