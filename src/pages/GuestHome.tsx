@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import theme from '../common/style/theme';
 import { Button } from '../components/common/style';
@@ -46,9 +46,10 @@ const StartBtn = styled(Button)`
 function GuestWrite() {
   const categoryId = 1;
   const navigate = useNavigate();
+  const { postId } = useParams();
 
   const onStartClick = useCallback(() => {
-    navigate('/guest/select');
+    navigate(`/guest/select/${postId}`);
   }, []);
 
   return (
