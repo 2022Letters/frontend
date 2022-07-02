@@ -5,6 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import theme from '../common/style/theme';
 import { Button } from '../components/common/style';
 import { flowerwraps, leaves } from '../constants';
+import { postDetailApi } from '../api/Apis';
 
 const MainWrapper = styled.div`
   width: 100%;
@@ -61,6 +62,9 @@ const Leaf = styled.img<ILeaf>`
   top: ${(props) => `${props.top * props.height}px`};
   left: ${(props) => `${props.left * props.width}px`};
   z-index: 8;
+  top: ${(props) => `calc(50% + ${props.top * props.height}px)`};
+  left: ${(props) => `calc(50% + ${props.left * props.width}px)`};
+  transform: translate(-50%, -50%);
   width: 100px;
   height: 100px;
 `;
@@ -70,7 +74,7 @@ const StartBtn = styled(Button)`
   flex-shrink: 0;
 `;
 
-function GuestWrite() {
+export default function PostHome() {
   const [box, setBox] = useState({ width: 0, height: 0 });
   const [post, setPost] = useState({
     id: 1,
@@ -86,14 +90,14 @@ function GuestWrite() {
       {
         msgId: 1,
         iconId: 1,
-        x: 0.3,
-        y: 0.4
+        x: 0.04230769230769231,
+        y: -0.39609483960948394
       },
       {
         msgId: 2,
         iconId: 2,
-        x: 0.7,
-        y: 0.6
+        x: -0.19038461538461537,
+        y: 0.10739191073919108
       }
     ]
   });
@@ -105,11 +109,16 @@ function GuestWrite() {
   useEffect(() => {
     const wrapperBox = imgWrapper.current.getBoundingClientRect();
     setBox({ ...box, width: wrapperBox.width, height: wrapperBox.height });
-    // postId로 게시글 상세정보 조회
+
+    // const fetchData = async () => {
+    //   const resp = await postDetailApi(Number(postId));
+    //   setPost(resp.data);
+    // };
+    // fetchData();
   }, []);
 
   const onStartClick = useCallback(() => {
-    navigate(`/guest/select/${postId}`);
+    navigate(`/guest/${postId}`);
   }, []);
 
   return (
@@ -145,5 +154,3 @@ function GuestWrite() {
     </MainWrapper>
   );
 }
-
-export default GuestWrite;

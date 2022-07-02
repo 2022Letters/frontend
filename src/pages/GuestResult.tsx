@@ -4,6 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 
 import { leaves, flowerwraps } from '../constants';
 import { Button } from '../components/common/style';
+import { postDetailApi } from '../api/Apis';
 
 const MainWrapper = styled.div`
   width: 100%;
@@ -59,6 +60,7 @@ const Label = styled.label`
   width: 100%;
   text-align: center;
   font-size: 1.5rem;
+  margin-top: 1rem;
 `;
 
 const StartBtn = styled(Button)`
@@ -101,8 +103,19 @@ export default function GuestResult() {
   useEffect(() => {
     const wrapperBox = imgWrapper.current.getBoundingClientRect();
     setBox({ ...box, width: wrapperBox.width, height: wrapperBox.height });
-    // postId로 게시글 상세정보 조회
+
+    const fetchData = async () => {
+      // const resp = await postDetailApi(postId);
+      // setPost(resp.data);
+    };
+
+    fetchData();
   }, []);
+
+  const onStartClick = useCallback(() => {
+    navigate('/login');
+  }, []);
+
   return (
     <MainWrapper>
       <ContentWrapper>
@@ -124,7 +137,7 @@ export default function GuestResult() {
         </ImgWrapper>
       </ContentWrapper>
       <Label>내 꽃이 전달되었어요.</Label>
-      <StartBtn>나도 꽃다발 만들기</StartBtn>
+      <StartBtn onClick={onStartClick}>나도 꽃다발 만들기</StartBtn>
     </MainWrapper>
   );
 }
