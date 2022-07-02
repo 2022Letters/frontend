@@ -7,6 +7,7 @@ export const Button = styled.button`
   border-radius: 12px;
   margin-bottom: 45px;
   font-size: 1.5rem;
+  background-color: #ffe5e2;
 `;
 
 export const Title = styled.h1`

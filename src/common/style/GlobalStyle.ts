@@ -41,12 +41,13 @@ html,body, #root{
 #root{
   position:relative;
   overflow-x: hidden;
+  background-color:#FFF7E3;
 }
 
 body{
   max-width:550px;
   min-width:320px;
-  min-height:100%;
+  min-height: 100%;
   margin:0 auto;
 }
 

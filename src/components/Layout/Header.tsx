@@ -9,7 +9,7 @@ const HeaderPostion = styled.header`
   justify-content: flex-end;
   align-items: center;
   height: 45px;
-  z-index: 1;
+  z-index: 10;
 `;
 
 const MenuBtn = styled.div`
