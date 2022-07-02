@@ -104,10 +104,10 @@ export default function GuestLayout({ post, iconId, nickname, text }: Props) {
     (data: any) => {
       setIsDragging(false);
       if (
-        data.x - imgSize * 0.66 >= (box.width / 2) * -1 &&
-        data.x + imgSize * 0.66 < box.width / 2 &&
-        data.y - imgSize * 0.66 >= (box.height / 2) * -1 &&
-        data.y + imgSize * 0.66 < box.height / 2
+        data.x - imgSize * 0.33 >= (box.width / 2) * -1 &&
+        data.x + imgSize * 0.33 < box.width / 2 &&
+        data.y - imgSize * 0.33 >= (box.height / 2) * -1 &&
+        data.y + imgSize * 0.33 < box.height / 2
       ) {
         setOriginPos({ ...originPos, x: data.x, y: data.y });
       } else {
@@ -129,10 +129,10 @@ export default function GuestLayout({ post, iconId, nickname, text }: Props) {
     (data: any) => {
       setIsDragging(false);
       if (
-        data.x - imgSize * 0.66 >= (box.width / 2) * -1 &&
-        data.x + imgSize * 0.66 < box.width / 2 &&
-        data.y - imgSize * 0.66 >= (box.height / 2) * -1 &&
-        data.y + imgSize * 0.66 < box.height / 2
+        data.x - imgSize * 0.33 >= (box.width / 2) * -1 &&
+        data.x + imgSize * 0.33 < box.width / 2 &&
+        data.y - imgSize * 0.33 >= (box.height / 2) * -1 &&
+        data.y + imgSize * 0.33 < box.height / 2
       ) {
         setPos({ ...pos, x: data.x, y: data.y });
       } else {

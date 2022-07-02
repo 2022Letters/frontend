@@ -69,6 +69,9 @@ const CountLength = styled.div`
   position: absolute;
   bottom: 0;
   right: 0;
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-right: 0.5rem;
 `;
 
 interface Props {
@@ -112,6 +115,7 @@ export default function GuestWrite({
       <LetterWrapper>
         <Letter required onChange={onTextChange} value={text} />
         <LetterImg src={letters[post.categoryId]} />
+        <CountLength>{text.length}/1000자</CountLength>
       </LetterWrapper>
       <NextBtn>다음</NextBtn>
     </ContentWrapper>

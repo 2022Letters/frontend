@@ -93,7 +93,7 @@ export default function GuestFlow() {
   const onTextChange = useCallback(
     (e: React.FormEvent<HTMLTextAreaElement>) => {
       const { value } = e.currentTarget;
-      setText(value);
+      if (value.length <= 1000) setText(value);
     },
     [text]
   );
