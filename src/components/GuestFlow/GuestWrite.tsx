@@ -93,14 +93,21 @@ export default function GuestWrite({
     setStep((prev) => prev + 1);
   }, []);
 
+  const prevent = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') e.preventDefault();
+    return false;
+  };
+
   return (
-    <ContentWrapper onSubmit={onNextClick}>
+    <ContentWrapper onSubmit={(e) => onNextClick(e)}>
+      <input hidden />
       <NicknameInput
         placeholder="닉네임 (최대 10자)"
         required
         maxLength={10}
         onChange={onNicknameChange}
         value={nickname}
+        onKeyDown={prevent}
       />
       <LetterWrapper>
         <Letter required onChange={onTextChange} value={text} />
