@@ -14,13 +14,13 @@ export const postApiExample = (body: any) => {
 };
 
 export const postDetailApi = (postId: number) => {
-  const url = `${process.env.APIURL}/post/${postId}`;
+  const url = `${process.env.API_URL}api/post/${postId}`;
   const data = getApi(url);
   return data;
 };
 
 export const createMessageApi = (body: ICreateMessage) => {
-  const url = `${process.env.APIURL}/msg`;
+  const url = `${process.env.API_URL}api/msg`;
   const data = postApi(url, body);
   return data;
 };
