@@ -11,11 +11,11 @@ const SideBarWrap = styled.div`
   padding: 12px;
   border-radius: 15px 0 0 15px;
   background-color: #e7e4e1;
-  height: 100%;
+  height: 100vh;
   width: 55%;
   right: -55%;
   top: 0;
-  position: fixed;
+  position: absolute;
   transition: 0.5s ease;
   &.open {
     right: 0;
