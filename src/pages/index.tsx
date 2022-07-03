@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Button } from '../components/common/style';
 
@@ -20,6 +21,7 @@ const BtnPosition = styled.div`
 `;
 
 function LandingPage() {
+  const navigate = useNavigate();
   useEffect(() => {
     // 테스트 코드
     // const user = {
@@ -29,10 +31,18 @@ function LandingPage() {
     // localStorage.setItem('user', JSON.stringify(user));
   });
 
+  const mainClick = () => {
+    const userInfo = localStorage.getItem('user');
+    if (userInfo) {
+      navigate('/main');
+    } else {
+      navigate('/login');
+    }
+  };
   return (
     <MainBackground>
       <BtnPosition>
-        <Button>꽃다발 만들기</Button>
+        <Button onClick={mainClick}>꽃다발 만들기</Button>
       </BtnPosition>
     </MainBackground>
   );

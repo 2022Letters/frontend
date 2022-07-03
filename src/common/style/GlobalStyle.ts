@@ -1,5 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
-import Neurit from '../../assets/fonts/Neurit.woff';
+import Neurit from '../../assets/fonts/Neurit.ttf';
 
 const GlobalStyles = createGlobalStyle`
 
@@ -36,7 +36,6 @@ html,body, #root{
   width:100%;
   height:100%;
   font-size:16px;
-  background-color: #FFF7E3;
 }
 
 #root{

@@ -63,8 +63,6 @@ function Sidebar({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) {
 
     const social: string | null = localStorage.getItem('social');
     // 회원 탈퇴 api
-    console.log(user);
-    console.log(social);
     try {
       const { data } = await axios.delete(
         `/user/${user.id}?socialLoginType=${social}`
@@ -130,7 +128,7 @@ function Sidebar({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) {
           </MenuLi>
           <MenuLi>mmm@gmail.com로 문의 부탁해요~</MenuLi>
         </ul>
-        <QuitMenu onClick={quitUser}>회원 탈퇴</QuitMenu>
+        {userInfo ? <QuitMenu onClick={quitUser}>회원 탈퇴</QuitMenu> : null}
       </nav>
     </SideBarWrap>
   );
