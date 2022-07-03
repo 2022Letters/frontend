@@ -1,9 +1,30 @@
-import { getApi, postApi } from './baseApi';
-import { ICreateMessage } from '../types';
 
-export const kakaoApi = () => {
-  const url = `api url 주소`;
+import { ICreateMessage } from '../types';
+import { getApi, postApi, putApi, deleteApi } from './baseApi';
+
+// 로그인 api
+export const kakaoLoginApi = (code: string) => {
+  const url = `kakaoLogin?code=${code}`;
   const data = getApi(url);
+  return data;
+};
+
+export const googleLoginApi = (email: string) => {
+  console.log(email);
+  const url = `login/sucess?email=${email}`;
+  const data = getApi(url);
+  return data;
+};
+
+export const nicknameRegistApi = () => {
+  const url = `login/user/nickname`;
+  const data = getApi(url);
+  return data;
+};
+
+export const deleteUser = (userid: string) => {
+  const url = `user/${userid}`;
+  const data = deleteApi(url);
   return data;
 };
 

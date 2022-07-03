@@ -1,5 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
-import Neurit from '../../assets/fonts/Neurit.woff';
+import Neurit from '../../assets/fonts/Neurit.ttf';
 
 const GlobalStyles = createGlobalStyle`
 
