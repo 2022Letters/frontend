@@ -70,15 +70,20 @@ function Sidebar({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) {
         `/user/${user.id}?socialLoginType=${social}`
       );
       console.log(data);
-      // 구글로그인 탈퇴인 경우 redirect
-      if (social === '0') {
-        window.location.href = 'http://localhost:8080/logout';
+      if (data.deleteUser) {
+        alert('탈퇴 되었습니다.');
+        // 구글로그인 탈퇴인 경우 redirect
+        if (social === '0') {
+          window.location.href = 'http://localhost:8080/logout';
+        } else {
+          // 카카오 로그인 탈퇴인 경우 메인으로
+          navigate('/');
+        }
+        // 로그아웃
+        handelLogout();
       } else {
-        // 카카오 로그인 탈퇴인 경우 메인으로
-        navigate('/');
+        alert('탈퇴 중 문제가 발생했습니다.');
       }
-      // 로그아웃
-      handelLogout();
     } catch (err) {
       console.log(err);
     }
