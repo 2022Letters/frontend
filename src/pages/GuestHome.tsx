@@ -5,6 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import theme from '../common/style/theme';
 import { Button } from '../components/common/style';
 import { flowerwraps, leaves } from '../constants';
+import FlowerList from '../components/GuestFlow/FlowerList';
 
 const MainWrapper = styled.div`
   width: 100%;
@@ -73,6 +74,20 @@ const StartBtn = styled(Button)`
   flex-shrink: 0;
 `;
 
+const HostButtonWrapper = styled.div`
+  display: flex;
+  gap: 1rem;
+`;
+
+const SendBtn = styled(Button)`
+  width: 100%;
+`;
+
+const MessageDisplayChangeBtn = styled(Button)`
+  width: 50px;
+  font-weight: bold;
+`;
+
 function GuestWrite() {
   const [box, setBox] = useState({ width: 0, height: 0 });
   const [post, setPost] = useState({
@@ -100,12 +115,23 @@ function GuestWrite() {
       }
     ]
   });
-
+  const [userId, setUserId] = useState<number>();
+  const [copied, setCopied] = useState(false);
+  const [isListMode, setIsListMode] = useState(false);
   const navigate = useNavigate();
+  const postUrl = window.location.href;
   const { postId } = useParams();
   const imgWrapper = useRef() as React.MutableRefObject<HTMLDivElement>;
 
+  const getUserId = useCallback(() => {
+    const userInfo = JSON.parse(localStorage.getItem('user') || '{}');
+    if (!Object.keys(userInfo).length) return;
+    const userId = userInfo?.id;
+    setUserId(+userId);
+  }, []);
+
   useEffect(() => {
+    getUserId();
     const wrapperBox = imgWrapper.current.getBoundingClientRect();
     setBox({ ...box, width: wrapperBox.width, height: wrapperBox.height });
     // postId로 게시글 상세정보 조회
@@ -114,6 +140,23 @@ function GuestWrite() {
   const onStartClick = useCallback(() => {
     navigate(`/guest/${postId}`);
   }, []);
+
+  const copyLink = useCallback(() => {
+    navigator.clipboard.writeText(postUrl);
+    setCopied(true);
+  }, []);
+
+  const handlePostUrl = () => {
+    if (navigator.share) {
+      navigator.share({
+        title: `${post?.userNickname} 님을 위한 꽃다발`,
+        text: `${post?.userNickname} 님에게 꽃 전달하러 가기`,
+        url: postUrl
+      });
+    } else {
+      copyLink();
+    }
+  };
 
   return (
     <MainWrapper>
@@ -128,23 +171,55 @@ function GuestWrite() {
           {post.date}
         </TextWrapper>
         <ImgWrapper ref={imgWrapper}>
-          <FlowerWrap src={flowerwraps[post.categoryId]} />
-          {post.count > 0 &&
-            post.messages.map((e) => {
-              return (
-                <Leaf
-                  top={e.y}
-                  left={e.x}
-                  width={box.width}
-                  height={box.height}
-                  src={leaves[post.categoryId][e.iconId].url}
-                  key={e.msgId}
-                />
-              );
-            })}
+          {isListMode ? (
+            <FlowerList />
+          ) : (
+            <>
+              <FlowerWrap src={flowerwraps[post.categoryId]} />
+              {post.count > 0 &&
+                post.messages.map((e) => {
+                  return (
+                    <Leaf
+                      top={e.y}
+                      left={e.x}
+                      width={box.width}
+                      height={box.height}
+                      src={leaves[post.categoryId][e.iconId].url}
+                      key={e.msgId}
+                    />
+                  );
+                })}
+            </>
+          )}
         </ImgWrapper>
       </ContentWrapper>
-      <StartBtn onClick={onStartClick}>꽃 보내기</StartBtn>
+      {post.userId !== userId ? (
+        <HostButtonWrapper>
+          <SendBtn onClick={handlePostUrl}>
+            {copied ? '링크 복사 완료!' : '링크 복사'}
+          </SendBtn>
+          <MessageDisplayChangeBtn
+            type="button"
+            onClick={() => setIsListMode((prev) => !prev)}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              className="bi bi-list-ul"
+              viewBox="0 0 16 16"
+            >
+              <path
+                fillRule="evenodd"
+                d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm-3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"
+              />
+            </svg>
+          </MessageDisplayChangeBtn>
+        </HostButtonWrapper>
+      ) : (
+        <StartBtn onClick={onStartClick}>꽃 보내기</StartBtn>
+      )}
     </MainWrapper>
   );
 }
