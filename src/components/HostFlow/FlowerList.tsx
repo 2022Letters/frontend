@@ -1,7 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useCallback, useContext } from 'react';
 import styled from 'styled-components';
-import { IMessageContext, MessageContext } from '../Store/MessageProvider';
+import {
+  IMessageContext,
+  MessageContext
+} from '../../api/Store/MessageProvider';
 import LetterModal from './LetterModal';
 import ListMessageButton from './ListMessageButton';
 

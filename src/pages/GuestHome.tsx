@@ -8,7 +8,7 @@ import { Button } from '../components/common/style';
 import { flowerwraps, leaves } from '../constants';
 import FlowerList from '../components/HostFlow/FlowerList';
 import LetterModal from '../components/HostFlow/LetterModal';
-import MessageProvider from '../components/Store/MessageProvider';
+import MessageProvider from '../api/Store/MessageProvider';
 
 const MainWrapper = styled.div`
   width: 100%;

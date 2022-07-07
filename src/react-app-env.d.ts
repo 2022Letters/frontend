@@ -12,9 +12,13 @@ interface IMenu {
   toggleMenu(event: React.MouseEvent<HTMLButtonElement>): void;
 }
 
+interface ICategory {
+  categoryId?: any;
+  categoryName: string;
+}
 interface ICategoryButton {
-  index: string;
-  currentCategory: string;
+  index: number | null;
+  currentCategory: ICategory;
 }
 
 interface IMessage {

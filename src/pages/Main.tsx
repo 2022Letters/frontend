@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable react/jsx-props-no-spreading */
 import axios from 'axios';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -5,6 +6,8 @@ import styled from 'styled-components';
 import { debounce } from 'lodash';
 import { Link } from 'react-router-dom';
 import EventCard from '../components/EventCard';
+import { getApi } from '../api/baseApi';
+import { categoryList } from '../constants';
 
 const Container = styled.section`
   position: relative;
@@ -12,7 +15,6 @@ const Container = styled.section`
   margin-right: auto;
   width: 100%;
   height: 100%;
-  background-color: lavender;
   overflow: auto;
 `;
 
@@ -54,7 +56,7 @@ const CategoryButton = styled.button<ICategoryButton>`
   padding: 0.25rem;
 
   background-color: ${(props) =>
-    props.index === props.currentCategory ? '#FA7272' : '#FFCACA'};
+    props.index === props.currentCategory.categoryId ? '#FA7272' : '#FFCACA'};
   transition: all 0.2s ease-in;
   @media (max-width: 600px) {
     font-size: 1.25rem;
@@ -92,61 +94,83 @@ const CreateButton = styled.button`
   border: none;
   font-size: 2rem;
 `;
+
+interface IKeyword {
+  keyword?: string;
+  categoryId?: number;
+}
+
+interface IEventListApi extends IKeyword {
+  mode: number;
+}
+
 export default function Main() {
-  const [celebratedList, setCelebratedList] = useState<any>();
+  const [userId, setUserId] = useState<number>();
+  const [eventList, setEventList] = useState<any>();
   const [isLoading, setIsLoading] = useState(false);
-  const [currentCategory, setCurrentCategory] = useState('');
+  const [currentCategory, setCurrentCategory] = useState<ICategory>({
+    categoryId: null,
+    categoryName: ''
+  });
   const [currentTargetEvent, setCurrentTargetEvent] = useState(-1);
-  const categoryList = ['생일', '졸업', '결혼', '새해', '기타'];
+  const [query, setQuery] = useState('');
+
+  const getUserId = useCallback(() => {
+    const userInfo = JSON.parse(localStorage.getItem('user') || '{}');
+    if (!Object.keys(userInfo).length) return;
+    const userId = userInfo?.id;
+    setUserId(+userId);
+  }, []);
+
+  const getEventListApi = ({ keyword, categoryId, mode }: IEventListApi) => {
+    console.log(mode);
+    const BASE_API = `/api/posts?userId=${userId}&mode=${mode}`;
+    switch (mode) {
+      case 3:
+        return `${BASE_API}&keyword=${keyword}&categoryId=${categoryId}`;
+      case 2:
+        return `${BASE_API}&keyword=${keyword}`;
+      default:
+        return BASE_API;
+    }
+  };
 
   useEffect(() => {
+    getUserId();
+  }, []);
+  useEffect(() => {
     (async () => {
-      await getQueryData();
+      await getEventData({ mode: 1 });
     })();
   }, []);
 
-  const getCategoryEventList = async () => {
-    try {
-      const response = await axios.get(`${currentCategory}`);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  const getAllEventList = useCallback(async () => {
+    const response = await getApi(getEventListApi({ mode: 1 }));
+    console.log(response);
+  }, []);
 
-  const getQueryData = async (value?: string) => {
-    setIsLoading(true);
-    const body = { query: value };
-    if (value) {
-      try {
-        setTimeout(() => {
-          console.log('data');
-        }, 1000);
-        const response = 'data';
+  const getKeywordEventList = useCallback(async ({ keyword }: IKeyword) => {
+    const response = await getApi(getEventListApi({ mode: 2, keyword }));
+    console.log(response);
+  }, []);
 
-        setCelebratedList(response);
-      } catch (err) {
-        console.log(err);
-      }
-    } else {
-      try {
-        setTimeout(() => {
-          console.log('data');
-        }, 1000);
-        const response = 'data';
-        setCelebratedList(response);
-      } catch (err) {
-        console.log(err);
-      }
-    }
-    setIsLoading(false);
-  };
+  const getCategoryEventList = useCallback(
+    async ({ keyword, categoryId }: IKeyword) => {
+      const response = await getApi(
+        getEventListApi({ mode: 3, keyword, categoryId })
+      );
+      console.log('끗?');
+      console.log(response);
+    },
+    []
+  );
 
   const request = debounce((value, func) => {
     func(value);
   }, 1000);
 
   const debounceRequest = useCallback(
-    (value: string, func: object) => request(value, func),
+    (value: IEventListApi, func: object) => request(value, func),
     []
   );
 
@@ -154,23 +178,56 @@ export default function Main() {
     const {
       currentTarget: { value }
     } = event;
-    debounceRequest(value, getQueryData);
+    console.log('value', value);
+    setQuery(value);
+    debounceRequest({ mode: 2, keyword: value }, getEventData);
   };
 
-  const onClick = async (event: React.MouseEvent<HTMLButtonElement>) => {
+  const onClickCategory = async (
+    event: React.MouseEvent<HTMLButtonElement>,
+    category: ICategory
+  ) => {
     const {
       currentTarget: { value }
     } = event;
-    if (value === currentCategory) {
-      setCurrentCategory('');
-      await getQueryData();
-      return;
+    console.log(category);
+    if (value === currentCategory.categoryName) {
+      setCurrentCategory({ categoryId: null, categoryName: '' });
+      await getEventData({ mode: 1 });
+    } else {
+      setCurrentCategory(category);
+      console.log(category.categoryId);
+      await getEventData({
+        categoryId: category.categoryId,
+        keyword: query,
+        mode: 3
+      });
     }
-    setIsLoading(true);
-    setCurrentCategory(value);
-    await getCategoryEventList();
-    setIsLoading(false);
+    console.log('카테고리 서칭 완료');
   };
+
+  const getEventData = useCallback(
+    async ({ mode, categoryId, keyword }: IEventListApi) => {
+      console.log(mode, categoryId, keyword);
+      setIsLoading(true);
+      switch (mode) {
+        case 2:
+          await getKeywordEventList({ categoryId, keyword });
+          break;
+        case 3:
+          await getCategoryEventList({
+            categoryId,
+            keyword
+          });
+          break;
+        default:
+          await getAllEventList();
+          break;
+      }
+      setIsLoading(false);
+    },
+    [currentCategory]
+  );
 
   const eventInfo: IEventInfo = {
     category: '생일',
@@ -208,13 +265,15 @@ export default function Main() {
         {categoryList.map((category) => (
           <CategoryButton
             type="button"
-            key={category}
-            value={category}
-            onClick={onClick}
-            index={category}
+            key={category.categoryId}
+            value={category.categoryName}
+            onClick={(event: React.MouseEvent<HTMLButtonElement>) =>
+              onClickCategory(event, category)
+            }
+            index={category.categoryId}
             currentCategory={currentCategory}
           >
-            {category}
+            {category.categoryName}
           </CategoryButton>
         ))}
       </CategoryWrapper>

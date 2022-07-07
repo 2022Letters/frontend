@@ -2,7 +2,10 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { getApi } from '../../api/baseApi';
 import { letters } from '../../constants';
-import { IMessageContext, MessageContext } from '../Store/MessageProvider';
+import {
+  IMessageContext,
+  MessageContext
+} from '../../api/Store/MessageProvider';
 
 interface IMessageImage {
   category: number | null;

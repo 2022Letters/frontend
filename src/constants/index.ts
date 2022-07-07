@@ -45,3 +45,11 @@ export const flowerwraps = [
   '/img/flowerwrap4.png',
   '/img/flowerwrap5.png'
 ];
+
+export const categoryList: ICategory[] = [
+  { categoryId: 1, categoryName: '생일' },
+  { categoryId: 2, categoryName: '졸업' },
+  { categoryId: 3, categoryName: '결혼' },
+  { categoryId: 4, categoryName: '새해' },
+  { categoryId: 5, categoryName: '기타' }
+];

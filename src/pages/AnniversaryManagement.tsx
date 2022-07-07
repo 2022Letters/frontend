@@ -1,10 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react';
+/* eslint-disable no-console */
+import React, { useEffect, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import ReactDatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { ko } from 'date-fns/esm/locale';
 import axios from 'axios';
 import * as C from '../components/common/style';
+import { categoryList } from '../constants';
 
 const borderColor = keyframes`
   0% {
@@ -129,7 +131,7 @@ const CategoryButton = styled.button<ICategoryButton>`
   border-radius: 10px;
   font-size: 1.5rem;
   background-color: ${(props) =>
-    props.index === props.currentCategory ? '#FA7272' : '#FFCACA'};
+    props.index === props.currentCategory.categoryId ? '#FA7272' : '#FFCACA'};
   transition: all 0.2s ease-in;
 `;
 
@@ -210,18 +212,27 @@ const CategoryWarningSpan = styled.span`
   color: red;
 `;
 
+interface ICreatedEvent {
+  title: string;
+  category: any;
+  date: string;
+  isOpen: boolean;
+}
+
 function AnniversaryManagement() {
   const [originalDateInfo, setOriginalDateInfo] = useState(new Date());
   const [isOpen, setIsOpen] = useState(false);
   const [isCategorySelected, setIsCategorySelected] = useState(true);
-  const [anniversaryInfo, setAnniversaryInfo] = useState({
+  const [anniversaryInfo, setAnniversaryInfo] = useState<ICreatedEvent>({
     title: '',
-    category: '',
+    category: {
+      categoryId: null,
+      categoryName: ''
+    },
     date: '',
     isOpen: false
   });
 
-  const ref = useRef();
   useEffect(() => {
     toStringByFormatting(originalDateInfo);
   }, []);
@@ -273,6 +284,7 @@ function AnniversaryManagement() {
       return;
     }
     const response = await axios.post('', { data: anniversaryInfo });
+    console.log(response);
   };
 
   const stayCalanderOn = (event: React.PointerEvent<HTMLDivElement>) => {
@@ -280,7 +292,6 @@ function AnniversaryManagement() {
     setIsOpen(true);
   };
 
-  const categoryList = ['생일', '졸업', '결혼', '새해', '기타'];
   return (
     <Container onClick={makeCalanderOff}>
       <Form onSubmit={onSubmit}>
@@ -307,16 +318,16 @@ function AnniversaryManagement() {
           </DetailedTitle>
 
           <CategoryButtonListWrapper>
-            {categoryList?.map((category) => (
-              <CategoryWrapper key={category}>
+            {categoryList?.map((category: ICategory) => (
+              <CategoryWrapper key={category.categoryId}>
                 <CategoryButton
                   type="button"
-                  index={category}
+                  index={category.categoryId}
                   currentCategory={anniversaryInfo.category}
                   onClick={onClickCategory}
-                  value={category}
+                  value={category.categoryName}
                 >
-                  {category}
+                  {category.categoryName}
                 </CategoryButton>
               </CategoryWrapper>
             ))}

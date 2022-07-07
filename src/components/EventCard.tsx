@@ -46,17 +46,17 @@ const Img = styled.img`
 `;
 
 const CategoryWrapper = styled.div`
-  background-color: #ffcaca;
+  background-color: lavender;
   border-radius: 50px;
   width: fit-content;
-  padding: 0.375rem 1.625rem;
+  padding: 0.375rem 1rem;
   position: absolute;
   bottom: 5px;
   right: 0;
   letter-spacing: 5px;
   font-size: 1.5rem;
   @media (max-width: 600px) {
-    font-size: 1rem;
+    font-size: 1.25rem;
   }
 `;
 
