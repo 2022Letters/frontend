@@ -1,6 +1,5 @@
 /* eslint-disable no-console */
 /* eslint-disable react/jsx-props-no-spreading */
-import axios from 'axios';
 import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { debounce } from 'lodash';
@@ -106,7 +105,15 @@ interface IEventListApi extends IKeyword {
 
 export default function Main() {
   const [userId, setUserId] = useState<number>();
-  const [eventList, setEventList] = useState<any>();
+  const [eventList, setEventList] = useState<IEventInfo[]>([
+    {
+      id: 1,
+      title: '싸피의 생일',
+      date: '2022-06-30',
+      categoryId: 1,
+      userNickname: '싸피'
+    }
+  ]);
   const [isLoading, setIsLoading] = useState(false);
   const [currentCategory, setCurrentCategory] = useState<ICategory>({
     categoryId: null,
@@ -159,7 +166,6 @@ export default function Main() {
       const response = await getApi(
         getEventListApi({ mode: 3, keyword, categoryId })
       );
-      console.log('끗?');
       console.log(response);
     },
     []
@@ -196,7 +202,6 @@ export default function Main() {
       await getEventData({ mode: 1 });
     } else {
       setCurrentCategory(category);
-      console.log(category.categoryId);
       await getEventData({
         categoryId: category.categoryId,
         keyword: query,
@@ -230,13 +235,13 @@ export default function Main() {
   );
 
   const eventInfo: IEventInfo = {
-    category: '생일',
-    bouquet:
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0VQF4Pjjbtd2gQ1GfDtgolMrZmJHFqsw_Qg&usqp=CAU',
-    date: '2022.06.25',
-    title: '20살 나의 생일',
-    id: 20
+    id: 1,
+    title: '싸피의 생일',
+    date: '2022-06-30',
+    categoryId: 1,
+    userNickname: '싸피'
   };
+
   const toggleMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
     if (event.currentTarget.dataset.menu) return;

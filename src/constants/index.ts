@@ -46,10 +46,19 @@ export const flowerwraps = [
   '/img/flowerwrap5.png'
 ];
 
+export const bouquetList = [
+  '',
+  '/img/bouquet1.png',
+  '/img/bouquet2.png',
+  '/img/bouquet3.png',
+  '/img/bouquet4.png',
+  '/img/bouquet5.png'
+];
+
 export const categoryList: ICategory[] = [
-  { categoryId: 1, categoryName: '생일' },
-  { categoryId: 2, categoryName: '졸업' },
-  { categoryId: 3, categoryName: '결혼' },
+  { categoryId: 1, categoryName: '결혼' },
+  { categoryId: 2, categoryName: '생일' },
+  { categoryId: 3, categoryName: '졸업' },
   { categoryId: 4, categoryName: '새해' },
   { categoryId: 5, categoryName: '기타' }
 ];

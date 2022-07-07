@@ -1,8 +1,8 @@
 /// <reference types="react-scripts" />
 
 interface IEventInfo {
-  category: string;
-  bouquet: string;
+  userNickname: string;
+  categoryId: number;
   date: string;
   title: string;
   id: number;

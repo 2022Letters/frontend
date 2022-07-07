@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled, { css, keyframes } from 'styled-components';
+import { bouquetList, categoryList } from '../constants';
 
 const boxFadeIn = keyframes`
   0% {
@@ -13,7 +14,7 @@ const boxFadeIn = keyframes`
 const Container = styled.article`
   width: 100%;
   position: relative;
-  background-color: #fff9c1;
+  background-color: transparent;
   border-radius: 10px;
   transition: all 0.3s ease-in;
 `;
@@ -43,6 +44,7 @@ const ImgWrapper = styled.picture`
 
 const Img = styled.img`
   width: 100%;
+  height: 100%;
 `;
 
 const CategoryWrapper = styled.div`
@@ -122,7 +124,7 @@ interface IEventCard {
 }
 export default function EventCard({ eventInfo, menu, idx }: IEventCard) {
   const [isMenuOn, setIsMenuOn] = useState(false);
-  const { category, bouquet, title, id, date } = eventInfo;
+  const { categoryId, userNickname, title, id, date } = eventInfo;
   const { currentTargetEvent, toggleMenu } = menu;
   const onClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setIsMenuOn(true);
@@ -136,10 +138,10 @@ export default function EventCard({ eventInfo, menu, idx }: IEventCard) {
     <Container>
       <EventCardTopWrapper>
         <ImgWrapper>
-          <Img src={bouquet} alt={`${title} banner`} />
+          <Img src={bouquetList[categoryId]} alt={`${title} banner`} />
         </ImgWrapper>
         <CategoryWrapper>
-          <p>{category}</p>
+          <p>{categoryList[categoryId - 1].categoryName}</p>
         </CategoryWrapper>
       </EventCardTopWrapper>
       <EventCardBottomWrapper>
