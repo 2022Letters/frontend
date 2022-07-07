@@ -1,8 +1,10 @@
-import { useContext } from 'react';
+import { useContext, useRef } from 'react';
 import styled from 'styled-components';
 import { IMessageContext, MessageContext } from '../Store/MessageProvider';
 
-const Container = styled.article`
+const Container = styled.article``;
+
+const Background = styled.div`
   position: absolute;
   background-color: rgba(0, 0, 0, 0.2);
   width: 100%;
@@ -31,6 +33,7 @@ const Modal = styled.div`
 `;
 
 function LetterModal() {
+  const modal = useRef(null);
   const { messageInfo, setToggle, setCategoryId } = useContext(
     MessageContext
   ) as IMessageContext;
@@ -39,16 +42,22 @@ function LetterModal() {
     setToggle(false);
   };
 
+  const toggleStop = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (event.currentTarget === modal.current) {
+      event.stopPropagation();
+    }
+  };
+
   return (
-    <div>
+    <Container>
       {messageInfo.toggle ? (
-        <Container onClick={makeToggleOff}>
+        <Background onClick={makeToggleOff}>
           <ModalWrapper>
-            <Modal />
+            <Modal ref={modal} onClick={toggleStop} />
           </ModalWrapper>
-        </Container>
+        </Background>
       ) : null}
-    </div>
+    </Container>
   );
 }
 

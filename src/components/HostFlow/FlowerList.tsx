@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useContext } from 'react';
+import React, { useCallback, useContext } from 'react';
 import styled from 'styled-components';
-import { MessageContext } from '../Store/MessageProvider';
+import { IMessageContext, MessageContext } from '../Store/MessageProvider';
 import LetterModal from './LetterModal';
 import ListMessageButton from './ListMessageButton';
 
@@ -26,16 +26,29 @@ interface IFlowerListProps {
   categoryId: number;
 }
 function FlowerList({ messages, categoryId }: IFlowerListProps) {
-  console.log(useContext(MessageContext));
+  const { messageInfo, setCategoryId, setMsgId, setToggle } = useContext(
+    MessageContext
+  ) as IMessageContext;
+
+  const onClick = useCallback((msgId: number) => {
+    setCategoryId(categoryId);
+    setMsgId(msgId);
+    setToggle(true);
+  }, []);
+  console.log(messageInfo);
   return (
     <Container>
       {messages.map((message) => (
         <MessageLinkWrapper key={message.msgId}>
-          <ListMessageButton message={message} categoryId={categoryId} />
+          <ListMessageButton
+            message={message}
+            categoryId={categoryId}
+            onClick={onClick}
+          />
         </MessageLinkWrapper>
       ))}
     </Container>
   );
 }
 
-export default FlowerList;
+export default React.memo(FlowerList);

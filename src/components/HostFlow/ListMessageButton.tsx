@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import { leaves } from '../../constants';
-import LetterModal from './LetterModal';
 
 const ContainerButton = styled.button`
   background-color: transparent;
@@ -27,11 +26,21 @@ const NickName = styled.div`
 interface IListMessageButtonProps {
   message: IMessage;
   categoryId: number;
+  onClick: (msgId: number) => void;
 }
 
-function ListMessageButton({ message, categoryId }: IListMessageButtonProps) {
+function ListMessageButton({
+  message,
+  categoryId,
+  onClick
+}: IListMessageButtonProps) {
+  const sendMsgId = useCallback(() => {
+    const { msgId } = message as IMessage;
+    onClick(msgId);
+  }, []);
+  console.log(message.msgId);
   return (
-    <ContainerButton type="button">
+    <ContainerButton type="button" onClick={sendMsgId}>
       <FlowerImageWrapper>
         <FlowerImg
           src={leaves[categoryId][message.iconId].url}
@@ -45,4 +54,4 @@ function ListMessageButton({ message, categoryId }: IListMessageButtonProps) {
   );
 }
 
-export default ListMessageButton;
+export default React.memo(ListMessageButton);
