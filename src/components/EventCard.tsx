@@ -138,7 +138,11 @@ export default function EventCard({ eventInfo, menu, idx }: IEventCard) {
     <Container>
       <EventCardTopWrapper>
         <ImgWrapper>
-          <Img src={bouquetList[categoryId]} alt={`${title} banner`} />
+          <Img
+            src={bouquetList[categoryId]}
+            alt={`${title} banner`}
+            draggable={false}
+          />
         </ImgWrapper>
         <CategoryWrapper>
           <p>{categoryList[categoryId - 1].categoryName}</p>

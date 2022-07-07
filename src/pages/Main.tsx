@@ -74,7 +74,7 @@ const EventCardListContainer = styled.div`
 
 const CreateButtonWrapper = styled.div`
   position: fixed;
-  width: 780px;
+  width: 550px;
   bottom: 0;
   padding: 0 15px;
   @media (max-width: 780px) {
