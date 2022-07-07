@@ -31,3 +31,14 @@ interface IMessageLink {
   msgId: number | null;
   toggle: boolean;
 }
+
+interface IMessageDetail {
+  msgId: number | null;
+  postId: number | null;
+  iconId: number | null;
+  nickname: string | null;
+  content: string | null;
+  x: number | null;
+  y: number | null;
+  createdAt: date | null;
+}

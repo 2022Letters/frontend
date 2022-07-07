@@ -35,7 +35,6 @@ function FlowerList({ messages, categoryId }: IFlowerListProps) {
     setMsgId(msgId);
     setToggle(true);
   }, []);
-  console.log(messageInfo);
   return (
     <Container>
       {messages.map((message) => (

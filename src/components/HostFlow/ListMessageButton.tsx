@@ -38,7 +38,6 @@ function ListMessageButton({
     const { msgId } = message as IMessage;
     onClick(msgId);
   }, []);
-  console.log(message.msgId);
   return (
     <ContainerButton type="button" onClick={sendMsgId}>
       <FlowerImageWrapper>
