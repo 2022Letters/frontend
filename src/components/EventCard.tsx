@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import styled, { css, keyframes } from 'styled-components';
 import { bouquetList, categoryList } from '../constants';
 
@@ -136,18 +137,20 @@ export default function EventCard({ eventInfo, menu, idx }: IEventCard) {
   };
   return (
     <Container>
-      <EventCardTopWrapper>
-        <ImgWrapper>
-          <Img
-            src={bouquetList[categoryId]}
-            alt={`${title} banner`}
-            draggable={false}
-          />
-        </ImgWrapper>
-        <CategoryWrapper>
-          <p>{categoryList[categoryId - 1].categoryName}</p>
-        </CategoryWrapper>
-      </EventCardTopWrapper>
+      <Link to={`/${id}`}>
+        <EventCardTopWrapper>
+          <ImgWrapper>
+            <Img
+              src={bouquetList[categoryId]}
+              alt={`${title} banner`}
+              draggable={false}
+            />
+          </ImgWrapper>
+          <CategoryWrapper>
+            <p>{categoryList[categoryId - 1].categoryName}</p>
+          </CategoryWrapper>
+        </EventCardTopWrapper>
+      </Link>
       <EventCardBottomWrapper>
         <p>{date}</p>
         <h1>{title}</h1>
