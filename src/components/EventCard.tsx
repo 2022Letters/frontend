@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled, { css, keyframes } from 'styled-components';
+import { deleteApi } from '../api/baseApi';
 import { bouquetList, categoryList } from '../constants';
 
 const boxFadeIn = keyframes`
@@ -132,8 +133,19 @@ export default function EventCard({ eventInfo, menu, idx }: IEventCard) {
     toggleMenu(event);
   };
 
-  const KeepMenuOn = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const KeepMenuOn = async (event: React.MouseEvent<HTMLButtonElement>) => {
     toggleMenu(event);
+    console.log(event.currentTarget.dataset.menu);
+    // if (event.currentTarget.dataset.menu === 'update') {
+    // }
+    // await deleteMessage();
+  };
+
+  const deleteMessage = async () => {
+    const response = window.confirm('기념일을 정말로 삭제하시겠어요?');
+    if (response) {
+      await deleteApi(`/api/msg/${id}`);
+    }
   };
   return (
     <Container>
@@ -159,12 +171,7 @@ export default function EventCard({ eventInfo, menu, idx }: IEventCard) {
         </MenuToggleButton>
         {currentTargetEvent === idx && (
           <MenuWrapper className="target" active={isMenuOn}>
-            <MenuButton
-              type="button"
-              update="update"
-              onClick={KeepMenuOn}
-              data-menu="update"
-            >
+            <MenuButton type="button" onClick={KeepMenuOn} data-menu="update">
               수정
             </MenuButton>
             <MenuButton type="button" data-menu="delete" onClick={KeepMenuOn}>
