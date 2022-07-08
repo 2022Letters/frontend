@@ -193,11 +193,8 @@ export default function Main() {
     event: React.MouseEvent<HTMLButtonElement>,
     category: ICategory
   ) => {
-    const {
-      currentTarget: { value }
-    } = event;
-    console.log(category);
-    if (value === currentCategory.categoryName) {
+    const target = Number(event.currentTarget.dataset.id);
+    if (target === currentCategory.categoryId) {
       setCurrentCategory({ categoryId: null, categoryName: '' });
       await getEventData({ mode: 1 });
     } else {
@@ -208,7 +205,6 @@ export default function Main() {
         mode: 3
       });
     }
-    console.log('카테고리 서칭 완료');
   };
 
   const getEventData = useCallback(
@@ -233,14 +229,6 @@ export default function Main() {
     },
     [currentCategory]
   );
-
-  const eventInfo: IEventInfo = {
-    id: 1,
-    title: '싸피의 생일',
-    date: '2022-06-30',
-    categoryId: 1,
-    userNickname: '싸피'
-  };
 
   const toggleMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
@@ -275,6 +263,7 @@ export default function Main() {
             onClick={(event: React.MouseEvent<HTMLButtonElement>) =>
               onClickCategory(event, category)
             }
+            data-id={category.categoryId}
             index={category.categoryId}
             currentCategory={currentCategory}
           >
@@ -286,10 +275,14 @@ export default function Main() {
         'Loading...'
       ) : (
         <EventCardListContainer>
-          <EventCard eventInfo={eventInfo} menu={menu} idx={1} />
-          <EventCard eventInfo={eventInfo} menu={menu} idx={2} />
-          <EventCard eventInfo={eventInfo} menu={menu} idx={3} />
-          <EventCard eventInfo={eventInfo} menu={menu} idx={4} />
+          {eventList?.map((event) => (
+            <EventCard
+              eventInfo={event}
+              menu={menu}
+              key={event.categoryId}
+              idx={event.categoryId}
+            />
+          ))}
         </EventCardListContainer>
       )}
       <CreateButtonWrapper>

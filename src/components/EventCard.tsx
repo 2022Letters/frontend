@@ -171,9 +171,11 @@ export default function EventCard({ eventInfo, menu, idx }: IEventCard) {
         </MenuToggleButton>
         {currentTargetEvent === idx && (
           <MenuWrapper className="target" active={isMenuOn}>
-            <MenuButton type="button" onClick={KeepMenuOn} data-menu="update">
-              수정
-            </MenuButton>
+            <Link to={`/edit/${id}`}>
+              <MenuButton type="button" onClick={KeepMenuOn} data-menu="update">
+                수정
+              </MenuButton>
+            </Link>
             <MenuButton type="button" data-menu="delete" onClick={KeepMenuOn}>
               삭제
             </MenuButton>

@@ -5,8 +5,10 @@ import ReactDatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { ko } from 'date-fns/esm/locale';
 import axios from 'axios';
+import { useMatch, useNavigate } from 'react-router-dom';
 import * as C from '../components/common/style';
 import { categoryList } from '../constants';
+import { getApi, putApi } from '../api/baseApi';
 
 const borderColor = keyframes`
   0% {
@@ -121,7 +123,7 @@ const CategoryWrapper = styled.div`
   padding-bottom: 100%;
 `;
 
-const CategoryButton = styled.button<ICategoryButton>`
+const CategoryButton = styled.button<ICategoryButtonProps>`
   position: absolute;
   width: 100%;
   height: 100%;
@@ -131,7 +133,7 @@ const CategoryButton = styled.button<ICategoryButton>`
   border-radius: 10px;
   font-size: 1.5rem;
   background-color: ${(props) =>
-    props.index === props.currentCategory.categoryId ? '#FA7272' : '#FFCACA'};
+    props.index === props.currentCategory ? '#FA7272' : '#FFCACA'};
   transition: all 0.2s ease-in;
 `;
 
@@ -212,29 +214,42 @@ const CategoryWarningSpan = styled.span`
   color: red;
 `;
 
-interface ICreatedEvent {
-  title: string;
-  category: any;
-  date: string;
-  isOpen: boolean;
+interface ICategoryButtonProps {
+  index: number | null;
+  currentCategory: number | null;
 }
 
+interface ICreatedEvent {
+  title: string;
+  categoryId: number | null;
+  date: string;
+  visibility: boolean;
+  userid?: number;
+}
 function AnniversaryManagement() {
   const [originalDateInfo, setOriginalDateInfo] = useState(new Date());
   const [isOpen, setIsOpen] = useState(false);
   const [isCategorySelected, setIsCategorySelected] = useState(true);
   const [anniversaryInfo, setAnniversaryInfo] = useState<ICreatedEvent>({
     title: '',
-    category: {
-      categoryId: null,
-      categoryName: ''
-    },
+    categoryId: null,
     date: '',
-    isOpen: false
+    visibility: false
   });
-
+  const [postId, setPostId] = useState<number>();
+  const match = useMatch('/edit/:postId');
+  const navigate = useNavigate();
   useEffect(() => {
-    toStringByFormatting(originalDateInfo);
+    if (!match) {
+      toStringByFormatting(originalDateInfo);
+    }
+    const currentPostId = match?.params?.postId;
+    if (currentPostId) {
+      setPostId(+currentPostId);
+    }
+    const response = getApi(`/api/post/${currentPostId}`);
+    setAnniversaryInfo({ ...anniversaryInfo });
+    setOriginalDateInfo(new Date());
   }, []);
 
   const leftPad = (value: number) => {
@@ -268,23 +283,25 @@ function AnniversaryManagement() {
     setAnniversaryInfo({ ...anniversaryInfo, [name]: value });
   };
 
-  const onClickCategory = (event: React.MouseEvent<HTMLButtonElement>) => {
-    const {
-      currentTarget: { value }
-    } = event;
+  const onClickCategory = (categoryId: number) => {
     setIsCategorySelected(true);
-    setAnniversaryInfo({ ...anniversaryInfo, category: value });
+    setAnniversaryInfo({ ...anniversaryInfo, categoryId });
   };
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!anniversaryInfo.title) return;
-    if (!anniversaryInfo.category) {
+    if (!anniversaryInfo.categoryId) {
       setIsCategorySelected(false);
       return;
     }
-    const response = await axios.post('', { data: anniversaryInfo });
-    console.log(response);
+    navigate(`/${postId}`);
+    if (!match) {
+      const response = await axios.post('/api/post', { data: anniversaryInfo });
+    } else {
+      await axios.put(`/api/post/${postId}`, { data: anniversaryInfo });
+      navigate(`/${postId}`);
+    }
   };
 
   const stayCalanderOn = (event: React.PointerEvent<HTMLDivElement>) => {
@@ -323,8 +340,9 @@ function AnniversaryManagement() {
                 <CategoryButton
                   type="button"
                   index={category.categoryId}
-                  currentCategory={anniversaryInfo.category}
-                  onClick={onClickCategory}
+                  currentCategory={anniversaryInfo.categoryId}
+                  onClick={() => onClickCategory(category.categoryId)}
+                  date-id={category.categoryId}
                   value={category.categoryName}
                 >
                   {category.categoryName}
@@ -370,12 +388,12 @@ function AnniversaryManagement() {
               onClick={() => {
                 setAnniversaryInfo({
                   ...anniversaryInfo,
-                  isOpen: !anniversaryInfo.isOpen
+                  visibility: !anniversaryInfo.visibility
                 });
               }}
             />
             <ToggleState>
-              {anniversaryInfo.isOpen ? '공개' : '비공개'}
+              {anniversaryInfo.visibility ? '공개' : '비공개'}
             </ToggleState>
           </ToggleWrapper>
         </ToggleControlWrapper>

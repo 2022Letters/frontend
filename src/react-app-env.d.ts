@@ -13,7 +13,7 @@ interface IMenu {
 }
 
 interface ICategory {
-  categoryId?: any;
+  categoryId: any;
   categoryName: string;
 }
 interface ICategoryButton {
