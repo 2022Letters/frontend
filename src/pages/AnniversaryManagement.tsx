@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import ReactDatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -242,6 +242,7 @@ function AnniversaryManagement() {
   useEffect(() => {
     if (!match) {
       toStringByFormatting(originalDateInfo);
+      return;
     }
     const currentPostId = match?.params?.postId;
     if (currentPostId) {
@@ -252,65 +253,83 @@ function AnniversaryManagement() {
     setOriginalDateInfo(new Date());
   }, []);
 
-  const leftPad = (value: number) => {
+  const leftPad = useCallback((value: number) => {
     if (value >= 10) {
       return value;
     }
     return `0${value}`;
-  };
+  }, []);
 
-  const toStringByFormatting = (source: Date, delimiter = '-') => {
+  const toStringByFormatting = useCallback((source: Date, delimiter = '-') => {
     const year = source.getFullYear();
     const month = leftPad(source.getMonth() + 1);
     const day = leftPad(source.getDate());
     const date = [year, month, day].join(delimiter);
     setOriginalDateInfo(new Date(date));
     setAnniversaryInfo({ ...anniversaryInfo, date });
-  };
+  }, []);
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.stopPropagation();
-    setIsOpen(!isOpen);
-  };
+  const handleClick = useCallback(
+    (event: React.MouseEvent<HTMLButtonElement>) => {
+      event.stopPropagation();
+      setIsOpen(!isOpen);
+    },
+    []
+  );
 
-  const makeCalanderOff = () => {
-    setIsOpen(false);
-  };
+  const changeTitle = useCallback(
+    (event: React.FormEvent<HTMLInputElement>) => {
+      const { name, value } = event.currentTarget;
+      event.preventDefault();
+      setAnniversaryInfo({ ...anniversaryInfo, [name]: value });
+    },
+    []
+  );
 
-  const changeTitle = (event: React.FormEvent<HTMLInputElement>) => {
-    const { name, value } = event.currentTarget;
-    event.preventDefault();
-    setAnniversaryInfo({ ...anniversaryInfo, [name]: value });
-  };
+  const onClickCategory = useCallback(
+    (categoryId: number) => {
+      setIsCategorySelected(true);
+      setAnniversaryInfo({ ...anniversaryInfo, categoryId });
+    },
+    [anniversaryInfo]
+  );
 
-  const onClickCategory = (categoryId: number) => {
-    setIsCategorySelected(true);
-    setAnniversaryInfo({ ...anniversaryInfo, categoryId });
-  };
-
-  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (!anniversaryInfo.title) return;
-    if (!anniversaryInfo.categoryId) {
-      setIsCategorySelected(false);
-      return;
-    }
-    navigate(`/${postId}`);
-    if (!match) {
-      const response = await axios.post('/api/post', { data: anniversaryInfo });
-    } else {
-      await axios.put(`/api/post/${postId}`, { data: anniversaryInfo });
+  const onSubmit = useCallback(
+    async (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      if (!anniversaryInfo.title) return;
+      if (!anniversaryInfo.categoryId) {
+        setIsCategorySelected(false);
+        return;
+      }
       navigate(`/${postId}`);
-    }
-  };
+      if (!match) {
+        const response = await axios.post('/api/post', {
+          data: anniversaryInfo
+        });
+        navigate(`/1`);
+      } else {
+        await axios.put(`/api/post/${postId}`, { data: anniversaryInfo });
+        navigate(`/${postId}`);
+      }
+    },
+    []
+  );
 
-  const stayCalanderOn = (event: React.PointerEvent<HTMLDivElement>) => {
-    event.stopPropagation();
-    setIsOpen(true);
-  };
+  const stayCalanderOn = useCallback(
+    (event: React.PointerEvent<HTMLDivElement>) => {
+      event.stopPropagation();
+      setIsOpen(true);
+    },
+    []
+  );
 
   return (
-    <Container onClick={makeCalanderOff}>
+    <Container
+      onClick={() => {
+        setIsOpen(false);
+      }}
+    >
       <Form onSubmit={onSubmit}>
         <AllyHiddenTitle>글쓰기</AllyHiddenTitle>
         <InputWrapper>

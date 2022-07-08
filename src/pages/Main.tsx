@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import EventCard from '../components/EventCard';
 import { getApi } from '../api/baseApi';
 import { categoryList } from '../constants';
+import LoadingPage from '../components/LoadingPage';
 
 const Container = styled.section`
   position: relative;
@@ -130,7 +131,6 @@ export default function Main() {
   }, []);
 
   const getEventListApi = ({ keyword, categoryId, mode }: IEventListApi) => {
-    console.log(mode);
     const BASE_API = `/api/posts?userId=${userId}&mode=${mode}`;
     switch (mode) {
       case 3:
@@ -209,7 +209,6 @@ export default function Main() {
 
   const getEventData = useCallback(
     async ({ mode, categoryId, keyword }: IEventListApi) => {
-      console.log(mode, categoryId, keyword);
       setIsLoading(true);
       switch (mode) {
         case 2:
@@ -227,7 +226,7 @@ export default function Main() {
       }
       setIsLoading(false);
     },
-    [currentCategory]
+    []
   );
 
   const toggleMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -271,8 +270,10 @@ export default function Main() {
           </CategoryButton>
         ))}
       </CategoryWrapper>
-      {isLoading ? (
-        'Loading...'
+      {!isLoading ? (
+        <div style={{ height: '70%' }}>
+          <LoadingPage />
+        </div>
       ) : (
         <EventCardListContainer>
           {eventList?.map((event) => (
