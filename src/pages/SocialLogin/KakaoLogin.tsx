@@ -7,12 +7,13 @@ import {
 } from '../../components/common/style';
 
 function Kakao() {
+  // backend와 통일
   const REST_API_KEY = 'cdbaf8838f9e64259177edf602022031';
   const REDIRECT_URI = 'http://localhost:3000/login/redirect';
   const getKakao = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
 
   const kakaoLogin = () => {
-    window.location.href = 'http://localhost:8080/kakaoLogin';
+    window.location.href = getKakao;
   };
   return (
     <SocialDiv>
