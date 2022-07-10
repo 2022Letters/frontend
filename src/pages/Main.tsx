@@ -215,6 +215,7 @@ export default function Main() {
   const getEventData = useCallback(
     async ({ mode, categoryId, keyword }: IEventListApi) => {
       setIsLoading(true);
+
       switch (mode) {
         case 2:
           await getKeywordEventList({ categoryId, keyword });
