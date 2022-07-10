@@ -2,7 +2,6 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:8080",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
@@ -14,6 +13,7 @@
     "@types/react-datepicker": "^4.4.2",
     "@types/react-dom": "^18.0.5",
     "axios": "^0.27.2",
+    "http-proxy-middleware": "^2.0.6",
     "lodash": "^4.17.21",
     "react": "^18.2.0",
     "react-datepicker": "^4.8.0",

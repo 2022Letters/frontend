@@ -8,8 +8,8 @@ import {
 
 function Kakao() {
   // backend와 통일
-  const REST_API_KEY = 'cdbaf8838f9e64259177edf602022031';
-  const REDIRECT_URI = 'http://localhost:3000/login/redirect';
+  const REST_API_KEY = process.env.REACT_APP_KAKAO_CLIENT_API;
+  const REDIRECT_URI = process.env.REACT_APP_KAKAO_REDIRECT_URI;
   const getKakao = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
 
   const kakaoLogin = () => {

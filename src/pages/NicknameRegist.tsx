@@ -55,7 +55,6 @@ function NicknameRegist() {
   };
 
   const registUser = () => {
-    console.log(location.state);
     const state = location.state as NicknameProps;
     const { email } = state;
     const { socialLoginType } = state;
@@ -66,7 +65,7 @@ function NicknameRegist() {
     console.log(socialLoginType);
     if (email) {
       axios
-        .post(`/login/user/nickname`, {
+        .post(`http://3.37.37.6:8080/login/user/nickname`, {
           nickname,
           email
         })

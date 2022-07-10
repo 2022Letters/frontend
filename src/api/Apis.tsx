@@ -1,9 +1,10 @@
 import { getApi, postApi, putApi, deleteApi } from './baseApi';
 
 // 로그인 api
-export const kakaoLoginApi = (code: string) => {
+export const kakaoLoginApi = async (code: string) => {
   const url = `kakaoLogin?code=${code}`;
-  const data = getApi(url);
+  const data = await getApi(url);
+  console.log(data);
   return data;
 };
 

@@ -15,16 +15,22 @@ function SocialRedirect() {
   const handlerLogin = async () => {
     const code = new URL(window.location.href).searchParams.get('code');
     const email = new URL(window.location.href).searchParams.get('email');
+    let data: any;
     try {
-      let data;
       if (code) {
         // 카카오 로그인
-        data = await axios.get(`/kakaoLogin?code=${code}`);
+        await axios
+          .get(`${process.env.REACT_APP_API_URL}kakaoLogin?code=${code}`)
+          .then((res) => {
+            data = res.data;
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       } else if (email) {
         // 구글 로그인
         data = await axios.get(`/login/sucess?email=${email}`);
       }
-      data = data?.data;
       if (data.existingUser === 'true') {
         // 가입된 회원
         localStorage.setItem('token', data.accessToken);
@@ -40,10 +46,8 @@ function SocialRedirect() {
         });
       }
       return data;
-    } catch (error) {
-      console.log(error);
-      alert('문제가 발생했습니다 ');
-      return error;
+    } catch (err) {
+      return err;
     }
   };
 
