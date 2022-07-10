@@ -8,7 +8,8 @@ import axios from 'axios';
 import { useMatch, useNavigate } from 'react-router-dom';
 import * as C from '../components/common/style';
 import { categoryList } from '../constants';
-import { getApi, putApi } from '../api/baseApi';
+import { getApi } from '../api/baseApi';
+import { toStringByFormatting } from '../common/utils/util';
 
 const borderColor = keyframes`
   0% {
@@ -241,7 +242,8 @@ function AnniversaryManagement() {
   const navigate = useNavigate();
   useEffect(() => {
     if (!match) {
-      toStringByFormatting(originalDateInfo);
+      const today = toStringByFormatting(originalDateInfo);
+      setAnniversaryInfo({ ...anniversaryInfo, date: today });
       return;
     }
     const currentPostId = match?.params?.postId;
@@ -249,27 +251,25 @@ function AnniversaryManagement() {
       setPostId(+currentPostId);
     }
     (async () => {
-      const response = await getApi(`/api/post/set/${currentPostId}`);
-      setAnniversaryInfo({ ...anniversaryInfo });
+      // const response = await getApi(`/api/post/set/${currentPostId}`);
+      setAnniversaryInfo({
+        title: '싸피의 생일',
+        categoryId: 2,
+        date: '2022-07-03',
+        visibility: true
+      });
       setOriginalDateInfo(new Date());
     })();
   }, []);
 
-  const leftPad = useCallback((value: number) => {
-    if (value >= 10) {
-      return value;
-    }
-    return `0${value}`;
-  }, []);
-
-  const toStringByFormatting = useCallback((source: Date, delimiter = '-') => {
-    const year = source.getFullYear();
-    const month = leftPad(source.getMonth() + 1);
-    const day = leftPad(source.getDate());
-    const date = [year, month, day].join(delimiter);
-    setOriginalDateInfo(new Date(date));
-    setAnniversaryInfo({ ...anniversaryInfo, date });
-  }, []);
+  const modifyDateFormat = useCallback(
+    (source: Date) => {
+      const date = toStringByFormatting(source);
+      setOriginalDateInfo(new Date(date));
+      setAnniversaryInfo({ ...anniversaryInfo, date });
+    },
+    [anniversaryInfo]
+  );
 
   const handleClick = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -342,6 +342,7 @@ function AnniversaryManagement() {
             type="text"
             id="title"
             name="title"
+            value={anniversaryInfo.title}
             onChange={changeTitle}
             placeholder="기념일 제목을 입력해주세요."
           />
@@ -396,7 +397,7 @@ function AnniversaryManagement() {
                 locale={ko}
                 selected={originalDateInfo}
                 onChange={(date: Date) => {
-                  toStringByFormatting(date);
+                  modifyDateFormat(date);
                 }}
                 inline
               />
@@ -408,7 +409,8 @@ function AnniversaryManagement() {
           <ToggleWrapper>
             <ToggleInput
               type="checkbox"
-              onClick={() => {
+              checked={anniversaryInfo.visibility}
+              onChange={() => {
                 setAnniversaryInfo({
                   ...anniversaryInfo,
                   visibility: !anniversaryInfo.visibility

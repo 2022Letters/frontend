@@ -96,6 +96,10 @@ const CreateButton = styled.button`
   font-size: 2rem;
 `;
 
+const LoadingWrapper = styled.div`
+  width: 70%;
+`;
+
 interface IKeyword {
   keyword?: string;
   categoryId?: number;
@@ -272,9 +276,9 @@ export default function Main() {
         ))}
       </CategoryWrapper>
       {isLoading ? (
-        <div style={{ height: '70%' }}>
+        <LoadingWrapper>
           <LoadingPage />
-        </div>
+        </LoadingWrapper>
       ) : (
         <EventCardListContainer>
           {eventList?.map((event) => (

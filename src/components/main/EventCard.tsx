@@ -146,7 +146,7 @@ export default function EventCard({ eventInfo, menu, idx }: IEventCard) {
   };
   return (
     <Container>
-      <Link to={`/${id}`}>
+      <Link to={`/post/${id}`}>
         <EventCardTopWrapper>
           <ImgWrapper>
             <Img
@@ -169,7 +169,7 @@ export default function EventCard({ eventInfo, menu, idx }: IEventCard) {
           . . .
         </MenuToggleButton>
         {currentTargetEvent === idx && (
-          <MenuWrapper className="target" active={isMenuOn}>
+          <MenuWrapper active={isMenuOn}>
             <Link to={`/edit/${id}`}>
               <MenuButton type="button" data-menu="update">
                 수정

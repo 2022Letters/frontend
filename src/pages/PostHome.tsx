@@ -2,13 +2,14 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate, useParams } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 
 import theme from '../common/style/theme';
 import { Button } from '../components/common/style';
 import { flowerwraps, leaves } from '../constants';
 import FlowerList from '../components/HostFlow/FlowerList';
 import LetterModal from '../components/HostFlow/LetterModal';
-import MessageProvider from '../api/Store/MessageProvider';
+import MessageProvider from '../Store/MessageProvider';
 import { postDetailApi } from '../api/Apis';
 
 const MainWrapper = styled.div`
@@ -180,6 +181,7 @@ export default function PostHome() {
     document.execCommand('copy');
     document.body.removeChild(el);
     setCopied(true);
+    setTimeout(() => setCopied(false), 3000);
   }, []);
 
   const handlePostUrl = () => {
@@ -195,75 +197,81 @@ export default function PostHome() {
   };
 
   return (
-    <MessageProvider>
-      <MainWrapper>
-        <LetterModal />
-        <ContentWrapper>
-          <TextWrapper>
-            <p>
-              <b>{post.userNickname}</b>&nbsp;님의 <b>[{post.title}]</b>을 위한
-            </p>
-            <p>
-              <b>{post.count}</b> 송이의 꽃이 도착했어요.
-            </p>
-            {post.date}
-          </TextWrapper>
-          <ImgWrapper ref={imgWrapper} isListMode={isListMode}>
-            {isListMode ? (
-              <FlowerList
-                messages={post.messages}
-                categoryId={post.categoryId}
-              />
-            ) : (
+    <>
+      <Helmet>
+        <title>꽃다발 | 기뻐유</title>
+      </Helmet>
+      <MessageProvider>
+        <MainWrapper>
+          <LetterModal />
+          <ContentWrapper>
+            <TextWrapper>
+              <p>
+                <b>{post.userNickname}</b>&nbsp;님의 <b>[{post.title}]</b>을
+                위한
+              </p>
+              <p>
+                <b>{post.count}</b> 송이의 꽃이 도착했어요.
+              </p>
+              {post.date}
+            </TextWrapper>
+            <ImgWrapper ref={imgWrapper} isListMode={isListMode}>
+              {isListMode ? (
+                <FlowerList
+                  messages={post.messages}
+                  categoryId={post.categoryId}
+                />
+              ) : (
+                <>
+                  <FlowerWrap src={flowerwraps[post.categoryId]} />
+                  {post.count > 0 &&
+                    post.messages.map((e) => {
+                      return (
+                        <Leaf
+                          top={e.y}
+                          left={e.x}
+                          width={box.width}
+                          height={box.height}
+                          src={leaves[post.categoryId][e.iconId].url}
+                          key={e.msgId}
+                        />
+                      );
+                    })}
+                </>
+              )}
+            </ImgWrapper>
+          </ContentWrapper>
+          <HostButtonWrapper>
+            {post.userId !== userId ? (
               <>
-                <FlowerWrap src={flowerwraps[post.categoryId]} />
-                {post.count > 0 &&
-                  post.messages.map((e) => {
-                    return (
-                      <Leaf
-                        top={e.y}
-                        left={e.x}
-                        width={box.width}
-                        height={box.height}
-                        src={leaves[post.categoryId][e.iconId].url}
-                        key={e.msgId}
-                      />
-                    );
-                  })}
-              </>
-            )}
-          </ImgWrapper>
-        </ContentWrapper>
-        <HostButtonWrapper>
-          {post.userId !== userId ? (
-            <>
-              <SendBtn onClick={handlePostUrl}>
-                {copied ? '링크 복사 완료!' : '링크 복사'}
-              </SendBtn>
-              <MessageDisplayChangeBtn
-                type="button"
-                onClick={() => setIsListMode((prev) => !prev)}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  fill="currentColor"
-                  className="bi bi-list-ul"
-                  viewBox="0 0 16 16"
+                <SendBtn onClick={handlePostUrl}>
+                  {copied ? '링크 복사 완료!' : '링크 복사'}
+                </SendBtn>
+                <MessageDisplayChangeBtn
+                  type="button"
+                  onClick={() => setIsListMode((prev) => !prev)}
                 >
-                  <path
-                    fillRule="evenodd"
-                    d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm-3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"
-                  />
-                </svg>
-              </MessageDisplayChangeBtn>
-            </>
-          ) : (
-            <StartBtn onClick={onStartClick}>꽃 보내기</StartBtn>
-          )}
-        </HostButtonWrapper>
-      </MainWrapper>
-    </MessageProvider>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    className="bi bi-list-ul"
+                    viewBox="0 0 16 16"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm-3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"
+                    />
+                  </svg>
+                </MessageDisplayChangeBtn>
+              </>
+            ) : (
+              <StartBtn onClick={onStartClick}>꽃 보내기</StartBtn>
+            )}
+          </HostButtonWrapper>
+        </MainWrapper>
+      </MessageProvider>
+    </>
   );
 }

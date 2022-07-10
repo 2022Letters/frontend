@@ -29,7 +29,7 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/login/redirect" element={<SocialRedirect />} />
             <Route path="/login/nickname" element={<NicknameRegist />} />
-            <Route path="/:postId" element={<PostHome />} />
+            <Route path="/post/:postId" element={<PostHome />} />
             <Route path="/guest/:postId" element={<GuestFlow />} />
             <Route path="/guest/result/:postId" element={<GuestResult />} />
           </Routes>
