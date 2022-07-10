@@ -2,11 +2,11 @@ import { useState, useCallback, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import Draggable from 'react-draggable';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 import { Title, Button } from '../common/style';
 import { leaves, flowerwraps } from '../../constants';
 import { IPost } from '../../types';
-import { createMessageApi } from '../../api/Apis';
 
 const MainTitle = styled(Title)`
   flex-shrink: 0;
@@ -146,15 +146,19 @@ export default function GuestLayout({ post, iconId, nickname, text }: Props) {
   const onFinishClick = useCallback(async () => {
     const xRatio = pos.x / box.width;
     const yRatio = pos.y / box.height;
-    console.log(pos, box, xRatio, yRatio);
-    // const resp = await createMessageApi({
-    //   postId: post.id,
-    //   iconId,
-    //   nickname,
-    //   content: text,
-    //   x: xRatio,
-    //   y: yRatio
-    // });
+    const obj = {
+      postId: post.id,
+      iconId,
+      nickname,
+      content: text,
+      x: xRatio,
+      y: yRatio
+    };
+    console.log(obj);
+    const resp = await axios.post(
+      `${process.env.REACT_APP_API_URL}api/msg`,
+      obj
+    );
     navigate(`/guest/result/${post.id}`);
   }, [pos, box]);
 

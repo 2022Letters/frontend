@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate, useParams } from 'react-router-dom';
+import axios from 'axios';
 
 import theme from '../common/style/theme';
 import { Button } from '../components/common/style';
 import { flowerwraps, leaves } from '../constants';
-import { postDetailApi } from '../api/Apis';
+import { IPost } from '../types';
 
 const MainWrapper = styled.div`
   width: 100%;
@@ -76,31 +77,7 @@ const StartBtn = styled(Button)`
 
 export default function PostHome() {
   const [box, setBox] = useState({ width: 0, height: 0 });
-  const [post, setPost] = useState({
-    id: 1,
-    categoryId: 1,
-    userId: 1,
-    userNickname: '싸피',
-    title: 'ssafy3',
-    visibility: false,
-    date: '2018-12-15',
-    createdAt: '2022-06-29T10:14:07.000+00:00',
-    count: 2,
-    messages: [
-      {
-        msgId: 1,
-        iconId: 1,
-        x: 0.04230769230769231,
-        y: -0.39609483960948394
-      },
-      {
-        msgId: 2,
-        iconId: 2,
-        x: -0.19038461538461537,
-        y: 0.10739191073919108
-      }
-    ]
-  });
+  const [post, setPost] = useState<IPost>();
 
   const navigate = useNavigate();
   const { postId } = useParams();
@@ -110,11 +87,13 @@ export default function PostHome() {
     const wrapperBox = imgWrapper.current.getBoundingClientRect();
     setBox({ ...box, width: wrapperBox.width, height: wrapperBox.height });
 
-    // const fetchData = async () => {
-    //   const resp = await postDetailApi(Number(postId));
-    //   setPost(resp.data);
-    // };
-    // fetchData();
+    const fetchData = async () => {
+      const resp = await axios.get(
+        `${process.env.REACT_APP_API_URL}api/post/${postId}`
+      );
+      setPost(resp.data);
+    };
+    fetchData();
   }, []);
 
   const onStartClick = useCallback(() => {
@@ -125,29 +104,38 @@ export default function PostHome() {
     <MainWrapper>
       <ContentWrapper>
         <TextWrapper>
-          <p>
-            <b>{post.userNickname}</b>&nbsp;님의 <b>[{post.title}]</b>을 위한
-          </p>
-          <p>
-            <b>{post.count}</b> 송이의 꽃이 도착했어요.
-          </p>
-          {post.date}
+          {post !== undefined && (
+            <>
+              <p>
+                <b>{post.userNickname}</b>&nbsp;님의 <b>[{post.title}]</b>을
+                위한
+              </p>
+              <p>
+                <b>{post.count}</b> 송이의 꽃이 도착했어요.
+              </p>
+              {post.date}
+            </>
+          )}
         </TextWrapper>
         <ImgWrapper ref={imgWrapper}>
-          <FlowerWrap src={flowerwraps[post.categoryId]} />
-          {post.count > 0 &&
-            post.messages.map((e) => {
-              return (
-                <Leaf
-                  top={e.y}
-                  left={e.x}
-                  width={box.width}
-                  height={box.height}
-                  src={leaves[post.categoryId][e.iconId].url}
-                  key={e.msgId}
-                />
-              );
-            })}
+          {post !== undefined && (
+            <>
+              <FlowerWrap src={flowerwraps[post.categoryId]} />
+              {post.count > 0 &&
+                post.messages.map((e) => {
+                  return (
+                    <Leaf
+                      top={e.y}
+                      left={e.x}
+                      width={box.width}
+                      height={box.height}
+                      src={leaves[post.categoryId][e.iconId].url}
+                      key={e.msgId}
+                    />
+                  );
+                })}
+            </>
+          )}
         </ImgWrapper>
       </ContentWrapper>
       <StartBtn onClick={onStartClick}>꽃 보내기</StartBtn>
