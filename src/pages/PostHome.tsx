@@ -9,6 +9,7 @@ import { flowerwraps, leaves } from '../constants';
 import FlowerList from '../components/HostFlow/FlowerList';
 import LetterModal from '../components/HostFlow/LetterModal';
 import MessageProvider from '../api/Store/MessageProvider';
+import { postDetailApi } from '../api/Apis';
 
 const MainWrapper = styled.div`
   width: 100%;
@@ -99,7 +100,7 @@ const MessageDisplayChangeBtn = styled(Button)`
   margin-bottom: 0;
 `;
 
-function GuestWrite() {
+export default function PostHome() {
   const [box, setBox] = useState({ width: 0, height: 0 });
   const [post, setPost] = useState({
     id: 1,
@@ -156,7 +157,12 @@ function GuestWrite() {
     getUserId();
     const wrapperBox = imgWrapper.current.getBoundingClientRect();
     setBox({ ...box, width: wrapperBox.width, height: wrapperBox.height });
-    // postId로 게시글 상세정보 조회
+
+    // const fetchData = async () => {
+    //   const resp = await postDetailApi(Number(postId));
+    //   setPost(resp.data);
+    // };
+    // fetchData();
   }, []);
 
   const onStartClick = useCallback(() => {
@@ -261,5 +267,3 @@ function GuestWrite() {
     </MessageProvider>
   );
 }
-
-export default GuestWrite;
