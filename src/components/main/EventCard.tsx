@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled, { css, keyframes } from 'styled-components';
-import { deleteApi } from '../api/baseApi';
-import { bouquetList, categoryList } from '../constants';
+import { deleteApi } from '../../api/baseApi';
+import { bouquetList, categoryList } from '../../constants';
 
 const boxFadeIn = keyframes`
   0% {
@@ -135,10 +135,7 @@ export default function EventCard({ eventInfo, menu, idx }: IEventCard) {
 
   const KeepMenuOn = async (event: React.MouseEvent<HTMLButtonElement>) => {
     toggleMenu(event);
-    console.log(event.currentTarget.dataset.menu);
-    // if (event.currentTarget.dataset.menu === 'update') {
-    // }
-    // await deleteMessage();
+    await deleteMessage();
   };
 
   const deleteMessage = async () => {
@@ -154,8 +151,10 @@ export default function EventCard({ eventInfo, menu, idx }: IEventCard) {
           <ImgWrapper>
             <Img
               src={bouquetList[categoryId]}
-              alt={`${title} banner`}
+              alt={`${title} event`}
               draggable={false}
+              width="167"
+              height="215"
             />
           </ImgWrapper>
           <CategoryWrapper>
@@ -172,7 +171,7 @@ export default function EventCard({ eventInfo, menu, idx }: IEventCard) {
         {currentTargetEvent === idx && (
           <MenuWrapper className="target" active={isMenuOn}>
             <Link to={`/edit/${id}`}>
-              <MenuButton type="button" onClick={KeepMenuOn} data-menu="update">
+              <MenuButton type="button" data-menu="update">
                 수정
               </MenuButton>
             </Link>

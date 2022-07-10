@@ -248,9 +248,11 @@ function AnniversaryManagement() {
     if (currentPostId) {
       setPostId(+currentPostId);
     }
-    const response = getApi(`/api/post/${currentPostId}`);
-    setAnniversaryInfo({ ...anniversaryInfo });
-    setOriginalDateInfo(new Date());
+    (async () => {
+      const response = await getApi(`/api/post/set/${currentPostId}`);
+      setAnniversaryInfo({ ...anniversaryInfo });
+      setOriginalDateInfo(new Date());
+    })();
   }, []);
 
   const leftPad = useCallback((value: number) => {
@@ -283,7 +285,7 @@ function AnniversaryManagement() {
       event.preventDefault();
       setAnniversaryInfo({ ...anniversaryInfo, [name]: value });
     },
-    []
+    [anniversaryInfo]
   );
 
   const onClickCategory = useCallback(
@@ -296,6 +298,7 @@ function AnniversaryManagement() {
 
   const onSubmit = useCallback(
     async (event: React.FormEvent<HTMLFormElement>) => {
+      console.log(anniversaryInfo);
       event.preventDefault();
       if (!anniversaryInfo.title) return;
       if (!anniversaryInfo.categoryId) {
@@ -304,16 +307,17 @@ function AnniversaryManagement() {
       }
       navigate(`/${postId}`);
       if (!match) {
+        console.log(match);
+        navigate(`/1`);
         const response = await axios.post('/api/post', {
           data: anniversaryInfo
         });
-        navigate(`/1`);
       } else {
         await axios.put(`/api/post/${postId}`, { data: anniversaryInfo });
         navigate(`/${postId}`);
       }
     },
-    []
+    [anniversaryInfo]
   );
 
   const stayCalanderOn = useCallback(
@@ -417,7 +421,7 @@ function AnniversaryManagement() {
           </ToggleWrapper>
         </ToggleControlWrapper>
         <SubmmitWrapper>
-          <SubmitButton type="submit">등록</SubmitButton>
+          <SubmitButton type="submit">{postId ? '수정' : '등록'}</SubmitButton>
         </SubmmitWrapper>
       </Form>
     </Container>

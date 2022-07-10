@@ -4,7 +4,8 @@ import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { debounce } from 'lodash';
 import { Link } from 'react-router-dom';
-import EventCard from '../components/EventCard';
+import { Helmet } from 'react-helmet';
+import EventCard from '../components/main/EventCard';
 import { getApi } from '../api/baseApi';
 import { categoryList } from '../constants';
 import LoadingPage from '../components/LoadingPage';
@@ -270,7 +271,7 @@ export default function Main() {
           </CategoryButton>
         ))}
       </CategoryWrapper>
-      {!isLoading ? (
+      {isLoading ? (
         <div style={{ height: '70%' }}>
           <LoadingPage />
         </div>
