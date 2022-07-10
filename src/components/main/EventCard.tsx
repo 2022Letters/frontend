@@ -150,6 +150,7 @@ export default function EventCard({ eventInfo, menu, idx }: IEventCard) {
         <EventCardTopWrapper>
           <ImgWrapper>
             <Img
+              loading="lazy"
               src={bouquetList[categoryId]}
               alt={`${title} event`}
               draggable={false}

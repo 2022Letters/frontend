@@ -409,6 +409,7 @@ function AnniversaryManagement() {
           <ToggleWrapper>
             <ToggleInput
               type="checkbox"
+              aria-label="게시글 공개 여부 체크 버튼"
               checked={anniversaryInfo.visibility}
               onChange={() => {
                 setAnniversaryInfo({

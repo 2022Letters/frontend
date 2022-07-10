@@ -96,11 +96,11 @@ Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots 
           x: null,
           y: null
         });
-        const date = toStringByFormatting(message.createdAt);
+        const date = toStringByFormatting(new Date(message.createdAt));
         setRefinedDate(date);
       })();
     }
-  }, []);
+  }, [messageInfo]);
 
   const makeToggleOff = () => {
     setToggle(false);

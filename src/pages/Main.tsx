@@ -251,52 +251,57 @@ export default function Main() {
     toggleMenu
   };
   return (
-    <Container onClick={() => setCurrentTargetEvent(-1)}>
-      <InputWrapper>
-        <SearchInput
-          type="text"
-          placeholder="찾고 싶은 추억을 입력해주세요."
-          onChange={onChange}
-        />
-      </InputWrapper>
-      <CategoryWrapper>
-        {categoryList.map((category) => (
-          <CategoryButton
-            type="button"
-            key={category.categoryId}
-            value={category.categoryName}
-            onClick={(event: React.MouseEvent<HTMLButtonElement>) =>
-              onClickCategory(event, category)
-            }
-            data-id={category.categoryId}
-            index={category.categoryId}
-            currentCategory={currentCategory}
-          >
-            {category.categoryName}
-          </CategoryButton>
-        ))}
-      </CategoryWrapper>
-      {isLoading ? (
-        <LoadingWrapper>
-          <LoadingPage />
-        </LoadingWrapper>
-      ) : (
-        <EventCardListContainer>
-          {eventList?.map((event) => (
-            <EventCard
-              eventInfo={event}
-              menu={menu}
-              key={event.categoryId}
-              idx={event.categoryId}
-            />
+    <>
+      <Helmet>
+        <title>나의 기념일 | 기뻐유</title>
+      </Helmet>
+      <Container onClick={() => setCurrentTargetEvent(-1)}>
+        <InputWrapper>
+          <SearchInput
+            type="text"
+            placeholder="찾고 싶은 추억을 입력해주세요."
+            onChange={onChange}
+          />
+        </InputWrapper>
+        <CategoryWrapper>
+          {categoryList.map((category) => (
+            <CategoryButton
+              type="button"
+              key={category.categoryId}
+              value={category.categoryName}
+              onClick={(event: React.MouseEvent<HTMLButtonElement>) =>
+                onClickCategory(event, category)
+              }
+              data-id={category.categoryId}
+              index={category.categoryId}
+              currentCategory={currentCategory}
+            >
+              {category.categoryName}
+            </CategoryButton>
           ))}
-        </EventCardListContainer>
-      )}
-      <CreateButtonWrapper>
-        <Link to="/create">
-          <CreateButton type="submit">+</CreateButton>
-        </Link>
-      </CreateButtonWrapper>
-    </Container>
+        </CategoryWrapper>
+        {isLoading ? (
+          <LoadingWrapper>
+            <LoadingPage />
+          </LoadingWrapper>
+        ) : (
+          <EventCardListContainer>
+            {eventList?.map((event) => (
+              <EventCard
+                eventInfo={event}
+                menu={menu}
+                key={event.categoryId}
+                idx={event.categoryId}
+              />
+            ))}
+          </EventCardListContainer>
+        )}
+        <CreateButtonWrapper>
+          <Link to="/create">
+            <CreateButton type="submit">+</CreateButton>
+          </Link>
+        </CreateButtonWrapper>
+      </Container>
+    </>
   );
 }
