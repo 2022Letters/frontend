@@ -5,6 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import theme from '../common/style/theme';
 import { Button } from '../components/common/style';
 import { flowerwraps, leaves } from '../constants';
+import { postDetailApi } from '../api/Apis';
 
 const MainWrapper = styled.div`
   width: 100%;
@@ -73,7 +74,7 @@ const StartBtn = styled(Button)`
   flex-shrink: 0;
 `;
 
-function GuestWrite() {
+export default function PostHome() {
   const [box, setBox] = useState({ width: 0, height: 0 });
   const [post, setPost] = useState({
     id: 1,
@@ -108,7 +109,12 @@ function GuestWrite() {
   useEffect(() => {
     const wrapperBox = imgWrapper.current.getBoundingClientRect();
     setBox({ ...box, width: wrapperBox.width, height: wrapperBox.height });
-    // postId로 게시글 상세정보 조회
+
+    // const fetchData = async () => {
+    //   const resp = await postDetailApi(Number(postId));
+    //   setPost(resp.data);
+    // };
+    // fetchData();
   }, []);
 
   const onStartClick = useCallback(() => {
@@ -148,5 +154,3 @@ function GuestWrite() {
     </MainWrapper>
   );
 }
-
-export default GuestWrite;

@@ -12,7 +12,7 @@ const MainTitle = styled(Title)`
 const LeafListWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  grid-column-gap: 2rem;
+  grid-column-gap: 1rem;
   grid-row-gap: 2rem;
   place-items: center;
   width: 100%;
@@ -29,7 +29,7 @@ interface LeafBtnProps {
 }
 
 const BtnWrapper = styled.div<LeafBtnProps>`
-  width: 100%;
+  width: 90%;
   background-color: ${(props) => (props.isSelect ? '#FFC7C7' : '#FFE5E2')};
   border-radius: 30px;
   cursor: pointer;

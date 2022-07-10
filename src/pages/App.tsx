@@ -6,13 +6,14 @@ import theme from '../common/style/theme';
 
 import LandingPage from '.';
 import Main from './Main';
-import GuestHome from './GuestHome';
+import PostHome from './PostHome';
 import Layout from '../components/Layout/Layout';
 import AnniversaryManagement from './AnniversaryManagement';
 import LoginPage from './LoginPage';
 import NicknameRegist from './NicknameRegist';
 import SocialRedirect from './SocialLogin/SocialRedirect';
 import GuestFlow from './GuestFlow';
+import GuestResult from './GuestResult';
 
 function App() {
   return (
@@ -28,8 +29,9 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/login/redirect" element={<SocialRedirect />} />
             <Route path="/login/nickname" element={<NicknameRegist />} />
-            <Route path="/:postId" element={<GuestHome />} />
+            <Route path="/:postId" element={<PostHome />} />
             <Route path="/guest/:postId" element={<GuestFlow />} />
+            <Route path="/guest/result/:postId" element={<GuestResult />} />
           </Routes>
         </Layout>
       </Router>
