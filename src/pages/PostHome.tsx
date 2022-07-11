@@ -199,7 +199,7 @@ export default function PostHome() {
   return (
     <>
       <Helmet>
-        <title>꽃다발 | 기뻐유</title>
+        <title>{post.userNickname}님의 꽃다발 | 기뻐유</title>
       </Helmet>
       <MessageProvider>
         <MainWrapper>
