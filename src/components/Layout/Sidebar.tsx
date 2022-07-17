@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { useUserDispatch } from '../../contexts/UserContext';
 
 const SideBarWrap = styled.div`
   background-color: #ffe2e2;
@@ -41,6 +42,7 @@ function Sidebar({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) {
   const outside = useRef<any>();
   const userInfo = localStorage.getItem('user');
   const navigate = useNavigate();
+  const dispatch = useUserDispatch();
 
   useEffect(() => {
     document.addEventListener('mousedown', handlerOutside);
@@ -86,6 +88,9 @@ function Sidebar({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) {
   // 로그아웃
   const handelLogout = () => {
     localStorage.clear();
+    dispatch({
+      type: 'REMOVE'
+    });
   };
 
   const toggleSide = () => {

@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { NicknameProps } from '../components/common/interface';
 import { Button, Title } from '../components/common/style';
+import { useUserDispatch } from '../contexts/UserContext';
 
 const NickWrap = styled.div`
   height: 100%;
@@ -49,6 +50,7 @@ function NicknameRegist() {
 
   const location = useLocation();
   const navigate = useNavigate();
+  const dispatch = useUserDispatch();
 
   const changeNickname = (e: any) => {
     setNickname(e.target.value);
@@ -68,11 +70,14 @@ function NicknameRegist() {
         })
         .then((res) => {
           const { data } = res;
-          console.log(data);
           if (data.message === 'success') {
             localStorage.setItem('token', data.accessToken);
             localStorage.setItem('social', JSON.stringify(socialLoginType));
-            localStorage.setItem('user', JSON.stringify(data.user));
+            localStorage.setItem('social', data.socialLoginType);
+            dispatch({
+              type: 'CREATE',
+              user: data.user
+            });
             navigate('/main'); // 메인 화면으로
           }
         })
