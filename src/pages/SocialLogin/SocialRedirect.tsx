@@ -1,8 +1,6 @@
 import axios from 'axios';
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { googleLoginApi, kakaoLoginApi } from '../../api/Apis';
-import { NicknameProps } from '../../components/common/interface';
 import LoadingPage from '../../components/LoadingPage';
 
 function SocialRedirect() {
@@ -32,6 +30,7 @@ function SocialRedirect() {
         data = await axios.get(`/login/sucess?email=${email}`);
       }
       if (data.existingUser === 'true') {
+        console.log(data);
         // 가입된 회원
         localStorage.setItem('token', data.accessToken);
         localStorage.setItem('social', data.socialLoginType);
@@ -41,7 +40,8 @@ function SocialRedirect() {
         navigate('/login/nickname', {
           state: {
             email: data.email,
-            socialLoginType: data.socialLoginType
+            socialLoginType: data.socialLoginType,
+            kakaoRefreshToken: data.kakaoRefreshToken
           }
         });
       }

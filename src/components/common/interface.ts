@@ -14,4 +14,5 @@ export interface User {
 export interface NicknameProps {
   email: string;
   socialLoginType: number;
+  kakaoRefreshToken: string;
 }

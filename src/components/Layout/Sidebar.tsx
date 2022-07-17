@@ -2,8 +2,6 @@ import axios from 'axios';
 import React, { useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { deleteUser } from '../../api/Apis';
-import { User } from '../common/interface';
 
 const SideBarWrap = styled.div`
   background-color: #ffe2e2;
@@ -64,8 +62,10 @@ function Sidebar({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) {
     const social: string | null = localStorage.getItem('social');
     // 회원 탈퇴 api
     try {
+      console.log(user);
+      console.log(social);
       const { data } = await axios.delete(
-        `/user/${user.id}?socialLoginType=${social}`
+        `${process.env.REACT_APP_API_URL}/user/${user.id}?socialLoginType=${social}`
       );
       console.log(data);
       if (data.deleteUser) {

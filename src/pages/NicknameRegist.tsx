@@ -56,18 +56,15 @@ function NicknameRegist() {
 
   const registUser = () => {
     const state = location.state as NicknameProps;
-    const { email } = state;
-    const { socialLoginType } = state;
+    const { email, socialLoginType, kakaoRefreshToken } = state;
 
-    console.log(email);
-    console.log(nickname);
     // 구글 0 , 카카오 1
-    console.log(socialLoginType);
     if (email) {
       axios
         .post(`http://3.37.37.6:8080/login/user/nickname`, {
           nickname,
-          email
+          email,
+          kakaoRefreshToken
         })
         .then((res) => {
           const { data } = res;
