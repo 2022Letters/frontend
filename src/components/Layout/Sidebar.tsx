@@ -97,12 +97,14 @@ function Sidebar({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) {
 
   return (
     <SideBarWrap id="sidebar" ref={outside} className={isOpen ? 'open' : ''}>
-      <CloseBtn>
+      <CloseBtn type="button">
         <img
           src="/img/close.png"
           alt="close"
           onClick={toggleSide}
           onKeyDown={toggleSide}
+          width="19"
+          height="19"
         />
       </CloseBtn>
       <nav>

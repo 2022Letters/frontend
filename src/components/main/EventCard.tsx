@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import styled, { css, keyframes } from 'styled-components';
+import { deleteApi } from '../../api/baseApi';
+import { bouquetList, categoryList } from '../../constants';
 
 const boxFadeIn = keyframes`
   0% {
@@ -13,7 +16,7 @@ const boxFadeIn = keyframes`
 const Container = styled.article`
   width: 100%;
   position: relative;
-  background-color: #fff9c1;
+  background-color: transparent;
   border-radius: 10px;
   transition: all 0.3s ease-in;
 `;
@@ -43,20 +46,21 @@ const ImgWrapper = styled.picture`
 
 const Img = styled.img`
   width: 100%;
+  height: 100%;
 `;
 
 const CategoryWrapper = styled.div`
-  background-color: #ffcaca;
+  background-color: lavender;
   border-radius: 50px;
   width: fit-content;
-  padding: 0.375rem 1.625rem;
+  padding: 0.375rem 1rem;
   position: absolute;
   bottom: 5px;
   right: 0;
   letter-spacing: 5px;
   font-size: 1.5rem;
   @media (max-width: 600px) {
-    font-size: 1rem;
+    font-size: 1.25rem;
   }
 `;
 
@@ -122,26 +126,43 @@ interface IEventCard {
 }
 export default function EventCard({ eventInfo, menu, idx }: IEventCard) {
   const [isMenuOn, setIsMenuOn] = useState(false);
-  const { category, bouquet, title, id, date } = eventInfo;
+  const { categoryId, userNickname, title, id, date } = eventInfo;
   const { currentTargetEvent, toggleMenu } = menu;
   const onClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setIsMenuOn(true);
     toggleMenu(event);
   };
 
-  const KeepMenuOn = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const KeepMenuOn = async (event: React.MouseEvent<HTMLButtonElement>) => {
     toggleMenu(event);
+    await deleteMessage();
+  };
+
+  const deleteMessage = async () => {
+    const response = window.confirm('기념일을 정말로 삭제하시겠어요?');
+    if (response) {
+      await deleteApi(`/api/msg/${id}`);
+    }
   };
   return (
     <Container>
-      <EventCardTopWrapper>
-        <ImgWrapper>
-          <Img src={bouquet} alt={`${title} banner`} />
-        </ImgWrapper>
-        <CategoryWrapper>
-          <p>{category}</p>
-        </CategoryWrapper>
-      </EventCardTopWrapper>
+      <Link to={`/post/${id}`}>
+        <EventCardTopWrapper>
+          <ImgWrapper>
+            <Img
+              loading="lazy"
+              src={bouquetList[categoryId]}
+              alt={`${title} event`}
+              draggable={false}
+              width="167"
+              height="215"
+            />
+          </ImgWrapper>
+          <CategoryWrapper>
+            <p>{categoryList[categoryId - 1].categoryName}</p>
+          </CategoryWrapper>
+        </EventCardTopWrapper>
+      </Link>
       <EventCardBottomWrapper>
         <p>{date}</p>
         <h1>{title}</h1>
@@ -149,15 +170,12 @@ export default function EventCard({ eventInfo, menu, idx }: IEventCard) {
           . . .
         </MenuToggleButton>
         {currentTargetEvent === idx && (
-          <MenuWrapper className="target" active={isMenuOn}>
-            <MenuButton
-              type="button"
-              update="update"
-              onClick={KeepMenuOn}
-              data-menu="update"
-            >
-              수정
-            </MenuButton>
+          <MenuWrapper active={isMenuOn}>
+            <Link to={`/edit/${id}`}>
+              <MenuButton type="button" data-menu="update">
+                수정
+              </MenuButton>
+            </Link>
             <MenuButton type="button" data-menu="delete" onClick={KeepMenuOn}>
               삭제
             </MenuButton>

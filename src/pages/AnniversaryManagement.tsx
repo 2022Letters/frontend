@@ -1,10 +1,15 @@
-import React, { useEffect, useRef, useState } from 'react';
+/* eslint-disable no-console */
+import React, { useCallback, useEffect, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import ReactDatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { ko } from 'date-fns/esm/locale';
 import axios from 'axios';
+import { useMatch, useNavigate } from 'react-router-dom';
 import * as C from '../components/common/style';
+import { categoryList } from '../constants';
+import { getApi } from '../api/baseApi';
+import { toStringByFormatting } from '../common/utils/util';
 
 const borderColor = keyframes`
   0% {
@@ -119,7 +124,7 @@ const CategoryWrapper = styled.div`
   padding-bottom: 100%;
 `;
 
-const CategoryButton = styled.button<ICategoryButton>`
+const CategoryButton = styled.button<ICategoryButtonProps>`
   position: absolute;
   width: 100%;
   height: 100%;
@@ -210,79 +215,125 @@ const CategoryWarningSpan = styled.span`
   color: red;
 `;
 
+interface ICategoryButtonProps {
+  index: number | null;
+  currentCategory: number | null;
+}
+
+interface ICreatedEvent {
+  title: string;
+  categoryId: number | null;
+  date: string;
+  visibility: boolean;
+  userid?: number;
+}
 function AnniversaryManagement() {
   const [originalDateInfo, setOriginalDateInfo] = useState(new Date());
   const [isOpen, setIsOpen] = useState(false);
   const [isCategorySelected, setIsCategorySelected] = useState(true);
-  const [anniversaryInfo, setAnniversaryInfo] = useState({
+  const [anniversaryInfo, setAnniversaryInfo] = useState<ICreatedEvent>({
     title: '',
-    category: '',
+    categoryId: null,
     date: '',
-    isOpen: false
+    visibility: false
   });
-
-  const ref = useRef();
+  const [postId, setPostId] = useState<number>();
+  const match = useMatch('/edit/:postId');
+  const navigate = useNavigate();
   useEffect(() => {
-    toStringByFormatting(originalDateInfo);
-  }, []);
-
-  const leftPad = (value: number) => {
-    if (value >= 10) {
-      return value;
-    }
-    return `0${value}`;
-  };
-
-  const toStringByFormatting = (source: Date, delimiter = '-') => {
-    const year = source.getFullYear();
-    const month = leftPad(source.getMonth() + 1);
-    const day = leftPad(source.getDate());
-    const date = [year, month, day].join(delimiter);
-    setOriginalDateInfo(new Date(date));
-    setAnniversaryInfo({ ...anniversaryInfo, date });
-  };
-
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.stopPropagation();
-    setIsOpen(!isOpen);
-  };
-
-  const makeCalanderOff = () => {
-    setIsOpen(false);
-  };
-
-  const changeTitle = (event: React.FormEvent<HTMLInputElement>) => {
-    const { name, value } = event.currentTarget;
-    event.preventDefault();
-    setAnniversaryInfo({ ...anniversaryInfo, [name]: value });
-  };
-
-  const onClickCategory = (event: React.MouseEvent<HTMLButtonElement>) => {
-    const {
-      currentTarget: { value }
-    } = event;
-    setIsCategorySelected(true);
-    setAnniversaryInfo({ ...anniversaryInfo, category: value });
-  };
-
-  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (!anniversaryInfo.title) return;
-    if (!anniversaryInfo.category) {
-      setIsCategorySelected(false);
+    if (!match) {
+      const today = toStringByFormatting(originalDateInfo);
+      setAnniversaryInfo({ ...anniversaryInfo, date: today });
       return;
     }
-    const response = await axios.post('', { data: anniversaryInfo });
-  };
+    const currentPostId = match?.params?.postId;
+    if (currentPostId) {
+      setPostId(+currentPostId);
+    }
+    (async () => {
+      // const response = await getApi(`/api/post/set/${currentPostId}`);
+      setAnniversaryInfo({
+        title: '싸피의 생일',
+        categoryId: 2,
+        date: '2022-07-03',
+        visibility: true
+      });
+      setOriginalDateInfo(new Date());
+    })();
+  }, []);
 
-  const stayCalanderOn = (event: React.PointerEvent<HTMLDivElement>) => {
-    event.stopPropagation();
-    setIsOpen(true);
-  };
+  const modifyDateFormat = useCallback(
+    (source: Date) => {
+      const date = toStringByFormatting(source);
+      setOriginalDateInfo(new Date(date));
+      setAnniversaryInfo({ ...anniversaryInfo, date });
+    },
+    [anniversaryInfo]
+  );
 
-  const categoryList = ['생일', '졸업', '결혼', '새해', '기타'];
+  const handleClick = useCallback(
+    (event: React.MouseEvent<HTMLButtonElement>) => {
+      event.stopPropagation();
+      setIsOpen(!isOpen);
+    },
+    []
+  );
+
+  const changeTitle = useCallback(
+    (event: React.FormEvent<HTMLInputElement>) => {
+      const { name, value } = event.currentTarget;
+      event.preventDefault();
+      setAnniversaryInfo({ ...anniversaryInfo, [name]: value });
+    },
+    [anniversaryInfo]
+  );
+
+  const onClickCategory = useCallback(
+    (categoryId: number) => {
+      setIsCategorySelected(true);
+      setAnniversaryInfo({ ...anniversaryInfo, categoryId });
+    },
+    [anniversaryInfo]
+  );
+
+  const onSubmit = useCallback(
+    async (event: React.FormEvent<HTMLFormElement>) => {
+      console.log(anniversaryInfo);
+      event.preventDefault();
+      if (!anniversaryInfo.title) return;
+      if (!anniversaryInfo.categoryId) {
+        setIsCategorySelected(false);
+        return;
+      }
+      navigate(`/${postId}`);
+      if (!match) {
+        console.log(match);
+        navigate(`/1`);
+        const response = await axios.post('/api/post', {
+          data: anniversaryInfo
+        });
+      } else {
+        await axios.put(`/api/post/${postId}`, { data: anniversaryInfo });
+        navigate(`/${postId}`);
+      }
+    },
+    [anniversaryInfo]
+  );
+
+  const stayCalanderOn = useCallback(
+    (event: React.PointerEvent<HTMLDivElement>) => {
+      event.stopPropagation();
+      setIsOpen(true);
+    },
+    []
+  );
+
   return (
-    <Container onClick={makeCalanderOff}>
+    <Container
+      onClick={() => {
+        setIsOpen(false);
+      }}
+    >
       <Form onSubmit={onSubmit}>
         <AllyHiddenTitle>글쓰기</AllyHiddenTitle>
         <InputWrapper>
@@ -291,6 +342,7 @@ function AnniversaryManagement() {
             type="text"
             id="title"
             name="title"
+            value={anniversaryInfo.title}
             onChange={changeTitle}
             placeholder="기념일 제목을 입력해주세요."
           />
@@ -307,16 +359,17 @@ function AnniversaryManagement() {
           </DetailedTitle>
 
           <CategoryButtonListWrapper>
-            {categoryList?.map((category) => (
-              <CategoryWrapper key={category}>
+            {categoryList?.map((category: ICategory) => (
+              <CategoryWrapper key={category.categoryId}>
                 <CategoryButton
                   type="button"
-                  index={category}
-                  currentCategory={anniversaryInfo.category}
-                  onClick={onClickCategory}
-                  value={category}
+                  index={category.categoryId}
+                  currentCategory={anniversaryInfo.categoryId}
+                  onClick={() => onClickCategory(category.categoryId)}
+                  date-id={category.categoryId}
+                  value={category.categoryName}
                 >
-                  {category}
+                  {category.categoryName}
                 </CategoryButton>
               </CategoryWrapper>
             ))}
@@ -344,7 +397,7 @@ function AnniversaryManagement() {
                 locale={ko}
                 selected={originalDateInfo}
                 onChange={(date: Date) => {
-                  toStringByFormatting(date);
+                  modifyDateFormat(date);
                 }}
                 inline
               />
@@ -356,20 +409,22 @@ function AnniversaryManagement() {
           <ToggleWrapper>
             <ToggleInput
               type="checkbox"
-              onClick={() => {
+              aria-label="게시글 공개 여부 체크 버튼"
+              checked={anniversaryInfo.visibility}
+              onChange={() => {
                 setAnniversaryInfo({
                   ...anniversaryInfo,
-                  isOpen: !anniversaryInfo.isOpen
+                  visibility: !anniversaryInfo.visibility
                 });
               }}
             />
             <ToggleState>
-              {anniversaryInfo.isOpen ? '공개' : '비공개'}
+              {anniversaryInfo.visibility ? '공개' : '비공개'}
             </ToggleState>
           </ToggleWrapper>
         </ToggleControlWrapper>
         <SubmmitWrapper>
-          <SubmitButton type="submit">등록</SubmitButton>
+          <SubmitButton type="submit">{postId ? '수정' : '등록'}</SubmitButton>
         </SubmmitWrapper>
       </Form>
     </Container>
