@@ -2,9 +2,11 @@ import axios from 'axios';
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LoadingPage from '../../components/LoadingPage';
+import { useUserDispatch, useUserState } from '../../contexts/UserContext';
 
 function SocialRedirect() {
   const navigate = useNavigate();
+  const dispatch = useUserDispatch();
 
   useEffect(() => {
     handlerLogin();
@@ -30,11 +32,13 @@ function SocialRedirect() {
         data = await axios.get(`/login/sucess?email=${email}`);
       }
       if (data.existingUser === 'true') {
-        console.log(data);
         // 가입된 회원
         localStorage.setItem('token', data.accessToken);
         localStorage.setItem('social', data.socialLoginType);
-        localStorage.setItem('user', JSON.stringify(data.user));
+        dispatch({
+          type: 'CREATE',
+          user: data.user
+        });
         navigate('/main'); // 메인 화면으로
       } else {
         navigate('/login/nickname', {

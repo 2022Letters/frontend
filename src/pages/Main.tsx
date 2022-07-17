@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { debounce } from 'lodash';
 import { Link } from 'react-router-dom';
 import EventCard from '../components/EventCard';
+import { useUserState } from '../contexts/UserContext';
 
 const Container = styled.section`
   position: relative;
@@ -98,6 +99,7 @@ export default function Main() {
   const [currentCategory, setCurrentCategory] = useState('');
   const [currentTargetEvent, setCurrentTargetEvent] = useState(-1);
   const categoryList = ['생일', '졸업', '결혼', '새해', '기타'];
+  const users = useUserState();
 
   useEffect(() => {
     (async () => {

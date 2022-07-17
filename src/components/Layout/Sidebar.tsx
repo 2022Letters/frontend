@@ -62,12 +62,9 @@ function Sidebar({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) {
     const social: string | null = localStorage.getItem('social');
     // 회원 탈퇴 api
     try {
-      console.log(user);
-      console.log(social);
       const { data } = await axios.delete(
         `${process.env.REACT_APP_API_URL}/user/${user.id}?socialLoginType=${social}`
       );
-      console.log(data);
       if (data.deleteUser) {
         alert('탈퇴 되었습니다.');
         // 구글로그인 탈퇴인 경우 redirect
