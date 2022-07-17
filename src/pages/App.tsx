@@ -7,13 +7,14 @@ import { UserContextProvider } from '../contexts/UserContext';
 
 import LandingPage from '.';
 import Main from './Main';
-import GuestHome from './GuestHome';
+import PostHome from './PostHome';
 import Layout from '../components/Layout/Layout';
 import AnniversaryManagement from './AnniversaryManagement';
 import LoginPage from './LoginPage';
 import NicknameRegist from './NicknameRegist';
 import SocialRedirect from './SocialLogin/SocialRedirect';
 import GuestFlow from './GuestFlow';
+import GuestResult from './GuestResult';
 
 function App() {
   return (

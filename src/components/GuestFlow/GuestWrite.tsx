@@ -69,6 +69,9 @@ const CountLength = styled.div`
   position: absolute;
   bottom: 0;
   right: 0;
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-right: 0.5rem;
 `;
 
 interface Props {
@@ -93,18 +96,26 @@ export default function GuestWrite({
     setStep((prev) => prev + 1);
   }, []);
 
+  const prevent = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') e.preventDefault();
+    return false;
+  };
+
   return (
-    <ContentWrapper onSubmit={onNextClick}>
+    <ContentWrapper onSubmit={(e) => onNextClick(e)}>
+      <input hidden />
       <NicknameInput
         placeholder="닉네임 (최대 10자)"
         required
         maxLength={10}
         onChange={onNicknameChange}
         value={nickname}
+        onKeyDown={prevent}
       />
       <LetterWrapper>
         <Letter required onChange={onTextChange} value={text} />
         <LetterImg src={letters[post.categoryId]} />
+        <CountLength>{text.length}/1000자</CountLength>
       </LetterWrapper>
       <NextBtn>다음</NextBtn>
     </ContentWrapper>

@@ -1,14 +1,14 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import styled from 'styled-components';
 
-import { useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
+import { useParams } from 'react-router-dom';
 
 import { Button } from '../components/common/style';
 import BackBtn from '../components/common/BackBtn';
 import LeafSelect from '../components/GuestFlow/LeafSelect';
 import GuestWrite from '../components/GuestFlow/GuestWrite';
 import GuestLayout from '../components/GuestFlow/GuestLayout';
+import { postDetailApi } from '../api/Apis';
 
 interface IMainWrapper {
   isZeroStep: boolean;
@@ -72,8 +72,15 @@ export default function GuestFlow() {
     ]
   });
 
-  const navigate = useNavigate();
   const { postId } = useParams();
+
+  useEffect(() => {
+    // const fetchData = async () => {
+    //   const resp = postDetailApi(postId);
+    //   setPost(resp.data);
+    // };
+    // fetchData();
+  }, []);
 
   const onNicknameChange = useCallback(
     (e: React.FormEvent<HTMLInputElement>) => {
@@ -86,7 +93,7 @@ export default function GuestFlow() {
   const onTextChange = useCallback(
     (e: React.FormEvent<HTMLTextAreaElement>) => {
       const { value } = e.currentTarget;
-      setText(value);
+      if (value.length <= 1000) setText(value);
     },
     [text]
   );
@@ -114,7 +121,14 @@ export default function GuestFlow() {
           onTextChange={onTextChange}
         />
       )}
-      {step === 2 && <GuestLayout post={post} iconId={iconId} />}
+      {step === 2 && (
+        <GuestLayout
+          post={post}
+          iconId={iconId}
+          nickname={nickname}
+          text={text}
+        />
+      )}
       {step === 0 && <NextBtn onClick={onNextClick}>다음</NextBtn>}
     </MainWrapper>
   );

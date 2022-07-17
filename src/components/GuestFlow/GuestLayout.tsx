@@ -1,10 +1,12 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import Draggable from 'react-draggable';
+import { useNavigate } from 'react-router-dom';
 
 import { Title, Button } from '../common/style';
 import { leaves, flowerwraps } from '../../constants';
 import { IPost } from '../../types';
+import { createMessageApi } from '../../api/Apis';
 
 const MainTitle = styled(Title)`
   flex-shrink: 0;
@@ -77,9 +79,11 @@ const NextBtn = styled(Button)`
 interface Props {
   post: IPost;
   iconId: number;
+  nickname: string;
+  text: string;
 }
 
-export default function GuestLayout({ post, iconId }: Props) {
+export default function GuestLayout({ post, iconId, nickname, text }: Props) {
   const [pos, setPos] = useState<IPos>({ x: 0, y: 0 });
   const [originPos, setOriginPos] = useState<IPos>({ x: 0, y: 0 });
   const [box, setBox] = useState<IBox>({ width: 0, height: 0 });
@@ -88,6 +92,7 @@ export default function GuestLayout({ post, iconId }: Props) {
   const imgWrapper = useRef() as React.MutableRefObject<HTMLDivElement>;
   const nodeRef = useRef(null);
   const imgSize = 100;
+  const navigate = useNavigate();
 
   useEffect(() => {
     const wrapperBox = imgWrapper.current.getBoundingClientRect();
@@ -99,10 +104,10 @@ export default function GuestLayout({ post, iconId }: Props) {
     (data: any) => {
       setIsDragging(false);
       if (
-        data.x - imgSize * 0.66 >= (box.width / 2) * -1 &&
-        data.x + imgSize * 0.66 < box.width / 2 &&
-        data.y - imgSize * 0.66 >= (box.height / 2) * -1 &&
-        data.y + imgSize * 0.66 < box.height / 2
+        data.x - imgSize * 0.33 >= (box.width / 2) * -1 &&
+        data.x + imgSize * 0.33 < box.width / 2 &&
+        data.y - imgSize * 0.33 >= (box.height / 2) * -1 &&
+        data.y + imgSize * 0.33 < box.height / 2
       ) {
         setOriginPos({ ...originPos, x: data.x, y: data.y });
       } else {
@@ -124,10 +129,10 @@ export default function GuestLayout({ post, iconId }: Props) {
     (data: any) => {
       setIsDragging(false);
       if (
-        data.x - imgSize * 0.66 >= (box.width / 2) * -1 &&
-        data.x + imgSize * 0.66 < box.width / 2 &&
-        data.y - imgSize * 0.66 >= (box.height / 2) * -1 &&
-        data.y + imgSize * 0.66 < box.height / 2
+        data.x - imgSize * 0.33 >= (box.width / 2) * -1 &&
+        data.x + imgSize * 0.33 < box.width / 2 &&
+        data.y - imgSize * 0.33 >= (box.height / 2) * -1 &&
+        data.y + imgSize * 0.33 < box.height / 2
       ) {
         setPos({ ...pos, x: data.x, y: data.y });
       } else {
@@ -138,11 +143,19 @@ export default function GuestLayout({ post, iconId }: Props) {
     [pos, originPos, box]
   );
 
-  const onFinishClick = useCallback(() => {
+  const onFinishClick = useCallback(async () => {
     const xRatio = pos.x / box.width;
     const yRatio = pos.y / box.height;
     console.log(pos, box, xRatio, yRatio);
-    // navigate('/guest/result');
+    // const resp = await createMessageApi({
+    //   postId: post.id,
+    //   iconId,
+    //   nickname,
+    //   content: text,
+    //   x: xRatio,
+    //   y: yRatio
+    // });
+    navigate(`/guest/result/${post.id}`);
   }, [pos, box]);
 
   return (
