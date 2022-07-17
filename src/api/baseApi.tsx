@@ -4,26 +4,14 @@ import axios from 'axios';
 const apiUrl = process.env.REACT_APP_API_URL;
 
 export const getApi = async (url: string) => {
-  // try {
-  //   console.log(`${apiUrl}${url}`);
-  //   const data = await axios.get(`${apiUrl}${url}`);
-  //   console.table([data]);
-  //   return data;
-  // } catch (err) {
-  //   console.log(err);
-  //   alert('문제가 발생했습니다');
-  //   return err;
-  // }
-
-  await axios
-    .get(`${apiUrl}${url}`)
-    .then((res) => {
-      console.log(res);
-      return res;
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+  try {
+    const data = await axios.get(`${apiUrl}${url}`);
+    return data;
+  } catch (err) {
+    console.log(err);
+    // alert('문제가 발생했습니다');
+    return err;
+  }
 };
 
 export const postApi = async (url: string, body?: any) => {
@@ -32,7 +20,7 @@ export const postApi = async (url: string, body?: any) => {
     return data;
   } catch (err) {
     console.log(err);
-    alert('문제가 발생했습니다');
+    // alert('문제가 발생했습니다');
     return err;
   }
 };
@@ -43,7 +31,7 @@ export const putApi = async (url: string, body?: any) => {
     return data;
   } catch (err) {
     console.log(err);
-    alert('문제가 발생했습니다');
+    // alert('문제가 발생했습니다');
     return err;
   }
 };
@@ -54,7 +42,7 @@ export const deleteApi = async (url: string) => {
     return data;
   } catch (err) {
     console.log(err);
-    alert('문제가 발생했습니다');
+    // alert('문제가 발생했습니다');
     return err;
   }
 };

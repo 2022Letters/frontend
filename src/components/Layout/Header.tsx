@@ -29,8 +29,17 @@ function Header() {
 
   return (
     <HeaderPostion>
-      <MenuBtn role="button" onClick={toggleSide}>
-        <MenuImg src="/img/menu.png" />
+      <MenuBtn
+        role="button"
+        onClick={toggleSide}
+        aria-label="navigation button"
+      >
+        <MenuImg
+          src="/img/menu.png"
+          alt="navigation button"
+          width="25"
+          height="25"
+        />
       </MenuBtn>
       <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} />
     </HeaderPostion>
