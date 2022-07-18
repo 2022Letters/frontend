@@ -4,7 +4,6 @@ import { useParams, useNavigate } from 'react-router-dom';
 
 import { leaves, flowerwraps } from '../constants';
 import { Button } from '../components/common/style';
-import { postDetailApi } from '../api/Apis';
 
 const MainWrapper = styled.div`
   width: 100%;

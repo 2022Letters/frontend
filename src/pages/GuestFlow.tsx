@@ -8,7 +8,6 @@ import BackBtn from '../components/common/BackBtn';
 import LeafSelect from '../components/GuestFlow/LeafSelect';
 import GuestWrite from '../components/GuestFlow/GuestWrite';
 import GuestLayout from '../components/GuestFlow/GuestLayout';
-import { postDetailApi } from '../api/Apis';
 
 interface IMainWrapper {
   isZeroStep: boolean;

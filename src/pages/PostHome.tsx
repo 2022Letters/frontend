@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
+import axios from 'axios';
 
 import theme from '../common/style/theme';
 import { Button } from '../components/common/style';
@@ -10,7 +11,7 @@ import { flowerwraps, leaves } from '../constants';
 import FlowerList from '../components/HostFlow/FlowerList';
 import LetterModal from '../components/HostFlow/LetterModal';
 import MessageProvider from '../Store/MessageProvider';
-import { postDetailApi } from '../api/Apis';
+import { useUserState } from '../contexts/UserContext';
 
 const MainWrapper = styled.div`
   width: 100%;
@@ -147,10 +148,10 @@ export default function PostHome() {
   const postUrl = window.location.href;
   const { postId } = useParams();
   const imgWrapper = useRef() as React.MutableRefObject<HTMLDivElement>;
+  const userInfo = useUserState();
   const getUserId = useCallback(() => {
-    const userInfo = JSON.parse(localStorage.getItem('user') || '{}');
-    if (!Object.keys(userInfo).length) return;
     const userId = userInfo?.id;
+    console.log(userId);
     setUserId(+userId);
   }, []);
 
@@ -159,11 +160,13 @@ export default function PostHome() {
     const wrapperBox = imgWrapper.current.getBoundingClientRect();
     setBox({ ...box, width: wrapperBox.width, height: wrapperBox.height });
 
-    // const fetchData = async () => {
-    //   const resp = await postDetailApi(Number(postId));
-    //   setPost(resp.data);
-    // };
-    // fetchData();
+    const fetchData = async () => {
+      const resp = await axios.get(
+        `${process.env.REACT_APP_API_URL}api/post/${postId}`
+      );
+      setPost(resp.data);
+    };
+    fetchData();
   }, []);
 
   const onStartClick = useCallback(() => {
