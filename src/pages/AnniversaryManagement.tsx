@@ -10,6 +10,7 @@ import * as C from '../components/common/style';
 import { categoryList } from '../constants';
 import { getApi } from '../api/baseApi';
 import { toStringByFormatting } from '../common/utils/util';
+import { useUserState } from '../contexts/UserContext';
 
 const borderColor = keyframes`
   0% {
@@ -225,13 +226,14 @@ interface ICreatedEvent {
   categoryId: number | null;
   date: string;
   visibility: boolean;
-  userid?: number;
+  userId?: number;
 }
 function AnniversaryManagement() {
   const [originalDateInfo, setOriginalDateInfo] = useState(new Date());
   const [isOpen, setIsOpen] = useState(false);
   const [isCategorySelected, setIsCategorySelected] = useState(true);
   const [anniversaryInfo, setAnniversaryInfo] = useState<ICreatedEvent>({
+    userId: 0,
     title: '',
     categoryId: null,
     date: '',
@@ -240,10 +242,11 @@ function AnniversaryManagement() {
   const [postId, setPostId] = useState<number>();
   const match = useMatch('/edit/:postId');
   const navigate = useNavigate();
+  const user = useUserState();
   useEffect(() => {
     if (!match) {
       const today = toStringByFormatting(originalDateInfo);
-      setAnniversaryInfo({ ...anniversaryInfo, date: today });
+      setAnniversaryInfo({ ...anniversaryInfo, date: today, userId: user.id });
       return;
     }
     const currentPostId = match?.params?.postId;
@@ -253,6 +256,7 @@ function AnniversaryManagement() {
     (async () => {
       // const response = await getApi(`/api/post/set/${currentPostId}`);
       setAnniversaryInfo({
+        userId: user.id,
         title: '싸피의 생일',
         categoryId: 2,
         date: '2022-07-03',
@@ -305,13 +309,20 @@ function AnniversaryManagement() {
         setIsCategorySelected(false);
         return;
       }
-      navigate(`/${postId}`);
+      // navigate(`/${postId}`);
       if (!match) {
-        console.log(match);
-        navigate(`/1`);
-        const response = await axios.post('/api/post', {
-          data: anniversaryInfo
-        });
+        console.log(anniversaryInfo);
+        // navigate(`/1`);
+        const response = await axios.post(
+          `${process.env.REACT_APP_API_URL}api/post`,
+          anniversaryInfo,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+          }
+        );
+        console.log(response);
       } else {
         await axios.put(`/api/post/${postId}`, { data: anniversaryInfo });
         navigate(`/${postId}`);
