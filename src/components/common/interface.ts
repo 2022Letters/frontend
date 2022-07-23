@@ -12,7 +12,7 @@ export interface User {
 }
 
 export interface NicknameProps {
-  email: string;
+  socialId: string;
   socialLoginType: number;
-  kakaoRefreshToken: string;
+  refreshToken: string;
 }

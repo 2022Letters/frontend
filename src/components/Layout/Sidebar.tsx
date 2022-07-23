@@ -40,7 +40,7 @@ const QuitMenu = styled.span`
 
 function Sidebar({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) {
   const outside = useRef<any>();
-  const userInfo = localStorage.getItem('user');
+  const userInfo = localStorage.getItem('token');
   const navigate = useNavigate();
   const dispatch = useUserDispatch();
 

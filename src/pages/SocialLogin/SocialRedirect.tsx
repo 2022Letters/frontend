@@ -31,6 +31,7 @@ function SocialRedirect() {
         // 구글 로그인
         data = await axios.get(`/login/sucess?email=${email}`);
       }
+      console.log(data);
       if (data.existingUser === 'true') {
         // 가입된 회원
         localStorage.setItem('token', data.accessToken);
@@ -43,9 +44,9 @@ function SocialRedirect() {
       } else {
         navigate('/login/nickname', {
           state: {
-            email: data.email,
+            socialId: data.socialId,
             socialLoginType: data.socialLoginType,
-            kakaoRefreshToken: data.kakaoRefreshToken
+            refreshToken: data.refreshToken
           }
         });
       }
