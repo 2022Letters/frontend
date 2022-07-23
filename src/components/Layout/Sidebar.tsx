@@ -2,8 +2,7 @@ import axios from 'axios';
 import React, { useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { deleteUser } from '../../api/Apis';
-import { User } from '../common/interface';
+import { useUserDispatch } from '../../contexts/UserContext';
 
 const SideBarWrap = styled.div`
   background-color: #ffe2e2;
@@ -41,8 +40,9 @@ const QuitMenu = styled.span`
 
 function Sidebar({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) {
   const outside = useRef<any>();
-  const userInfo = localStorage.getItem('user');
+  const userInfo = localStorage.getItem('token');
   const navigate = useNavigate();
+  const dispatch = useUserDispatch();
 
   useEffect(() => {
     document.addEventListener('mousedown', handlerOutside);
@@ -65,9 +65,8 @@ function Sidebar({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) {
     // 회원 탈퇴 api
     try {
       const { data } = await axios.delete(
-        `/user/${user.id}?socialLoginType=${social}`
+        `${process.env.REACT_APP_API_URL}/user/${user.id}?socialLoginType=${social}`
       );
-      console.log(data);
       if (data.deleteUser) {
         alert('탈퇴 되었습니다.');
         // 구글로그인 탈퇴인 경우 redirect
@@ -89,6 +88,9 @@ function Sidebar({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) {
   // 로그아웃
   const handelLogout = () => {
     localStorage.clear();
+    dispatch({
+      type: 'REMOVE'
+    });
   };
 
   const toggleSide = () => {

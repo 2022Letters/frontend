@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { debounce } from 'lodash';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
+import { useUserState } from '../contexts/UserContext';
 import EventCard from '../components/main/EventCard';
 import { getApi } from '../api/baseApi';
 import { categoryList } from '../constants';
@@ -126,6 +127,7 @@ export default function Main() {
     categoryName: ''
   });
   const [currentTargetEvent, setCurrentTargetEvent] = useState(-1);
+  const users = useUserState();
   const [query, setQuery] = useState('');
 
   const getUserId = useCallback(() => {

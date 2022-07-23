@@ -13,6 +13,7 @@ interface IMenu {
 }
 
 interface ICategory {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   categoryId: any;
   categoryName: string;
 }

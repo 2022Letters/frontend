@@ -1,12 +1,12 @@
 import axios from 'axios';
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { googleLoginApi, kakaoLoginApi } from '../../api/Apis';
-import { NicknameProps } from '../../components/common/interface';
 import LoadingPage from '../../components/LoadingPage';
+import { useUserDispatch, useUserState } from '../../contexts/UserContext';
 
 function SocialRedirect() {
   const navigate = useNavigate();
+  const dispatch = useUserDispatch();
 
   useEffect(() => {
     handlerLogin();
@@ -15,35 +15,44 @@ function SocialRedirect() {
   const handlerLogin = async () => {
     const code = new URL(window.location.href).searchParams.get('code');
     const email = new URL(window.location.href).searchParams.get('email');
+    let data: any;
     try {
-      let data;
       if (code) {
         // 카카오 로그인
-        data = await axios.get(`/kakaoLogin?code=${code}`);
+        await axios
+          .get(`${process.env.REACT_APP_API_URL}kakaoLogin?code=${code}`)
+          .then((res) => {
+            data = res.data;
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       } else if (email) {
         // 구글 로그인
         data = await axios.get(`/login/sucess?email=${email}`);
       }
-      data = data?.data;
+      console.log(data);
       if (data.existingUser === 'true') {
         // 가입된 회원
         localStorage.setItem('token', data.accessToken);
         localStorage.setItem('social', data.socialLoginType);
-        localStorage.setItem('user', JSON.stringify(data.user));
+        dispatch({
+          type: 'CREATE',
+          user: data.user
+        });
         navigate('/main'); // 메인 화면으로
       } else {
         navigate('/login/nickname', {
           state: {
-            email: data.email,
-            socialLoginType: data.socialLoginType
+            socialId: data.socialId,
+            socialLoginType: data.socialLoginType,
+            refreshToken: data.refreshToken
           }
         });
       }
       return data;
-    } catch (error) {
-      console.log(error);
-      alert('문제가 발생했습니다 ');
-      return error;
+    } catch (err) {
+      return err;
     }
   };
 

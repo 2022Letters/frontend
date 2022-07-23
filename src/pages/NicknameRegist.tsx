@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { NicknameProps } from '../components/common/interface';
 import { Button, Title } from '../components/common/style';
+import { useUserDispatch } from '../contexts/UserContext';
 
 const NickWrap = styled.div`
   height: 100%;
@@ -49,26 +50,24 @@ function NicknameRegist() {
 
   const location = useLocation();
   const navigate = useNavigate();
+  const dispatch = useUserDispatch();
 
   const changeNickname = (e: any) => {
     setNickname(e.target.value);
   };
 
   const registUser = () => {
-    console.log(location.state);
     const state = location.state as NicknameProps;
-    const { email } = state;
-    const { socialLoginType } = state;
+    const { socialId, socialLoginType, refreshToken } = state;
 
-    console.log(email);
-    console.log(nickname);
     // 구글 0 , 카카오 1
-    console.log(socialLoginType);
-    if (email) {
+    if (socialId) {
       axios
-        .post(`/login/user/nickname`, {
+        .post(`http://3.37.37.6:8080/login/user/nickname`, {
           nickname,
-          email
+          socialId,
+          socialLoginType,
+          refreshToken
         })
         .then((res) => {
           const { data } = res;
@@ -76,7 +75,10 @@ function NicknameRegist() {
           if (data.message === 'success') {
             localStorage.setItem('token', data.accessToken);
             localStorage.setItem('social', JSON.stringify(socialLoginType));
-            localStorage.setItem('user', JSON.stringify(data.user));
+            dispatch({
+              type: 'CREATE',
+              user: data.user
+            });
             navigate('/main'); // 메인 화면으로
           }
         })

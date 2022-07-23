@@ -216,7 +216,7 @@ const CategoryWarningSpan = styled.span`
 `;
 
 interface ICategoryButtonProps {
-  index: number | null;
+  index: number | undefined;
   currentCategory: number | null;
 }
 
